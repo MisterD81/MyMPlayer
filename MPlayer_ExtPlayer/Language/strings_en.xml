@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Language name="English" characters="255">
+  <Section name="unmapped">
+    <String id="0">Speed</String>
+    <String id="1">Audio</String>
+    <String id="2">Subtitles</String>
+    <String id="3">enabled</String>
+    <String id="4">disabled</String>
+    <String id="5">Seek</String>
+    <String id="6">Jump to</String>
+    <String id="7">Subtitle position</String>
+    <String id="8">Subtitle size</String>
+    <String id="9">Subtitle delay</String>
+    <String id="10">Audio delay</String>
+    <String id="11">Aspect ratio</String>
+    <String id="12">Mute</String>
+    <String id="13">Volume</String>
+    <String id="14">Play Stream</String>
+    <String id="15">Play Disc</String>
+    <String id="16">Delete Item</String>
+    <String id="17">Initializing</String>
+  </Section>
+</Language>

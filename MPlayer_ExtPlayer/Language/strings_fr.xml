@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Language name="English" characters="255">
+  <Section name="unmapped">
+    <String id="0">Vitesse</String>
+    <String id="1">Audio</String>
+    <String id="2">Sous-titres</String>
+    <String id="3">Activé</String>
+    <String id="4">désactivé</String>
+    <String id="5">Recherche</String>
+    <String id="6">Aller à</String>
+    <String id="7">Position sous-titres</String>
+    <String id="8">Taille sous-titres</String>
+    <String id="9">Delai sous-titres</String>
+    <String id="10">Delai audio</String>
+    <String id="11">Aspect ratio</String>
+    <String id="12">Mute</String>
+    <String id="13">Volume</String>
+    <String id="14">Lit le flux</String>
+    <String id="15">Lit Disque</String>
+    <String id="16">Supprimer item</String>
+    <String id="17">Initialisation</String>
+  </Section>
+</Language>

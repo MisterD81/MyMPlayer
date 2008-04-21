@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPlayer_ExtPlayer", "MPlayer_ExtPlayer\MPlayer_ExtPlayer.csproj", "{77254E2B-4032-495A-AF2D-1804AB2127EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPlayer_GUIPlugin", "MPlayer_GUIPlugin\MPlayer_GUIPlugin.csproj", "{53898324-E882-4D37-86C1-E4696B248A13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalOSDLibrary", "ExternalOSDLibrary\ExternalOSDLibrary.csproj", "{CA1C8C7D-4AB2-4D8D-87E9-AB9FC970A8C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPlayer_Installer", "MPlayer_Installer\MPlayer_Installer.csproj", "{BB0EE0B3-0BC4-4337-8DA5-3AEFC8E42547}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{77254E2B-4032-495A-AF2D-1804AB2127EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77254E2B-4032-495A-AF2D-1804AB2127EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77254E2B-4032-495A-AF2D-1804AB2127EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77254E2B-4032-495A-AF2D-1804AB2127EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53898324-E882-4D37-86C1-E4696B248A13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53898324-E882-4D37-86C1-E4696B248A13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53898324-E882-4D37-86C1-E4696B248A13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53898324-E882-4D37-86C1-E4696B248A13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA1C8C7D-4AB2-4D8D-87E9-AB9FC970A8C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA1C8C7D-4AB2-4D8D-87E9-AB9FC970A8C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA1C8C7D-4AB2-4D8D-87E9-AB9FC970A8C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA1C8C7D-4AB2-4D8D-87E9-AB9FC970A8C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB0EE0B3-0BC4-4337-8DA5-3AEFC8E42547}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB0EE0B3-0BC4-4337-8DA5-3AEFC8E42547}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB0EE0B3-0BC4-4337-8DA5-3AEFC8E42547}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB0EE0B3-0BC4-4337-8DA5-3AEFC8E42547}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

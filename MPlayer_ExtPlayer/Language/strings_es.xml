@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Language name="Spanish" characters="255">
+  <Section name="unmapped">
+    <String id="0">Velocidad</String>
+    <String id="1">Audio</String>
+    <String id="2">Subtitulos</String>
+    <String id="3">habilitado</String>
+    <String id="4">deshabilitado</String>
+    <String id="5">Buscar</String>
+    <String id="6">Saltar a</String>
+    <String id="7">Posicion de subtitulos</String>
+    <String id="8">Tamaño de subtitulos</String>
+    <String id="9">Retraso de subtitulos</String>
+    <String id="10">Retraso de audio</String>
+    <String id="11">Relación de aspecto</String>
+    <String id="12">Sin sonido</String>
+    <String id="13">Volumen</String>
+    <String id="14">Reproducir flujo</String>
+    <String id="15">Reproducir disco</String>
+    <String id="16">Borrar elemento</String>
+  </Section>
+</Language>

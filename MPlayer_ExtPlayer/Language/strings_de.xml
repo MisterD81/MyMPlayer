@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Language name="German" characters="255">
+  <Section name="unmapped">
+    <String id="0">Geschwindigkeit</String>
+    <String id="1">Audio</String>
+    <String id="2">Untertitel</String>
+    <String id="3">ein</String>
+    <String id="4">aus</String>
+    <String id="5">Seek</String>
+    <String id="6">Gehe zu</String>
+    <String id="7">Untertitelposition</String>
+    <String id="8">Untertitelgröße</String>
+    <String id="9">Untertitelverögerung</String>
+    <String id="10">Audioverzögerung</String>
+    <String id="11">Ansichtsverhältnis</String>
+    <String id="12">Stumm</String>
+    <String id="13">Lautstärke</String>
+    <String id="14">Wiedergabe Stream</String>
+    <String id="15">Disc-Wiedergabe</String>
+    <String id="16">Lösche Element</String>
+    <String id="17">Initialisiere</String>
+  </Section>
+</Language>

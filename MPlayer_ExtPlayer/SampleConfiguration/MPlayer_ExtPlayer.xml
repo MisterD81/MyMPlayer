@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<mplayer version="1">
+	<extensions family="Video">
+		<Extension name=".mpg" arguments="" extPlayerUse="False" />
+		<Extension name=".dat" arguments="" extPlayerUse="False" />
+		<Extension name=".avi" arguments="" extPlayerUse="False" />
+		<Extension name=".divx" arguments="" extPlayerUse="False" />
+		<Extension name=".xvid" arguments="" extPlayerUse="False" />
+		<Extension name=".asf" arguments="" extPlayerUse="False" />
+		<Extension name=".wmv" arguments="" extPlayerUse="False" />
+		<Extension name=".qt" arguments="" extPlayerUse="False" />
+		<Extension name=".mov" arguments="" extPlayerUse="False" />
+		<Extension name=".mp4" arguments="" extPlayerUse="False" />
+		<Extension name=".fli" arguments="" extPlayerUse="False" />
+		<Extension name=".rm" arguments="" extPlayerUse="False" />
+		<Extension name=".nuv" arguments="" extPlayerUse="False" />
+		<Extension name=".y4m" arguments="" extPlayerUse="False" />
+		<Extension name=".film" arguments="" extPlayerUse="False" />
+		<Extension name=".roq" arguments="" extPlayerUse="False" />
+		<Extension name=".ogm" arguments="" extPlayerUse="False" />
+		<Extension name=".pva" arguments="" extPlayerUse="False" />
+		<Extension name=".nsv" arguments="" extPlayerUse="False" />
+		<Extension name=".mkv" arguments="" extPlayerUse="False" />
+		<Extension name=".nut" arguments="" extPlayerUse="False" />
+		<Extension name=".flv" arguments="" extPlayerUse="False" />
+	</extensions>
+	<extensions family="Audio">
+    <Extension name=".cda" arguments="" extPlayerUse="False" />
+    <Extension name=".mp3" arguments="" extPlayerUse="False" />
+		<Extension name=".ogg" arguments="" extPlayerUse="False" />
+	</extensions>
+</mplayer>

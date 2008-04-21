@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Language name="Italiano" characters="255">
+  <Section name="unmapped">
+    <String id="0">Speed</String>
+    <String id="1">Audio</String>
+    <String id="2">Sottotitoli</String>
+    <String id="3">attivato</String>
+    <String id="4">distattivato</String>
+    <String id="5">cerca</String>
+    <String id="6">Vai a</String>
+    <String id="7">Posizione sottotitoli</String>
+    <String id="8">Dimensione sottotitoli</String>
+    <String id="9">Ritardo sottotitoli</String>
+    <String id="10">Ritardo Audio</String>
+    <String id="11">Aspect ratio</String>
+    <String id="12">Mute</String>
+    <String id="13">Volume</String>
+    <String id="14">Riproduci Stream</String>
+    <String id="15">Riproduci Disco</String>
+    <String id="16">Cancella</String>
+    <String id="17">Inizializzazione</String>
+  </Section>
+</Language>

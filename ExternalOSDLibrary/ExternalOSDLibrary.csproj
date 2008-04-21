@@ -1,0 +1,89 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CA1C8C7D-4AB2-4D8D-87E9-AB9FC970A8C7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ExternalOSDLibrary</RootNamespace>
+    <AssemblyName>ExternalOSDLibrary</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\ExternalOSDLibrary.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Core, Version=0.2.2.9991, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\MediaPortal\xbmc\bin\Release\Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Dialogs, Version=0.2.2.9991, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\MediaPortal\Dialogs\bin\Release\Dialogs.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Utils, Version=2.2.2.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\MediaPortal\xbmc\bin\Release\Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowPlugins, Version=0.2.2.9991, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\MediaPortal\WindowPlugins\bin\Release\WindowPlugins.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseWindow.cs" />
+    <Compile Include="Elements\GroupElement.cs" />
+    <Compile Include="Elements\VerticalScrollbarElement.cs" />
+    <Compile Include="Elements\TextScrollUpElement.cs" />
+    <Compile Include="Elements\ListElement.cs" />
+    <Compile Include="FullscreenWindow.cs">
+    </Compile>
+    <Compile Include="Elements\BaseElement.cs" />
+    <Compile Include="Elements\ImageElement.cs" />
+    <Compile Include="Elements\CheckMarkElement.cs" />
+    <Compile Include="Elements\SliderElement.cs" />
+    <Compile Include="Elements\ToggleButtonElement.cs" />
+    <Compile Include="Elements\VolumeBarElement.cs" />
+    <Compile Include="Elements\LabelElement.cs" />
+    <Compile Include="DialogWindow.cs" />
+    <Compile Include="OSDForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OSDController.cs" />
+    <Compile Include="OSDWindow.cs">
+    </Compile>
+    <Compile Include="Elements\ProgressControlElement.cs" />
+    <Compile Include="Elements\ButtonElement.cs" />
+    <Compile Include="Elements\FadeLabelElement.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
