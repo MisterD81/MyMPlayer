@@ -26,15 +26,17 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MPlayer {
+namespace MPlayer
+{
   /// <summary>
   /// Interface for all handlers, except the process handler for handling the received messages
   /// </summary>
-  internal interface IMessageHandler {
+  internal interface IMessageHandler
+  {
     /// <summary>
     /// Handles a message that is retrieved from the MPlayer process
     /// </summary>
-    /// <param name="message">Message to handle</param>
+    /// <param _name="message">Message to handle</param>
     void HandleMessage(String message);
   }
 }

@@ -26,14 +26,18 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
+using MediaPortal.Player;
 using MediaPortal.GUI.Library;
+using OsDetection;
 
-namespace MPlayer {
+namespace MPlayer
+{
   /// <summary>
   /// This class handles all audio and subtitle relevant tasks for the MPlayer external player plugin,
   /// including read and write operations
   /// </summary>
-  internal class AudioSubtitleHandler : IDisposable, IMessageHandler {
+  internal class AudioSubtitleHandler : IDisposable, IMessageHandler
+  {
     #region variables
     /// <summary>
     /// Playing volume
@@ -129,15 +133,21 @@ namespace MPlayer {
     /// Instance of the current OSD Handler
     /// </summary>
     private IOSDHandler _osdHandler;
+
+    /// <summary>
+    /// Message handler for MP messages
+    /// </summary>
+    private SendMessageHandler _mpMessageHandler;
     #endregion
 
     #region ctor
     /// <summary>
     /// Constructor which initialises the audio and subtitle handler
     /// </summary>
-    /// <param name="player">Instance of external player</param>
-    /// <param name="osdHandler">Instance of the osdHandler</param>
-    public AudioSubtitleHandler(MPlayer_ExtPlayer player, IOSDHandler osdHandler) {
+    /// <param _name="player">Instance of external player</param>
+    /// <param _name="osdHandler">Instance of the osdHandler</param>
+    public AudioSubtitleHandler(MPlayer_ExtPlayer player, IOSDHandler osdHandler)
+    {
       _player = player;
       _osdHandler = osdHandler;
       _audioID = new Dictionary<int, int>();
@@ -150,19 +160,30 @@ namespace MPlayer {
       _currentSubtitleStream = 0;
       _currentAudioDelay = 0;
       _currentSubtitleDelay = 0;
-      _configManager = ConfigurationManager.getInstance();
+      _configManager = ConfigurationManager.GetInstance();
       _audioDelayStep = _configManager.AudioDelayStep;
       _subtitleDelayStep = _configManager.SubtitleDelayStep;
       _subtitlesEnabled = _configManager.EnableSubtitles;
       _currentSubtitlePosition = _configManager.SubtitlePosition;
       _currentSubtitleSize = _configManager.SubtitleSize;
+      OSVersionInfo os = new OperatingSystemVersion();
+      if (os.OSVersion == OSVersion.Vista || os.OSVersion == OSVersion.Win2008)
+      {
+        _mpMessageHandler = new SendMessageHandler(OnMessage);
+        GUIWindowManager.Receivers += _mpMessageHandler;
+      }
       _volume = 100;
     }
 
     /// <summary>
     /// Disposes the video handler
     /// </summary>
-    public void Dispose() {
+    public void Dispose()
+    {
+      if (_mpMessageHandler != null)
+      {
+        GUIWindowManager.Receivers -= _mpMessageHandler;
+      }
       _audioNames.Clear();
       _subtitleNames.Clear();
     }
@@ -172,11 +193,14 @@ namespace MPlayer {
     /// <summary>
     /// Gets/Sets the volume of the player
     /// </summary>
-    public int Volume {
-      get {
+    public int Volume
+    {
+      get
+      {
         return _volume;
       }
-      set {
+      set
+      {
         _volume = value;
         _player.SendPausingKeepCommand("volume " + value + " 1");
       }
@@ -185,8 +209,10 @@ namespace MPlayer {
     /// <summary>
     /// Gets the number of audio streams
     /// </summary>
-    public int AudioStreams {
-      get {
+    public int AudioStreams
+    {
+      get
+      {
         if (_numberOfAudioStreams < 1)
           return 1;
         return _numberOfAudioStreams;
@@ -196,8 +222,10 @@ namespace MPlayer {
     /// <summary>
     /// Gets the number of subtitles
     /// </summary>
-    public int SubtitleStreams {
-      get {
+    public int SubtitleStreams
+    {
+      get
+      {
         return _numberOfSubtitles;
       }
     }
@@ -205,12 +233,16 @@ namespace MPlayer {
     /// <summary>
     /// Gets/Sets the current audio streams
     /// </summary>
-    public int CurrentAudioStream {
-      get {
+    public int CurrentAudioStream
+    {
+      get
+      {
         return _currentAudioStream;
       }
-      set {
-        if (value < _numberOfAudioStreams) {
+      set
+      {
+        if (value < _numberOfAudioStreams)
+        {
           _currentAudioStream = value;
           _player.SendPausingKeepCommand("set_property switch_audio " + _audioID[value]);
           _osdHandler.ShowAudioChanged(_audioNames[_audioID[value]]);
@@ -222,12 +254,16 @@ namespace MPlayer {
     /// <summary>
     /// Gets/Sets the current subtitles streams
     /// </summary>
-    public int CurrentSubtitleStream {
-      get {
+    public int CurrentSubtitleStream
+    {
+      get
+      {
         return _currentSubtitleStream;
       }
-      set {
-        if (value < _numberOfSubtitles) {
+      set
+      {
+        if (value < _numberOfSubtitles)
+        {
           _currentSubtitleStream = value;
           _player.SendPausingKeepCommand("sub_select " + _subtitleID[value]);
           _osdHandler.ShowSubtitleChanged(_subtitleNames[_subtitleID[value]]);
@@ -239,12 +275,16 @@ namespace MPlayer {
     /// <summary>
     /// Gets/Sets the subtitle position
     /// </summary>
-    public int SubtitlePosition {
-      get {
+    public int SubtitlePosition
+    {
+      get
+      {
         return _currentSubtitlePosition;
       }
-      set {
-        if (value < 100 && value > 0) {
+      set
+      {
+        if (value < 100 && value > 0)
+        {
           _currentSubtitlePosition = value;
           _player.SendPausingKeepCommand("sub_pos " + _currentSubtitlePosition + " 1");
           _osdHandler.ShowSubtitlePositionChanged(_currentSubtitlePosition + "/100");
@@ -255,12 +295,16 @@ namespace MPlayer {
     /// <summary>
     /// Sets the new subtitle size
     /// </summary>
-    public int SubtitleSize {
-      get {
+    public int SubtitleSize
+    {
+      get
+      {
         return _currentSubtitleSize;
       }
-      set {
-        if (value < 100 && value > 0) {
+      set
+      {
+        if (value < 100 && value > 0)
+        {
           _currentSubtitleSize = value;
           _player.SendPausingKeepCommand("sub_scale " + _currentSubtitleSize + " 1");
           _osdHandler.ShowSubtitleSizeChanged(_currentSubtitleSize + "/100");
@@ -271,11 +315,14 @@ namespace MPlayer {
     /// <summary>
     /// Gets/Sets the delay of the audio stream
     /// </summary>
-    public int AudioDelay {
-      get {
+    public int AudioDelay
+    {
+      get
+      {
         return _currentAudioDelay;
       }
-      set {
+      set
+      {
         _currentAudioDelay = value;
         double seconds = _currentAudioDelay / 1000d;
         String temp = seconds.ToString();
@@ -288,11 +335,14 @@ namespace MPlayer {
     /// <summary>
     /// Gets/Sets the subtitle delay
     /// </summary>
-    public int SubtitleDelay {
-      get {
+    public int SubtitleDelay
+    {
+      get
+      {
         return _currentSubtitleDelay;
       }
-      set {
+      set
+      {
         _currentSubtitleDelay = value;
         double seconds = _currentSubtitleDelay / 1000d;
         String temp = seconds.ToString();
@@ -305,16 +355,22 @@ namespace MPlayer {
     /// <summary>
     /// Gets/Sets if subtitles are enabled
     /// </summary>
-    public bool EnableSubtitle {
-      get {
+    public bool EnableSubtitle
+    {
+      get
+      {
         return _subtitlesEnabled;
       }
-      set {
+      set
+      {
         _subtitlesEnabled = value;
-        if (_subtitlesEnabled) {
+        if (_subtitlesEnabled)
+        {
           _player.SendPausingKeepCommand("sub_visibility 1");
           _osdHandler.ShowSubtitleAcDeActivated(true);
-        } else {
+        }
+        else
+        {
           _player.SendPausingKeepCommand("sub_visibility 0");
           _osdHandler.ShowSubtitleAcDeActivated(false);
           _player.SendPausingKeepCommand("forced_subs_only 1");
@@ -326,41 +382,51 @@ namespace MPlayer {
 
     #region Public methods
     /// <summary>
-    /// Gives the name of the audio language
+    /// Gives the _name of the audio language
     /// </summary>
-    /// <param name="iStream">Index of the audio language</param>
+    /// <param _name="iStream">Index of the audio language</param>
     /// <returns>Name of the audio language</returns>
-    public string AudioLanguage(int iStream) {
-      try {
-        if (_numberOfAudioStreams == 0) {
+    public string AudioLanguage(int iStream)
+    {
+      try
+      {
+        if (_numberOfAudioStreams == 0)
+        {
           return Strings.Unknown;
         }
         String audioName = _audioNames[_audioID[iStream]];
         String temp = audioName.Substring(0, 2);
-        try {
+        try
+        {
           CultureInfo info = new CultureInfo(temp);
           audioName = info.DisplayName;
-        } catch {
+        } catch
+        {
         }
         return audioName;
-      } catch (Exception e) {
+      } catch (Exception e)
+      {
         Log.Info("MPlayer Error: Audiolanguage not found: " + e.Message);
         return Strings.Unknown;
       }
     }
 
     /// <summary>
-    /// Gives the name of the subtitle language
+    /// Gives the _name of the subtitle language
     /// </summary>
-    /// <param name="iStream">Index of the subtitle language</param>
+    /// <param _name="iStream">Index of the subtitle language</param>
     /// <returns>Name of the subtitle language</returns>
-    public string SubtitleLanguage(int iStream) {
-      try {
-        if (_numberOfSubtitles == 0) {
+    public string SubtitleLanguage(int iStream)
+    {
+      try
+      {
+        if (_numberOfSubtitles == 0)
+        {
           return Strings.Unknown;
         }
         return _subtitleNames[_subtitleID[iStream]];
-      } catch (Exception e) {
+      } catch (Exception e)
+      {
         Log.Info("MPlayer Error: SubtitleLanguage not found: " + e.Message);
         return Strings.Unknown;
       }
@@ -369,10 +435,13 @@ namespace MPlayer {
     /// <summary>
     /// Handles MP internal action related for the internal osd handler
     /// </summary>
-    /// <param name="action">Action to handle</param>
-    public void OnAction(Action action) {
-      if (_player.FullScreen && !_osdHandler.OsdVisible) {
-        switch (action.wID) {
+    /// <param _name="action">Action to handle</param>
+    public void OnAction(Action action)
+    {
+      if (_player.FullScreen && !_osdHandler.OsdVisible)
+      {
+        switch (action.wID)
+        {
           case Action.ActionType.ACTION_AUDIO_DELAY_PLUS:
             AudioDelay += _audioDelayStep;
             break;
@@ -404,19 +473,47 @@ namespace MPlayer {
 
     #region Private methods
     /// <summary>
-    /// Tries to get the language name by creating a culture info
+    /// Tries to get the language _name by creating a culture info
     /// </summary>
-    /// <param name="languageName">Identification of the lanugae (2 or 3 characters)</param>
+    /// <param _name="languageName">Identification of the lanugae (2 or 3 characters)</param>
     /// <returns></returns>
-    private String getLanguageName(String languageName) {
+    private String getLanguageName(String languageName)
+    {
       String result = languageName;
       String temp = languageName.Substring(0, 2);
-      try {
+      try
+      {
         CultureInfo info = new CultureInfo(temp);
         result = info.DisplayName;
-      } catch {
+      } catch
+      {
       }
       return result;
+    }
+
+    /// <summary>
+    /// Handles the on message event. Needed for handling the volume change event
+    /// </summary>
+    /// <param _name="message">Message to handle</param>
+    private void OnMessage(GUIMessage message)
+    {
+      switch (message.Message)
+      {
+        case GUIMessage.MessageType.GUI_MSG_AUDIOVOLUME_CHANGED:
+          double percentage;
+          if (VolumeHandler.Instance.IsMuted)
+          {
+            percentage = 0;
+          }
+          else
+          {
+            double currentVolume = (double)VolumeHandler.Instance.Volume;
+            double maximumVolume = (double)VolumeHandler.Instance.Maximum;
+            percentage = currentVolume / maximumVolume * 100;
+          }
+          this.Volume = (int)percentage;
+          break;
+      }
     }
     #endregion
 
@@ -424,51 +521,85 @@ namespace MPlayer {
     /// <summary>
     /// Handles a message that is retrieved from the MPlayer process
     /// </summary>
-    /// <param name="message">Message to handle</param>
-    public void HandleMessage(string message) {
-      if (message.StartsWith("ID_AUDIO_ID")) {
+    /// <param _name="message">Message to handle</param>
+    public void HandleMessage(string message)
+    {
+      if (message.StartsWith("ID_AUDIO_ID"))
+      {
         int temp;
         Int32.TryParse(message.Substring(12), out temp);
-        if (!_audioNames.ContainsKey(temp)) {
+        if (!_audioNames.ContainsKey(temp))
+        {
           _audioID.Add(_numberOfAudioStreams, temp);
           _audioNames.Add(temp, Strings.Unknown);
           _numberOfAudioStreams++;
         }
-      } else if (message.StartsWith("ID_AID_")) {
+      }
+      else if (message.StartsWith("ID_AID_"))
+      {
         String help = message.Substring(7);
         int index = help.IndexOf('_');
         int temp;
         Int32.TryParse(help.Substring(0, index), out temp);
         index = message.IndexOf('=');
         _audioNames[temp] = getLanguageName(message.Substring(index + 1));
-      } else if (message.StartsWith("ID_SUBTITLE_ID")) {
+      }
+      else if (message.StartsWith("ID_SUBTITLE_ID"))
+      {
         int temp;
         Int32.TryParse(message.Substring(15), out temp);
-        if (!_subtitleNames.ContainsKey(temp)) {
+        if (!_subtitleNames.ContainsKey(temp))
+        {
           _subtitleID.Add(_numberOfSubtitles, temp);
           _subtitleNames.Add(temp, Strings.Unknown);
           _numberOfSubtitles++;
         }
-      } else if (message.StartsWith("ID_SID_")) {
+      }
+      else if (message.StartsWith("ID_SID_"))
+      {
         String help = message.Substring(7);
         int index = help.IndexOf('_');
         int temp;
         Int32.TryParse(help.Substring(0, index), out temp);
         index = message.IndexOf('=');
         _subtitleNames[temp] = getLanguageName(message.Substring(index + 1));
-      } else if (message.StartsWith("VO: [directx] ") ||
-          message.StartsWith("VO: [gl2] ") ||
-          message.StartsWith("VO: [gl] ")) {
-        if (_subtitlesEnabled) {
+      }
+      else if (message.StartsWith("VO: [directx] ") ||
+        message.StartsWith("VO: [gl2] ") ||
+        message.StartsWith("VO: [gl] "))
+      {
+        if (_mpMessageHandler != null)
+        {
+          _player.SendCommand("use_master");
+          double percentage;
+          if (VolumeHandler.Instance.IsMuted)
+          {
+            percentage = 0;
+          }
+          else
+          {
+            double currentVolume = (double)VolumeHandler.Instance.Volume;
+            double maximumVolume = (double)VolumeHandler.Instance.Maximum;
+            percentage = currentVolume / maximumVolume * 100;
+          }
+          this.Volume = (int)percentage;
+        }
+        if (_subtitlesEnabled)
+        {
           _player.SendCommand("sub_visibility 1");
-        } else {
+        }
+        else
+        {
           _player.SendCommand("sub_visibility 0");
           _player.SendCommand("forced_subs_only 1");
         }
-      } else if (message.StartsWith("ANS_switch_audio")) {
+      }
+      else if (message.StartsWith("ANS_switch_audio"))
+      {
         int id;
         Int32.TryParse(message.Substring(17), out id);
-        if (id != _audioID[CurrentAudioStream]) {
+        if (id != _audioID[CurrentAudioStream])
+        {
           _player.SendPausingKeepCommand("switch_audio");
           _player.SendPausingKeepCommand("get_property switch_audio");
         }

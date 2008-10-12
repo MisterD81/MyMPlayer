@@ -36,13 +36,15 @@ using MediaPortal.Util;
 using MediaPortal.Configuration;
 using Microsoft.Win32;
 
-namespace MPlayer {
+namespace MPlayer
+{
 
   #region enumeration
   /// <summary>
   /// State of the player
   /// </summary>
-  public enum PlayState {
+  public enum PlayState
+  {
     /// <summary>
     /// In init phase
     /// </summary>
@@ -68,7 +70,8 @@ namespace MPlayer {
   /// <summary>
   /// Possible Deinterlace Methods
   /// </summary>
-  public enum Deinterlace {
+  public enum Deinterlace
+  {
     /// <summary>
     /// No Deinterlacing
     /// </summary>
@@ -86,7 +89,8 @@ namespace MPlayer {
   /// <summary>
   /// Possible AspectRatios
   /// </summary>
-  public enum AspectRatio {
+  public enum AspectRatio
+  {
     /// <summary>
     /// Determine Automatic A/R
     /// </summary>
@@ -108,7 +112,8 @@ namespace MPlayer {
   /// <summary>
   /// Possible SoundOutputs
   /// </summary>
-  public enum SoundOutputDriver {
+  public enum SoundOutputDriver
+  {
     /// <summary>
     /// Don't Decode audio
     /// </summary>
@@ -130,7 +135,8 @@ namespace MPlayer {
   /// <summary>
   /// Possible Postprocessing methods
   /// </summary>
-  public enum PostProcessing {
+  public enum PostProcessing
+  {
     /// <summary>
     /// No Postprocessing
     /// </summary>
@@ -148,7 +154,8 @@ namespace MPlayer {
   /// <summary>
   /// Possible modes of audio channels
   /// </summary>
-  public enum AudioChannels {
+  public enum AudioChannels
+  {
     /// <summary>
     /// Default audio channels of file
     /// </summary>
@@ -170,7 +177,8 @@ namespace MPlayer {
   /// <summary>
   /// Possible NoiseDenoise methods
   /// </summary>
-  public enum NoiseDenoise {
+  public enum NoiseDenoise
+  {
     /// <summary>
     /// No _noiseDenoise
     /// </summary>
@@ -192,7 +200,8 @@ namespace MPlayer {
   /// <summary>
   /// Possible Video output driver
   /// </summary>
-  public enum VideoOutputDriver {
+  public enum VideoOutputDriver
+  {
     /// <summary>
     /// DirectX
     /// </summary>
@@ -214,7 +223,8 @@ namespace MPlayer {
   /// <summary>
   /// Possible osd variants
   /// </summary>
-  public enum OSDMode {
+  public enum OSDMode
+  {
     /// <summary>
     /// Internal MPlayer osd
     /// </summary>
@@ -230,7 +240,8 @@ namespace MPlayer {
   /// Handles configuration operations. Creates a list of all possible fonts
   /// and gernerates the parameters for the mplayer process
   /// </summary>
-  public class ConfigurationManager {
+  public class ConfigurationManager
+  {
     #region variables
     /// <summary>
     /// Singleton instance
@@ -392,17 +403,20 @@ namespace MPlayer {
     /// <summary>
     /// Initialize the system
     /// </summary>
-    private ConfigurationManager() {
-      initializeFontList();
-      readConfig();
+    private ConfigurationManager()
+    {
+      InitializeFontList();
+      ReadConfig();
     }
 
     /// <summary>
     /// Returns the singleton instance
     /// </summary>
     /// <returns>Singleton instance</returns>
-    public static ConfigurationManager getInstance() {
-      if (_singletonInstance == null) {
+    public static ConfigurationManager GetInstance()
+    {
+      if (_singletonInstance == null)
+      {
         _singletonInstance = new ConfigurationManager();
       }
       return _singletonInstance;
@@ -413,42 +427,48 @@ namespace MPlayer {
     /// <summary>
     /// Returns if the Subtitles are enabled by default
     /// </summary>
-    public bool EnableSubtitles {
+    public bool EnableSubtitles
+    {
       get { return _enableSubtitles; }
     }
 
     /// <summary>
     /// Returns the step to change the audio delay in milliseconds
     /// </summary>
-    public int AudioDelayStep {
+    public int AudioDelayStep
+    {
       get { return _audioDelayStep; }
     }
 
     /// <summary>
     /// Returns the step to change the subtitle delay in milliseconds
     /// </summary>
-    public int SubtitleDelayStep {
+    public int SubtitleDelayStep
+    {
       get { return _subtitleDelayStep; }
     }
 
     /// <summary>
     /// Gets the start position of the subtitles
     /// </summary>
-    public int SubtitlePosition {
+    public int SubtitlePosition
+    {
       get { return _subtitlePosition; }
     }
 
     /// <summary>
     /// Gets the start size of the subtitles and the MPlayer OSD
     /// </summary>
-    public int SubtitleSize {
+    public int SubtitleSize
+    {
       get { return _subtitleSize; }
     }
 
     /// <summary>
     /// Gets the mode of the osd, which the user wants to use
     /// </summary>
-    public OSDMode OsdMode {
+    public OSDMode OsdMode
+    {
       get { return _osdMode; }
     }
     #endregion
@@ -457,12 +477,15 @@ namespace MPlayer {
     /// <summary>
     /// Generates the list of all installed fonts
     /// </summary>
-    private void initializeFontList() {
+    private void InitializeFontList()
+    {
       _fontsCollection = new List<string>();
       InstalledFontCollection fonts = new InstalledFontCollection();
       string fileName;
-      foreach (FontFamily family in fonts.Families) {
-        if (checkSubtitleFont(family.Name, out fileName)) {
+      foreach (FontFamily family in fonts.Families)
+      {
+        if (CheckSubtitleFont(family.Name, out fileName))
+        {
           _fontsCollection.Add(family.Name);
         }
       }
@@ -471,40 +494,52 @@ namespace MPlayer {
     /// <summary>
     /// Checks if we can retrieve the filename of the font family
     /// </summary>
-    /// <param name="subtitleFont">Name of the font family</param>
-    /// <param name="fileName">Filename of the font family</param>
+    /// <param _name="subtitleFont">Name of the font family</param>
+    /// <param _name="fileName">Filename of the font family</param>
     /// <returns>true, if Filename can be retrieved</returns>
-    private bool checkSubtitleFont(string subtitleFont, out string fileName) {
+    private bool CheckSubtitleFont(string subtitleFont, out string fileName)
+    {
       fileName = String.Empty;
-      using (RegistryKey subkey = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion\Fonts")) {
-        if (subkey != null) {
+      using (RegistryKey subkey = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion\Fonts"))
+      {
+        if (subkey != null)
+        {
           fileName = (string)subkey.GetValue(subtitleFont + " (TrueType)");
-          if (fileName == null) {
+          if (fileName == null)
+          {
             fileName = (string)subkey.GetValue(subtitleFont);
           }
-          if (fileName == null) {
+          if (fileName == null)
+          {
             fileName = (string)subkey.GetValue(subtitleFont + " (All Res)");
           }
         }
       }
-      using (RegistryKey subkey = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Fonts")) {
-        if (subkey != null) {
-          if (fileName == null) {
+      using (RegistryKey subkey = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Fonts"))
+      {
+        if (subkey != null)
+        {
+          if (fileName == null)
+          {
             fileName = (string)subkey.GetValue(subtitleFont + " (TrueType)");
           }
-          if (fileName == null) {
+          if (fileName == null)
+          {
             fileName = (string)subkey.GetValue(subtitleFont);
           }
-          if (fileName == null) {
+          if (fileName == null)
+          {
             fileName = (string)subkey.GetValue(subtitleFont + " (All Res)");
           }
         }
       }
-      if (!System.IO.Path.IsPathRooted(fileName)) {
+      if (!System.IO.Path.IsPathRooted(fileName))
+      {
         String systemroot = Environment.GetEnvironmentVariable("SystemRoot");
         fileName = systemroot + @"\fonts\" + fileName;
       }
-      if (fileName != String.Empty) {
+      if (fileName != String.Empty)
+      {
         return System.IO.File.Exists(fileName);
       }
       return false;
@@ -513,107 +548,111 @@ namespace MPlayer {
     /// <summary>
     /// Reads the whole configuration
     /// </summary>
-    private void readConfig() {
-      string strExtAudio = null;
-      string strExtVideo = null;
-      ExtensionSettings mplayerSetting = new ExtensionSettings(".mplayer", PlayMode.Unrecognized, "", true);
-      _extensionSettings = new Dictionary<string, ExtensionSettings>();
-      _extensionSettings.Add(mplayerSetting.Name, mplayerSetting);
-      _extensionSettingsExtPlayer = new Dictionary<string, ExtensionSettings>();
-      _extensionSettingsExtPlayer.Add(mplayerSetting.Name, mplayerSetting);
-      String arguments;
-      ExtensionSettings settings;
-      String videoArguments;
-      String audioArguments;
-      using (MediaPortal.Profile.Settings xmlreader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml"))) {
-        _osdMode = (OSDMode) xmlreader.GetValueAsInt("mplayer", "osd", (int) OSDMode.InternalMPlayer);
-        strExtAudio = xmlreader.GetValueAsString("mplayer", "enabledextensionsAudio", "");
-        strExtVideo = xmlreader.GetValueAsString("mplayer", "enabledextensionsVideo", "");
-        _rebuildIndex = xmlreader.GetValueAsBool("mplayer", "rebuildIndex", false);
-        _priorityBoost = xmlreader.GetValueAsBool("mplayer", "priorityBoost", true);
-        _framedrop = xmlreader.GetValueAsBool("mplayer", "framedrop", false);
-        _doubleBuffering = xmlreader.GetValueAsBool("mplayer", "doubleBuffering", true);
-        _directRendering = xmlreader.GetValueAsBool("mplayer", "directRendering", true);
-        _audioNormalize = xmlreader.GetValueAsBool("mplayer", "audioNormalize", false);
-        _passthroughAC3_DTS = xmlreader.GetValueAsBool("mplayer", "passthroughAC3DTS", false);
-        _soundOutputDriver = (SoundOutputDriver)xmlreader.GetValueAsInt("mplayer", "soundOutputDriver", (int)SoundOutputDriver.DirectSound);
-        _soundOutputDevice = xmlreader.GetValueAsInt("mplayer", "soundOutputDevice", 0);
-        _deinterlace = (Deinterlace)xmlreader.GetValueAsInt("mplayer", "deinterlace", (int)Deinterlace.Adaptive);
-        _aspectRatio = (AspectRatio)xmlreader.GetValueAsInt("mplayer", "aspectRatio", (int)AspectRatio.Automatic);
-        _postProcessing = (PostProcessing)xmlreader.GetValueAsInt("mplayer", "postProcessing", (int)PostProcessing.Maximum);
-        _audioChannels = (AudioChannels)xmlreader.GetValueAsInt("mplayer", "audioChannels", (int)AudioChannels.Default);
-        _noiseDenoise = (NoiseDenoise)xmlreader.GetValueAsInt("mplayer", "noise", (int)NoiseDenoise.Nothing);
-        _cacheSize = xmlreader.GetValueAsInt("mplayer", "cacheSize", 0);
-        _audioDelayStep = xmlreader.GetValueAsInt("mplayer", "audioDelayStep", 100);
-        _subtitleDelayStep = xmlreader.GetValueAsInt("mplayer", "subtitleDelayStep", 100);
-        _subtitlePosition = xmlreader.GetValueAsInt("mplayer", "subtitlePosition", 100);
-        _subtitleSize = xmlreader.GetValueAsInt("mplayer", "subtitleSize", 5);
-        string subtitleFontName = xmlreader.GetValueAsString("mplayer", "subtitleFontName", "Arial");
-        _subtitleFontSet = checkSubtitleFont(subtitleFontName, out _subtitleFontFileName);
-        _mplayerPath = xmlreader.GetValueAsString("mplayer", "mplayerPath", "C:\\Program Files\\MPlayer\\");
-        xmlreader.GetValueAsString("mplayer", "mplayerPath", "C:\\Program Files\\MPlayer\\Mplayer.exe");
-        arguments = xmlreader.GetValueAsString("mplayer", "generalArguments", "");
-        settings = new ExtensionSettings("general", PlayMode.Unrecognized, arguments, false);
-        _extensionSettings.Add(settings.Name, settings);
-        arguments = xmlreader.GetValueAsString("mplayer", "dvdArguments", String.Empty);
-        settings = new ExtensionSettings("dvd://", PlayMode.Video, arguments, false);
-        _extensionSettings.Add(settings.Name, settings);
-        arguments = xmlreader.GetValueAsString("mplayer", "vcdArguments", String.Empty);
-        settings = new ExtensionSettings("vcd://", PlayMode.Video, arguments, false);
-        _extensionSettings.Add(settings.Name, settings);
-        arguments = xmlreader.GetValueAsString("mplayer", "svcdArguments", String.Empty);
-        settings = new ExtensionSettings("svcd://", PlayMode.Video, arguments, false);
-        _extensionSettings.Add(settings.Name, settings);
-        arguments = xmlreader.GetValueAsString("mplayer", "cueArguments", String.Empty);
-        settings = new ExtensionSettings("cue://", PlayMode.Unrecognized, arguments, false);
-        _extensionSettings.Add(settings.Name, settings);
-        arguments = xmlreader.GetValueAsString("mplayer", "ftpArguments", String.Empty);
-        settings = new ExtensionSettings("ftp://", PlayMode.Unrecognized, arguments, false);
-        _extensionSettings.Add(settings.Name, settings);
-        arguments = xmlreader.GetValueAsString("mplayer", "httpArguments", String.Empty);
-        settings = new ExtensionSettings("http://", PlayMode.Unrecognized, arguments, false);
-        _extensionSettings.Add(settings.Name, settings);
-        settings = new ExtensionSettings("http_proxy://", PlayMode.Unrecognized, arguments, false);
-        _extensionSettings.Add(settings.Name, settings);
-        arguments = xmlreader.GetValueAsString("mplayer", "mmsArguments", String.Empty);
-        settings = new ExtensionSettings("mms://", PlayMode.Unrecognized, arguments, false);
-        _extensionSettings.Add(settings.Name, settings);
-        settings = new ExtensionSettings("mmst://", PlayMode.Unrecognized, arguments, false);
-        _extensionSettings.Add(settings.Name, settings);
-        arguments = xmlreader.GetValueAsString("mplayer", "mpstArguments", String.Empty);
-        settings = new ExtensionSettings("mpst://", PlayMode.Unrecognized, arguments, false);
-        _extensionSettings.Add(settings.Name, settings);
-        arguments = xmlreader.GetValueAsString("mplayer", "rtspArguments", String.Empty);
-        settings = new ExtensionSettings("rtsp://", PlayMode.Unrecognized, arguments, false);
-        _extensionSettings.Add(settings.Name, settings);
-        settings = new ExtensionSettings("rtp://", PlayMode.Unrecognized, arguments, false);
-        _extensionSettings.Add(settings.Name, settings);
-        arguments = xmlreader.GetValueAsString("mplayer", "sdpArguments", String.Empty);
-        settings = new ExtensionSettings("sdp://", PlayMode.Unrecognized, arguments, false);
-        _extensionSettings.Add(settings.Name, settings);
-        arguments = xmlreader.GetValueAsString("mplayer", "udpArguments", String.Empty);
-        settings = new ExtensionSettings("udp://", PlayMode.Unrecognized, arguments, false);
-        _extensionSettings.Add(settings.Name, settings);
-        arguments = xmlreader.GetValueAsString("mplayer", "unsvArguments", String.Empty);
-        settings = new ExtensionSettings("unsv://", PlayMode.Unrecognized, arguments, false);
-        _extensionSettings.Add(settings.Name, settings);
-        videoArguments = xmlreader.GetValueAsString("mplayer", "videoArguments", String.Empty);
-        audioArguments = xmlreader.GetValueAsString("mplayer", "audioArguments", String.Empty);
-        _enableSubtitles = xmlreader.GetValueAsBool("mplayer", "enableSubtitles", false);
-        _videoOutputDriver = (VideoOutputDriver)xmlreader.GetValueAsInt("mplayer", "videoOutputDriver", (int)VideoOutputDriver.DirectX);
-        string timeout = (xmlreader.GetValueAsString("movieplayer", "skipsteptimeout", "1500"));
+    private void ReadConfig()
+    {
+      try
+      {
+        string strExtAudio = null;
+        string strExtVideo = null;
+        ExtensionSettings mplayerSetting = new ExtensionSettings(".mplayer", PlayMode.Unrecognized, "", true);
+        _extensionSettings = new Dictionary<string, ExtensionSettings>();
+        _extensionSettings.Add(mplayerSetting.Name, mplayerSetting);
+        _extensionSettingsExtPlayer = new Dictionary<string, ExtensionSettings>();
+        _extensionSettingsExtPlayer.Add(mplayerSetting.Name, mplayerSetting);
+        String arguments;
+        ExtensionSettings settings;
+        String videoArguments;
+        String audioArguments;
+        using (MediaPortal.Profile.Settings xmlreader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml")))
+        {
+          _osdMode = (OSDMode)xmlreader.GetValueAsInt("mplayer", "osd", (int)OSDMode.InternalMPlayer);
+          strExtAudio = xmlreader.GetValueAsString("mplayer", "enabledextensionsAudio", "");
+          strExtVideo = xmlreader.GetValueAsString("mplayer", "enabledextensionsVideo", "");
+          _rebuildIndex = xmlreader.GetValueAsBool("mplayer", "rebuildIndex", false);
+          _priorityBoost = xmlreader.GetValueAsBool("mplayer", "priorityBoost", true);
+          _framedrop = xmlreader.GetValueAsBool("mplayer", "framedrop", false);
+          _doubleBuffering = xmlreader.GetValueAsBool("mplayer", "doubleBuffering", true);
+          _directRendering = xmlreader.GetValueAsBool("mplayer", "directRendering", true);
+          _audioNormalize = xmlreader.GetValueAsBool("mplayer", "audioNormalize", false);
+          _passthroughAC3_DTS = xmlreader.GetValueAsBool("mplayer", "passthroughAC3DTS", false);
+          _soundOutputDriver = (SoundOutputDriver)xmlreader.GetValueAsInt("mplayer", "soundOutputDriver", (int)SoundOutputDriver.DirectSound);
+          _soundOutputDevice = xmlreader.GetValueAsInt("mplayer", "soundOutputDevice", 0);
+          _deinterlace = (Deinterlace)xmlreader.GetValueAsInt("mplayer", "deinterlace", (int)Deinterlace.Adaptive);
+          _aspectRatio = (AspectRatio)xmlreader.GetValueAsInt("mplayer", "aspectRatio", (int)AspectRatio.Automatic);
+          _postProcessing = (PostProcessing)xmlreader.GetValueAsInt("mplayer", "postProcessing", (int)PostProcessing.Maximum);
+          _audioChannels = (AudioChannels)xmlreader.GetValueAsInt("mplayer", "audioChannels", (int)AudioChannels.Default);
+          _noiseDenoise = (NoiseDenoise)xmlreader.GetValueAsInt("mplayer", "noise", (int)NoiseDenoise.Nothing);
+          _cacheSize = xmlreader.GetValueAsInt("mplayer", "cacheSize", 0);
+          _audioDelayStep = xmlreader.GetValueAsInt("mplayer", "audioDelayStep", 100);
+          _subtitleDelayStep = xmlreader.GetValueAsInt("mplayer", "subtitleDelayStep", 100);
+          _subtitlePosition = xmlreader.GetValueAsInt("mplayer", "subtitlePosition", 100);
+          _subtitleSize = xmlreader.GetValueAsInt("mplayer", "subtitleSize", 5);
+          string subtitleFontName = xmlreader.GetValueAsString("mplayer", "subtitleFontName", "Arial");
+          _subtitleFontSet = CheckSubtitleFont(subtitleFontName, out _subtitleFontFileName);
+          _mplayerPath = xmlreader.GetValueAsString("mplayer", "mplayerPath", "C:\\Program Files\\MPlayer\\");
+          xmlreader.GetValueAsString("mplayer", "mplayerPath", "C:\\Program Files\\MPlayer\\Mplayer.exe");
+          arguments = xmlreader.GetValueAsString("mplayer", "generalArguments", "");
+          settings = new ExtensionSettings("general", PlayMode.Unrecognized, arguments, false);
+          _extensionSettings.Add(settings.Name, settings);
+          arguments = xmlreader.GetValueAsString("mplayer", "dvdArguments", String.Empty);
+          settings = new ExtensionSettings("dvd://", PlayMode.Video, arguments, false);
+          _extensionSettings.Add(settings.Name, settings);
+          arguments = xmlreader.GetValueAsString("mplayer", "vcdArguments", String.Empty);
+          settings = new ExtensionSettings("vcd://", PlayMode.Video, arguments, false);
+          _extensionSettings.Add(settings.Name, settings);
+          arguments = xmlreader.GetValueAsString("mplayer", "svcdArguments", String.Empty);
+          settings = new ExtensionSettings("svcd://", PlayMode.Video, arguments, false);
+          _extensionSettings.Add(settings.Name, settings);
+          arguments = xmlreader.GetValueAsString("mplayer", "cueArguments", String.Empty);
+          settings = new ExtensionSettings("cue://", PlayMode.Unrecognized, arguments, false);
+          _extensionSettings.Add(settings.Name, settings);
+          arguments = xmlreader.GetValueAsString("mplayer", "ftpArguments", String.Empty);
+          settings = new ExtensionSettings("ftp://", PlayMode.Unrecognized, arguments, false);
+          _extensionSettings.Add(settings.Name, settings);
+          arguments = xmlreader.GetValueAsString("mplayer", "httpArguments", String.Empty);
+          settings = new ExtensionSettings("http://", PlayMode.Unrecognized, arguments, false);
+          _extensionSettings.Add(settings.Name, settings);
+          settings = new ExtensionSettings("http_proxy://", PlayMode.Unrecognized, arguments, false);
+          _extensionSettings.Add(settings.Name, settings);
+          arguments = xmlreader.GetValueAsString("mplayer", "mmsArguments", String.Empty);
+          settings = new ExtensionSettings("mms://", PlayMode.Unrecognized, arguments, false);
+          _extensionSettings.Add(settings.Name, settings);
+          settings = new ExtensionSettings("mmst://", PlayMode.Unrecognized, arguments, false);
+          _extensionSettings.Add(settings.Name, settings);
+          arguments = xmlreader.GetValueAsString("mplayer", "mpstArguments", String.Empty);
+          settings = new ExtensionSettings("mpst://", PlayMode.Unrecognized, arguments, false);
+          _extensionSettings.Add(settings.Name, settings);
+          arguments = xmlreader.GetValueAsString("mplayer", "rtspArguments", String.Empty);
+          settings = new ExtensionSettings("rtsp://", PlayMode.Unrecognized, arguments, false);
+          _extensionSettings.Add(settings.Name, settings);
+          settings = new ExtensionSettings("rtp://", PlayMode.Unrecognized, arguments, false);
+          _extensionSettings.Add(settings.Name, settings);
+          arguments = xmlreader.GetValueAsString("mplayer", "sdpArguments", String.Empty);
+          settings = new ExtensionSettings("sdp://", PlayMode.Unrecognized, arguments, false);
+          _extensionSettings.Add(settings.Name, settings);
+          arguments = xmlreader.GetValueAsString("mplayer", "udpArguments", String.Empty);
+          settings = new ExtensionSettings("udp://", PlayMode.Unrecognized, arguments, false);
+          _extensionSettings.Add(settings.Name, settings);
+          arguments = xmlreader.GetValueAsString("mplayer", "unsvArguments", String.Empty);
+          settings = new ExtensionSettings("unsv://", PlayMode.Unrecognized, arguments, false);
+          _extensionSettings.Add(settings.Name, settings);
+          videoArguments = xmlreader.GetValueAsString("mplayer", "videoArguments", String.Empty);
+          audioArguments = xmlreader.GetValueAsString("mplayer", "audioArguments", String.Empty);
+          _enableSubtitles = xmlreader.GetValueAsBool("mplayer", "enableSubtitles", false);
+          _videoOutputDriver = (VideoOutputDriver)xmlreader.GetValueAsInt("mplayer", "videoOutputDriver", (int)VideoOutputDriver.DirectX);
+          string timeout = (xmlreader.GetValueAsString("movieplayer", "skipsteptimeout", "1500"));
 
-        if (timeout == string.Empty)
-          _seekStepTimeout = 1500;
-        else
-          _seekStepTimeout = Convert.ToInt16(timeout);
+          if (timeout == string.Empty)
+            _seekStepTimeout = 1500;
+          else
+            _seekStepTimeout = Convert.ToInt16(timeout);
 
-        String m_strLanguage = xmlreader.GetValueAsString("skin", "language", "English");
-        LocalizeStrings.Load(m_strLanguage);
-      }
-      try {
-        loadXMLData();
-      } catch (Exception e) {
+          String m_strLanguage = xmlreader.GetValueAsString("skin", "language", "English");
+          LocalizeStrings.Load(m_strLanguage);
+        }
+        LoadXMLData();
+      } catch (Exception e)
+      {
         Log.Error(e);
       }
       _supportedExtensions = new String[_extensionSettingsExtPlayer.Count];
@@ -623,29 +662,37 @@ namespace MPlayer {
     /// <summary>
     /// Loads the Plugin specific XML configuration file
     /// </summary>
-    private void loadXMLData() {
+    private void LoadXMLData()
+    {
       ExtensionSettings settings = null;
       PlayMode mode = PlayMode.Unrecognized;
       XmlDocument doc = new XmlDocument();
       string path = Config.GetFile(Config.Dir.Config, "MPlayer_ExtPlayer.xml");
       doc.Load(path);
       XmlNodeList listExtensionFamilies = doc.DocumentElement.SelectNodes("/mplayer/extensions");
-      foreach (XmlNode nodeFamily in listExtensionFamilies) {
-        if (nodeFamily.Attributes["family"].Value.Equals("Video")) {
+      foreach (XmlNode nodeFamily in listExtensionFamilies)
+      {
+        if (nodeFamily.Attributes["family"].Value.Equals("Video"))
+        {
           mode = PlayMode.Video;
-        } else if (nodeFamily.Attributes["family"].Value.Equals("Audio")) {
+        }
+        else if (nodeFamily.Attributes["family"].Value.Equals("Audio"))
+        {
           mode = PlayMode.Audio;
         }
         XmlNodeList listExtensions = nodeFamily.SelectNodes("Extension");
-        foreach (XmlNode nodeExtension in listExtensions) {
+        foreach (XmlNode nodeExtension in listExtensions)
+        {
           settings = new ExtensionSettings();
           settings.Name = nodeExtension.Attributes["name"].Value;
           settings.Arguments = nodeExtension.Attributes["arguments"].Value;
           settings.ExtPlayerUse = Boolean.Parse(nodeExtension.Attributes["extPlayerUse"].Value);
           settings.PlayMode = mode;
-          if (!_extensionSettings.ContainsKey(settings.Name)) {
+          if (!_extensionSettings.ContainsKey(settings.Name))
+          {
             _extensionSettings.Add(settings.Name, settings);
-            if (settings.ExtPlayerUse) {
+            if (settings.ExtPlayerUse)
+            {
               _extensionSettingsExtPlayer.Add(settings.Name, settings);
             }
           }
@@ -655,59 +702,75 @@ namespace MPlayer {
     }
 
     /// <summary>
-    /// Generates the general arguments
+    /// Generates the general _arguments
     /// </summary>
-    /// <param name="handle">Handle to inner panel</param>
-    /// <returns>General arguments</returns>
-    private StringBuilder getGeneralArguments(IntPtr handle) {
+    /// <param _name="handle">Handle to inner panel</param>
+    /// <returns>General _arguments</returns>
+    private StringBuilder GetGeneralArguments(IntPtr handle)
+    {
       StringBuilder arguments = new StringBuilder();
-      if (_mplayerPath.EndsWith("\\gmplayer.exe")) {
+      if (_mplayerPath.EndsWith("\\gmplayer.exe"))
+      {
         arguments.Append("-nogui -noconsolecontrols ");
       }
       arguments.Append("-slave -quiet -identify -wid ");
       arguments.Append(handle);
-      arguments.Append(" -colorkey 0x101010 -nokeepaspect -autosync 100 ");
-      if (_subtitlePosition != 100) {
-        arguments.Append("-subpos "+_subtitlePosition+" ");
+      arguments.Append(" -colorkey 0x101010 -nokeepaspect -autosync 100 -noborder ");
+      if (_subtitlePosition != 100)
+      {
+        arguments.Append("-subpos " + _subtitlePosition + " ");
       }
-      if (_subtitleSize != 5) {
-        arguments.Append("−subfont-text-scale "+_subtitleSize+" ");
-        arguments.Append("−subfont-osd-scale " + _subtitleSize+" ");
+      if (_subtitleSize != 5)
+      {
+        arguments.Append("−subfont-text-scale " + _subtitleSize + " ");
+        arguments.Append("−subfont-osd-scale " + _subtitleSize + " ");
       }
-      if (_subtitleFontSet) {
+      if (_subtitleFontSet)
+      {
         arguments.Append("-font ");
         arguments.Append(_subtitleFontFileName);
         arguments.Append(" ");
       }
-      if (_priorityBoost) {
+      if (_priorityBoost)
+      {
         arguments.Append("-priority abovenormal ");
       }
-      if (_rebuildIndex) {
+      if (_rebuildIndex)
+      {
         arguments.Append("-idx ");
       }
-      if (_framedrop) {
+      if (_framedrop)
+      {
         arguments.Append("-framedrop ");
       }
-      if (_doubleBuffering) {
+      if (_doubleBuffering)
+      {
         arguments.Append("-double ");
-      } else {
+      }
+      else
+      {
         arguments.Append("-nodouble ");
       }
-      if (_directRendering && _videoOutputDriver != VideoOutputDriver.OpenGL) {
+      if (_directRendering)
+      {
         arguments.Append("-dr ");
       }
-      if (_audioNormalize) {
+      if (_audioNormalize)
+      {
         arguments.Append("-af volnorm ");
       }
-      if (_passthroughAC3_DTS) {
+      if (_passthroughAC3_DTS)
+      {
         arguments.Append("-afm hwac3 ");
       }
-      if (_cacheSize > 0) {
+      if (_cacheSize > 0)
+      {
         arguments.Append("-cache ");
         arguments.Append(_cacheSize);
         arguments.Append(" ");
       }
-      switch (_soundOutputDriver) {
+      switch (_soundOutputDriver)
+      {
         case SoundOutputDriver.NoDecoding:
           arguments.Append("-nosound ");
           break;
@@ -723,7 +786,8 @@ namespace MPlayer {
           arguments.Append(" ");
           break;
       }
-      switch (_deinterlace) {
+      switch (_deinterlace)
+      {
         case Deinterlace.Simple:
           arguments.Append("-vf-add lavcdeint ");
           break;
@@ -731,7 +795,8 @@ namespace MPlayer {
           arguments.Append("-vf-add kerndeint ");
           break;
       }
-      switch (_postProcessing) {
+      switch (_postProcessing)
+      {
         case PostProcessing.Automatic:
           arguments.Append("-autoq 10 -vf-add pp ");
           break;
@@ -739,7 +804,8 @@ namespace MPlayer {
           arguments.Append("-vf-add pp=hb/vb/dr ");
           break;
       }
-      switch (_aspectRatio) {
+      switch (_aspectRatio)
+      {
         case AspectRatio.m_4x3:
           arguments.Append(" -aspect 4:3 ");
           break;
@@ -750,7 +816,8 @@ namespace MPlayer {
           arguments.Append(" -aspect 2.35 ");
           break;
       }
-      switch (_audioChannels) {
+      switch (_audioChannels)
+      {
         case AudioChannels.Stereo:
           arguments.Append(" -channels 2 ");
           break;
@@ -761,7 +828,8 @@ namespace MPlayer {
           arguments.Append(" -channels 6 ");
           break;
       }
-      switch (_noiseDenoise) {
+      switch (_noiseDenoise)
+      {
         case NoiseDenoise.Noise:
           arguments.Append(" -vf-add noise=05h:05h ");
           break;
@@ -772,7 +840,8 @@ namespace MPlayer {
           arguments.Append(" -vf-add denoise3d ");
           break;
       }
-      switch (_videoOutputDriver) {
+      switch (_videoOutputDriver)
+      {
         case VideoOutputDriver.DirectX:
           arguments.Append(" -vo directx ");
           break;
@@ -780,7 +849,7 @@ namespace MPlayer {
           arguments.Append(" -vo directx:noaccel ");
           break;
         case VideoOutputDriver.OpenGL:
-          arguments.Append(" -vo gl ");
+          arguments.Append(" -vo gl");
           break;
         case VideoOutputDriver.OpenGL2:
           arguments.Append(" -vo gl2 ");
@@ -795,15 +864,19 @@ namespace MPlayer {
     /// Check if the current screen is the primary screen or we have to add and extra argument
     /// </summary>
     /// <returns>Additional argument for a different screen</returns>
-    private String getScreenArguments() {
+    private String GetScreenArguments()
+    {
       Screen currentScreen = GUIGraphicsContext.currentScreen;
-      if (currentScreen.Primary) {
+      if (currentScreen.Primary)
+      {
         return String.Empty;
       }
       Screen[] allScreens = Screen.AllScreens;
       int i;
-      for (i = 0; i < allScreens.Length; i++) {
-        if (allScreens[i] == currentScreen) {
+      for (i = 0; i < allScreens.Length; i++)
+      {
+        if (allScreens[i] == currentScreen)
+        {
           break;
         }
       }
@@ -817,36 +890,51 @@ namespace MPlayer {
     /// <summary>
     /// Checks if the fileName has a video or not
     /// </summary>
-    /// <param name="fileName">Filename to check</param>
+    /// <param _name="fileName">Filename to check</param>
     /// <returns>true, when file or stream has a video</returns>
-    public bool HasFileOrStreamVideo(String fileName) {
+    public bool HasFileOrStreamVideo(String fileName)
+    {
       bool isVideo = false;
-      if (fileName.StartsWith("dvd://")) {
+      if (fileName.StartsWith("dvd://"))
+      {
         isVideo = true;
-      } else if (fileName.StartsWith("vcd://")) {
+      }
+      else if (fileName.StartsWith("vcd://"))
+      {
         isVideo = true;
-      } else if (fileName.StartsWith("svcd://")) {
+      }
+      else if (fileName.StartsWith("svcd://"))
+      {
         isVideo = true;
-      } else if (fileName.StartsWith("cue://") ||
-                 fileName.StartsWith("ftp://") ||
-                 fileName.StartsWith("http://") ||
-                 fileName.StartsWith("http_proxy://") ||
-                 fileName.StartsWith("mms://") ||
-                 fileName.StartsWith("mmst://") ||
-                 fileName.StartsWith("mpst://") ||
-                 fileName.StartsWith("rtp://") ||
-                 fileName.StartsWith("rtsp://") ||
-                 fileName.StartsWith("sdp://") ||
-                 fileName.StartsWith("udp://") ||
-                 fileName.StartsWith("unsv://")) {
-        if (_extensionSettings.ContainsKey(System.IO.Path.GetExtension(fileName))) {
+      }
+      else if (fileName.StartsWith("cue://") ||
+               fileName.StartsWith("ftp://") ||
+               fileName.StartsWith("http://") ||
+               fileName.StartsWith("http_proxy://") ||
+               fileName.StartsWith("mms://") ||
+               fileName.StartsWith("mmst://") ||
+               fileName.StartsWith("mpst://") ||
+               fileName.StartsWith("rtp://") ||
+               fileName.StartsWith("rtsp://") ||
+               fileName.StartsWith("sdp://") ||
+               fileName.StartsWith("udp://") ||
+               fileName.StartsWith("unsv://"))
+      {
+        if (_extensionSettings.ContainsKey(System.IO.Path.GetExtension(fileName)))
+        {
           isVideo = _extensionSettings[System.IO.Path.GetExtension(fileName)].PlayMode == PlayMode.Video;
-        } else {
+        }
+        else
+        {
           isVideo = true;
         }
-      } else if (fileName.EndsWith(".cda")) {
+      }
+      else if (fileName.EndsWith(".cda"))
+      {
         isVideo = false;
-      } else {
+      }
+      else
+      {
         ExtensionSettings extSettings = _extensionSettings[System.IO.Path.GetExtension(fileName).Trim().ToLower()];
         isVideo = (extSettings.PlayMode == PlayMode.Video);
       }
@@ -854,20 +942,22 @@ namespace MPlayer {
     }
 
     /// <summary>
-    /// Creates a process object and sets the starting arguments
+    /// Creates a process object and sets the starting _arguments
     /// </summary>
-    /// <param name="fileName">FileName that should be started</param>
-    /// <param name="handle">Handle of inner panel</param>
+    /// <param _name="fileName">FileName that should be started</param>
+    /// <param _name="handle">Handle of inner panel</param>
     /// <returns>UpdateGUI object</returns>
-    public Process createProcessForFileName(String fileName, IntPtr handle) {
+    public Process CreateProcessForFileName(String fileName, IntPtr handle)
+    {
       Process mplayerProcess = new Process();
       mplayerProcess.StartInfo.UseShellExecute = false;
       mplayerProcess.StartInfo.RedirectStandardInput = true;
       mplayerProcess.StartInfo.RedirectStandardOutput = true;
       mplayerProcess.StartInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(_mplayerPath);
       mplayerProcess.StartInfo.FileName = _mplayerPath;
-      StringBuilder arguments = getGeneralArguments(handle);
-      if (fileName.StartsWith("dvd://")) {
+      StringBuilder arguments = GetGeneralArguments(handle);
+      if (fileName.StartsWith("dvd://"))
+      {
         String file = fileName.Substring(6);
         arguments.Append(_extensionSettings["dvd://"].Arguments);
         arguments.Append(" -dvd-device \"");
@@ -878,46 +968,56 @@ namespace MPlayer {
         arguments.Append(" -slang ");
         arguments.Append(CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
         arguments.Append(" dvd://");
-      } else if (fileName.StartsWith("vcd://")) {
+      }
+      else if (fileName.StartsWith("vcd://"))
+      {
         String file = fileName.Substring(6);
         arguments.Append(_extensionSettings["vcd://"].Arguments);
         arguments.Append(" \"vcd://");
         arguments.Append(file);
         arguments.Append("\" ");
-      } else if (fileName.StartsWith("svcd://")) {
+      }
+      else if (fileName.StartsWith("svcd://"))
+      {
         String file = fileName.Substring(7);
         arguments.Append(_extensionSettings["svcd://"].Arguments);
         arguments.Append(" \"vcd://");
         arguments.Append(file);
         arguments.Append("\" ");
-      } else if (fileName.StartsWith("cue://") ||
-                 fileName.StartsWith("ftp://") ||
-                 fileName.StartsWith("http://") ||
-                 fileName.StartsWith("http_proxy://") ||
-                 fileName.StartsWith("mms://") ||
-                 fileName.StartsWith("mmst://") ||
-                 fileName.StartsWith("mpst://") ||
-                 fileName.StartsWith("rtp://") ||
-                 fileName.StartsWith("rtsp://") ||
-                 fileName.StartsWith("sdp://") ||
-                 fileName.StartsWith("udp://") ||
-                 fileName.StartsWith("unsv://")) {
+      }
+      else if (fileName.StartsWith("cue://") ||
+               fileName.StartsWith("ftp://") ||
+               fileName.StartsWith("http://") ||
+               fileName.StartsWith("http_proxy://") ||
+               fileName.StartsWith("mms://") ||
+               fileName.StartsWith("mmst://") ||
+               fileName.StartsWith("mpst://") ||
+               fileName.StartsWith("rtp://") ||
+               fileName.StartsWith("rtsp://") ||
+               fileName.StartsWith("sdp://") ||
+               fileName.StartsWith("udp://") ||
+               fileName.StartsWith("unsv://"))
+      {
         int index = fileName.IndexOf("://");
         String file = fileName.Substring(index + 3);
         String protocol = fileName.Substring(0, index + +3).ToLower();
         Log.Info("MPlayer: StreamProtocol: " + protocol);
         Log.Info("MPlayer: StremFilename: " + file);
         arguments.Append(_extensionSettings[protocol].Arguments);
-        if (_extensionSettings.ContainsKey(System.IO.Path.GetExtension(fileName))) {
+        if (_extensionSettings.ContainsKey(System.IO.Path.GetExtension(fileName)))
+        {
           arguments.Append(_extensionSettings[System.IO.Path.GetExtension(fileName)].Arguments);
         }
         arguments.Append(" \"");
         arguments.Append(protocol);
         arguments.Append(file);
         arguments.Append("\" ");
-      } else if (fileName.EndsWith(".cda")) {
+      }
+      else if (fileName.EndsWith(".cda"))
+      {
         String drive = System.IO.Path.GetDirectoryName(fileName);
-        if (drive.EndsWith("\\")) {
+        if (drive.EndsWith("\\"))
+        {
           drive = drive.Substring(0, drive.Length - 1);
         }
         String trackNumber = System.IO.Path.GetFileNameWithoutExtension(fileName).Substring(5);
@@ -927,14 +1027,16 @@ namespace MPlayer {
         arguments.Append(" -cdrom-device ");
         arguments.Append(drive);
         arguments.Append(" ");
-      } else {
+      }
+      else
+      {
         ExtensionSettings extSettings = _extensionSettings[System.IO.Path.GetExtension(fileName).Trim().ToLower()];
         arguments.Append(extSettings.Arguments);
         arguments.Append(" \"");
         arguments.Append(fileName);
         arguments.Append("\" ");
       }
-      arguments.Append(getScreenArguments());
+      arguments.Append(GetScreenArguments());
       Log.Info("MPlayer: All Arguments: " + arguments);
       mplayerProcess.StartInfo.Arguments = arguments.ToString();
       mplayerProcess.StartInfo.CreateNoWindow = true;
@@ -945,34 +1047,45 @@ namespace MPlayer {
     /// <summary>
     /// Method which specifiy, if the player supports the file
     /// </summary>
-    /// <param name="filename">Filename</param>
+    /// <param _name="filename">Filename</param>
     /// <returns>true, if the player can play this file</returns>
-    public bool SupportsFile(String filename) {
+    public bool SupportsFile(String filename)
+    {
       string ext = null;
       int dot = filename.LastIndexOf(".");    // couldn't find the dot to get the extension
-      if (dot == -1) return false;
+      if (dot == -1)
+        return false;
 
       ext = filename.Substring(dot).Trim();
-      if (ext.Length == 0) return false;   // no extension so return false;
+      if (ext.Length == 0)
+        return false;   // no extension so return false;
 
       ext = ext.ToLower();
-      if (ext.Equals(".mplayer")) {
-        if (filename.StartsWith("dvd://") || filename.StartsWith("vcd://") || filename.StartsWith("svcd://")
-            || filename.StartsWith("cue://")
-            || filename.StartsWith("ZZZZ://")) {
+      if (ext.Equals(".mplayer"))
+      {
+        if (filename.StartsWith("dvd://") || filename.StartsWith("vcd://") || filename.StartsWith("svcd://") ||
+            filename.StartsWith("ftp://") || filename.StartsWith("http://") || filename.StartsWith("http_proxy://") ||
+            filename.StartsWith("mms://") || filename.StartsWith("mmst://") || filename.StartsWith("mpst://") ||
+            filename.StartsWith("rtp://") || filename.StartsWith("rtsp://") || filename.StartsWith("sdp://") ||
+            filename.StartsWith("udp://") || filename.StartsWith("unsv://") || filename.StartsWith("ZZZZ://"))
+        {
           return true;
         }
         filename = filename.Remove(filename.LastIndexOf(".mplayer"));
         dot = filename.LastIndexOf(".");    // couldn't find the dot to get the real extension
-        if (dot == -1) return false;
+        if (dot == -1)
+          return false;
 
         ext = filename.Substring(dot).Trim().ToLower();
-        if (ext.Length == 0) return false;   // no real extension so return false;
-        if (_extensionSettings.ContainsKey(ext)) {
+        if (ext.Length == 0)
+          return false;   // no real extension so return false;
+        if (_extensionSettings.ContainsKey(ext))
+        {
           return true;
         }
       }
-      if (_extensionSettingsExtPlayer.ContainsKey(ext)) {
+      if (_extensionSettingsExtPlayer.ContainsKey(ext))
+      {
         return true;
       }
       // could not match the extension, so return false;
@@ -984,21 +1097,24 @@ namespace MPlayer {
     /// <summary>
     /// Installed Fonts that can be used
     /// </summary>
-    public String[] PossibleFonts {
+    public String[] PossibleFonts
+    {
       get { return _fontsCollection.ToArray(); }
     }
 
     /// <summary>
     /// Supported Extensions of MPlayer plugin
     /// </summary>
-    public String[] SupportedExtensions {
+    public String[] SupportedExtensions
+    {
       get { return _supportedExtensions; }
     }
 
     /// <summary>
     /// Timeout before a seek step is performed
     /// </summary>
-    public int SeekStepTimeout {
+    public int SeekStepTimeout
+    {
       get { return _seekStepTimeout; }
     }
     #endregion

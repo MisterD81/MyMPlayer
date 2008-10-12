@@ -29,7 +29,7 @@ namespace MPlayer {
     /// <summary>
     /// Verwendete Ressourcen bereinigen.
     /// </summary>
-    /// <param name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
+    /// <param _name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
     protected override void Dispose(bool disposing) {
       if (disposing && (components != null)) {
         components.Dispose();
@@ -256,7 +256,6 @@ namespace MPlayer {
       this.Controls.Add(this.tabControl1);
       this.Controls.Add(this.cancelButton);
       this.Controls.Add(this.okButton);
-      this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.MinimizeBox = false;
       this.Name = "ConfigurationForm";
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -283,8 +282,6 @@ namespace MPlayer {
     private System.ComponentModel.IContainer components = null;
     private System.Windows.Forms.Button okButton;
     private System.Windows.Forms.Button cancelButton;
-    #endregion
-
     private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
     private System.Windows.Forms.TabControl tabControl1;
     private System.Windows.Forms.TabPage general_Tab;
@@ -301,6 +298,7 @@ namespace MPlayer {
     private MPlayer.ConfigurationPanel.SubtitleSection subtitleSection1;
     private MPlayer.ConfigurationPanel.StreamSection streamSection1;
     private MPlayer.ConfigurationPanel.ExtensionSection extensionSection1;
+    #endregion
 
   }
 }

@@ -107,10 +107,6 @@
     <Compile Include="ExternalOSDLibrary.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ConfigurationForm.resx">
-      <DependentUpon>ConfigurationForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationPanel\AudioSection.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AudioSection.cs</DependentUpon>
@@ -142,7 +138,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="config.ico" />
     <Content Include="Language\strings_de.xml" />
     <Content Include="Language\strings_en.xml" />
     <Content Include="Language\strings_es.xml" />

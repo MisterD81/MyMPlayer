@@ -28,11 +28,13 @@ using System.Threading;
 using MediaPortal.Player;
 using MediaPortal.GUI.Library;
 
-namespace MPlayer {
+namespace MPlayer
+{
   /// <summary>
   /// This class handles all osd relevant task for the internal MPlayer osd
   /// </summary>
-  internal class InternalOSDHandler : IOSDHandler {
+  internal class InternalOSDHandler : IOSDHandler
+  {
     #region variables
     /// <summary>
     /// Time the _osd is displayed
@@ -84,16 +86,18 @@ namespace MPlayer {
     /// <summary>
     /// Constructor which initialises the internal osd handler
     /// </summary>
-    /// <param name="player">Instance of external player</param>
-    /// <param name="playerUse">Indicates, if this instance will be used by the player class</param>
-    public InternalOSDHandler(MPlayer_ExtPlayer player, bool playerUse) {
+    /// <param _name="player">Instance of external player</param>
+    /// <param _name="playerUse">Indicates, if this instance will be used by the player class</param>
+    public InternalOSDHandler(MPlayer_ExtPlayer player, bool playerUse)
+    {
       _player = player;
-      _configManager = ConfigurationManager.getInstance();
+      _configManager = ConfigurationManager.GetInstance();
       _displayDuration = 2000;
       _osdVisible = false;
       _osdVisibleForPause = false;
       _mpVolumeHandler = VolumeHandler.Instance;
-      if (playerUse) {
+      if (playerUse)
+      {
         _mpMessageHandler = new SendMessageHandler(OnMessage);
         GUIWindowManager.Receivers += _mpMessageHandler;
       }
@@ -102,7 +106,12 @@ namespace MPlayer {
     /// <summary>
     /// Disposes the object
     /// </summary>
-    public void Dispose() {
+    public void Dispose()
+    {
+      if (_mpMessageHandler != null)
+      {
+        GUIWindowManager.Receivers -= _mpMessageHandler;
+      }
     }
     #endregion
 
@@ -110,14 +119,20 @@ namespace MPlayer {
     /// <summary>
     /// Handles the on message event. Needed for handling the volume change event
     /// </summary>
-    /// <param name="message">Message to handle</param>
-    private void OnMessage(GUIMessage message) {
-      switch (message.Message) {
+    /// <param _name="message">Message to handle</param>
+    private void OnMessage(GUIMessage message)
+    {
+      switch (message.Message)
+      {
         case GUIMessage.MessageType.GUI_MSG_AUDIOVOLUME_CHANGED:
-          if (!_osdVisible && _player.FullScreen) {
-            if (_mpVolumeHandler.IsMuted) {
+          if (!_osdVisible && _player.FullScreen)
+          {
+            if (_mpVolumeHandler.IsMuted)
+            {
               SendOSDText(LocalizedMessages.Mute, _configManager.SeekStepTimeout);
-            } else {
+            }
+            else
+            {
               double currentVolume = (double)_mpVolumeHandler.Volume;
               double maximumVolume = (double)_mpVolumeHandler.Maximum;
               double percentage = currentVolume / maximumVolume * 100;
@@ -131,18 +146,22 @@ namespace MPlayer {
     /// <summary>
     /// Creates the new timestamp string with the additional key
     /// </summary>
-    /// <param name="chKey">Additional key for the timestamp</param>
-    private void ChangeTheTimeCode(char chKey) {
-      if (_timeCodePosition <= 4) {
+    /// <param _name="chKey">Additional key for the timestamp</param>
+    private void ChangeTheTimeCode(char chKey)
+    {
+      if (_timeCodePosition <= 4)
+      {
         //00:12
         _timeStamp += chKey;
         _timeCodePosition++;
-        if (_timeCodePosition == 2) {
+        if (_timeCodePosition == 2)
+        {
           _timeStamp += ":";
           _timeCodePosition++;
         }
       }
-      if (_timeCodePosition > 4) {
+      if (_timeCodePosition > 4)
+      {
         _timeStamp = "";
         _timeCodePosition = 0;
       }
@@ -151,47 +170,53 @@ namespace MPlayer {
     /// <summary>
     /// Sends a localized OSD command with a specific value and duration to the mplayer proccess
     /// </summary>
-    /// <param name="message">Message type</param>
-    /// <param name="value">Value of the message</param>
-    /// <param name="duration">Duration to display</param>
-    private void SendOSDText(LocalizedMessages message, String value, int duration) {
+    /// <param _name="message">Message type</param>
+    /// <param _name="value">Value of the message</param>
+    /// <param _name="duration">Duration to display</param>
+    private void SendOSDText(LocalizedMessages message, String value, int duration)
+    {
       SendOSDText(LocalizeStrings.Get((int)message) + ": " + value, duration);
     }
 
     /// <summary>
     /// Sends a localized OSD command with a specific duration to the mplayer proccess
     /// </summary>
-    /// <param name="message">Message type</param>
-    /// <param name="duration">Duration to display</param>
-    private void SendOSDText(LocalizedMessages message, int duration) {
+    /// <param _name="message">Message type</param>
+    /// <param _name="duration">Duration to display</param>
+    private void SendOSDText(LocalizedMessages message, int duration)
+    {
       SendOSDText(LocalizeStrings.Get((int)message), duration);
     }
 
     /// <summary>
     /// Sends a localized OSD command with a specific value to the mplayer proccess
     /// </summary>
-    /// <param name="message">Message type</param>
-    /// <param name="value">Value of the message</param>
-    private void SendOSDText(LocalizedMessages message, String value) {
+    /// <param _name="message">Message type</param>
+    /// <param _name="value">Value of the message</param>
+    private void SendOSDText(LocalizedMessages message, String value)
+    {
       SendOSDText(LocalizeStrings.Get((int)message) + ": " + value, _displayDuration);
     }
 
     /// <summary>
     /// Sends a localized OSD command with a localized value to the mplayer proccess
     /// </summary>
-    /// <param name="message">Message type</param>
-    /// <param name="value">Value of the message</param>
-    private void SendOSDText(LocalizedMessages message, LocalizedMessages value) {
+    /// <param _name="message">Message type</param>
+    /// <param _name="value">Value of the message</param>
+    private void SendOSDText(LocalizedMessages message, LocalizedMessages value)
+    {
       SendOSDText(LocalizeStrings.Get((int)message) + ": " + LocalizeStrings.Get((int)value), _displayDuration);
     }
 
     /// <summary>
     /// Sends a OSD command to the mplayer process
     /// </summary>
-    /// <param name="text">_osd command</param>
-    /// <param name="duration">Duration to display</param>
-    private void SendOSDText(string text, int duration) {
-      if (_player.FullScreen) {
+    /// <param _name="text">_osd command</param>
+    /// <param _name="duration">Duration to display</param>
+    private void SendOSDText(string text, int duration)
+    {
+      if (_player.FullScreen)
+      {
         _player.SendPausingKeepCommand("osd_show_text \"" + text + "\" " + _displayDuration + " 0");
       }
     }
@@ -201,25 +226,32 @@ namespace MPlayer {
     /// <summary>
     /// Gets the OSD Visible property
     /// </summary>
-    public bool OsdVisible {
+    public bool OsdVisible
+    {
       get { return _osdVisible; }
     }
 
     /// <summary>
     /// Handles MP internal action related for the internal osd handler
     /// </summary>
-    /// <param name="action">Action to handle</param>
-    public void OnAction(Action action) {
-      switch (action.wID) {
+    /// <param _name="action">Action to handle</param>
+    public void OnAction(Action action)
+    {
+      switch (action.wID)
+      {
         case Action.ActionType.ACTION_SHOW_OSD:
-          if (_osdVisible) {
+          if (_osdVisible)
+          {
             DeactivateOSD(true);
-          } else {
+          }
+          else
+          {
             ActivateOSD(true);
           }
           break;
         case Action.ActionType.ACTION_SHOW_GUI:
-          if (_osdVisible) {
+          if (_osdVisible)
+          {
             DeactivateOSD(true);
           }
           break;
@@ -227,24 +259,34 @@ namespace MPlayer {
         case Action.ActionType.ACTION_STEP_BACK:
         case Action.ActionType.ACTION_MOVE_RIGHT:
         case Action.ActionType.ACTION_STEP_FORWARD:
-          if (!_osdVisible) {
+          if (!_osdVisible)
+          {
             String description = g_Player.GetStepDescription();
-            if (!String.IsNullOrEmpty(description)) {
+            if (!String.IsNullOrEmpty(description))
+            {
               SendOSDText(LocalizedMessages.Seek, description, _configManager.SeekStepTimeout);
-            } else {
+            }
+            else
+            {
               SendOSDText("", 1);
             }
           }
           break;
         case Action.ActionType.ACTION_KEY_PRESSED:
-          if (!_osdVisible && action.m_key != null) {
+          if (!_osdVisible && action.m_key != null)
+          {
             char chKey = (char)action.m_key.KeyChar;
-            if (chKey >= '0' && chKey <= '9') {
-              if (_player.CanSeek()) {
+            if (chKey >= '0' && chKey <= '9')
+            {
+              if (_player.CanSeek())
+              {
                 ChangeTheTimeCode(chKey);
-                if (!String.IsNullOrEmpty(_timeStamp)) {
+                if (!String.IsNullOrEmpty(_timeStamp))
+                {
                   SendOSDText(LocalizedMessages.JumpTo, _timeStamp);
-                } else {
+                }
+                else
+                {
                   SendOSDText("", 1);
                 }
               }
@@ -257,14 +299,19 @@ namespace MPlayer {
     /// <summary>
     /// Activate the osd of MPlayer
     /// </summary>
-    /// <param name="activate">If false, OSD will only be activated when OSDVisbileForPause is true; If true always</param>
-    public void ActivateOSD(bool activate) {
-      if (activate) {
+    /// <param _name="activate">If false, OSD will only be activated when OSDVisbileForPause is true; If true always</param>
+    public void ActivateOSD(bool activate)
+    {
+      if (activate)
+      {
         _osdVisible = true;
-      } else if (_osdVisibleForPause) {
+      }
+      else if (_osdVisibleForPause)
+      {
         activate = true;
       }
-      if (_player.FullScreen && activate) {
+      if (_player.FullScreen && activate)
+      {
         _player.SendPausingKeepCommand("osd 3");
       }
     }
@@ -272,13 +319,16 @@ namespace MPlayer {
     /// <summary>
     /// Deactivates the internal osd
     /// </summary>
-    /// <param name="deactivate">If false, OSD will only be deactivate when OSDVisbileForPause is true; If true always</param>
-    public void DeactivateOSD(bool deactivate) {
-      if (deactivate) {
+    /// <param _name="deactivate">If false, OSD will only be deactivate when OSDVisbileForPause is true; If true always</param>
+    public void DeactivateOSD(bool deactivate)
+    {
+      if (deactivate)
+      {
         _osdVisible = false;
       }
       deactivate = (!_osdVisible) && !_osdVisibleForPause;
-      if (deactivate || !_player.FullScreen) {
+      if (deactivate || !_player.FullScreen)
+      {
         _player.SendPausingKeepCommand("osd 0");
         Thread.Sleep(200);
       }
@@ -287,67 +337,78 @@ namespace MPlayer {
     /// <summary>
     /// Sets that osd osd should be visible, because of pausing
     /// </summary>
-    /// <param name="osdVisibleForPause">true/false</param>
-    public void SetOSDVisibleForPause(bool osdVisibleForPause) {
+    /// <param _name="osdVisibleForPause">true/false</param>
+    public void SetOSDVisibleForPause(bool osdVisibleForPause)
+    {
       _osdVisibleForPause = osdVisibleForPause;
     }
 
     /// <summary>
     /// Shows the new audio language
     /// </summary>
-    /// <param name="newAudioLanguage">Name of the new audio langauge</param>
-    public void ShowAudioChanged(String newAudioLanguage) {
+    /// <param _name="newAudioLanguage">Name of the new audio langauge</param>
+    public void ShowAudioChanged(String newAudioLanguage)
+    {
       SendOSDText(LocalizedMessages.Audio, newAudioLanguage);
     }
 
     /// <summary>
     /// Shows the new subtitle language
     /// </summary>
-    /// <param name="newSubtitleLanguage">Name of the new subtitle langauge</param>
-    public void ShowSubtitleChanged(String newSubtitleLanguage) {
+    /// <param _name="newSubtitleLanguage">Name of the new subtitle langauge</param>
+    public void ShowSubtitleChanged(String newSubtitleLanguage)
+    {
       SendOSDText(LocalizedMessages.Subtitles, newSubtitleLanguage);
     }
 
     /// <summary>
     /// Shows the new subtitle position
     /// </summary>
-    /// <param name="newSubtitlePosition">Value of the new subtitle position</param>
-    public void ShowSubtitlePositionChanged(String newSubtitlePosition) {
+    /// <param _name="newSubtitlePosition">Value of the new subtitle position</param>
+    public void ShowSubtitlePositionChanged(String newSubtitlePosition)
+    {
       SendOSDText(LocalizedMessages.SubtitlePosition, newSubtitlePosition);
     }
 
     /// <summary>
     /// Shows the new subtitle size
     /// </summary>
-    /// <param name="newSubtitleSize">Value of the new subtitle size</param>
-    public void ShowSubtitleSizeChanged(String newSubtitleSize) {
+    /// <param _name="newSubtitleSize">Value of the new subtitle size</param>
+    public void ShowSubtitleSizeChanged(String newSubtitleSize)
+    {
       SendOSDText(LocalizedMessages.SubtitleSize, newSubtitleSize);
     }
 
     /// <summary>
     /// Shows the new audio delay
     /// </summary>
-    /// <param name="newAudioDelay">Value of the new audio delay</param>
-    public void ShowAudioDelayChanged(String newAudioDelay) {
+    /// <param _name="newAudioDelay">Value of the new audio delay</param>
+    public void ShowAudioDelayChanged(String newAudioDelay)
+    {
       SendOSDText(LocalizedMessages.AudioDelay, newAudioDelay);
     }
 
     /// <summary>
     /// Shows the new subtitle delay
     /// </summary>
-    /// <param name="newSubtitleDelay">Value of the new subtitle delay</param>
-    public void ShowSubtitleDelayChanged(String newSubtitleDelay) {
+    /// <param _name="newSubtitleDelay">Value of the new subtitle delay</param>
+    public void ShowSubtitleDelayChanged(String newSubtitleDelay)
+    {
       SendOSDText(LocalizedMessages.SubtitleDelay, newSubtitleDelay);
     }
 
     /// <summary>
     /// Shows the new status of the subtitles
     /// </summary>
-    /// <param name="enabled">New status of the subtitles</param>
-    public void ShowSubtitleAcDeActivated(bool enabled) {
-      if (enabled) {
+    /// <param _name="enabled">New status of the subtitles</param>
+    public void ShowSubtitleAcDeActivated(bool enabled)
+    {
+      if (enabled)
+      {
         SendOSDText(LocalizedMessages.Subtitles, LocalizedMessages.Enabled);
-      } else {
+      }
+      else
+      {
         SendOSDText(LocalizedMessages.Subtitles, LocalizedMessages.Disabled);
       }
     }
@@ -355,23 +416,26 @@ namespace MPlayer {
     /// <summary>
     /// Shows the new speed value
     /// </summary>
-    /// <param name="newSpeed">Value of the new speed value</param>
-    public void ShowSpeedChanged(String newSpeed) {
+    /// <param _name="newSpeed">Value of the new speed value</param>
+    public void ShowSpeedChanged(String newSpeed)
+    {
       SendOSDText(LocalizedMessages.Speed, newSpeed);
     }
 
     /// <summary>
     /// Shows the new display mode
     /// </summary>
-    /// <param name="newDisplayMode">Name of the new display mode</param>
-    public void ShowDisplayModeChanged(String newDisplayMode) {
+    /// <param _name="newDisplayMode">Name of the new display mode</param>
+    public void ShowDisplayModeChanged(String newDisplayMode)
+    {
       SendOSDText(LocalizedMessages.DisplayMode, newDisplayMode);
     }
 
     /// <summary>
     /// Updates the gui and osd
     /// </summary>
-    public void UpdateGUI() { 
+    public void UpdateGUI()
+    {
     }
     #endregion
 
@@ -379,8 +443,9 @@ namespace MPlayer {
     /// <summary>
     /// Handles a message that is retrieved from the MPlayer process
     /// </summary>
-    /// <param name="message">Message to handle</param>
-    public void HandleMessage(string message) {
+    /// <param _name="message">Message to handle</param>
+    public void HandleMessage(string message)
+    {
     }
     #endregion
 

@@ -38,79 +38,79 @@ namespace MPlayer {
     /// <summary>
     /// Handles MP internal action related for the internal osd handler
     /// </summary>
-    /// <param name="action">Action to handle</param>
+    /// <param _name="action">Action to handle</param>
     void OnAction(Action action);
 
     /// <summary>
     /// Activate the osd of MPlayer
     /// </summary>
-    /// <param name="activate">If false, OSD will only be activated when OSDVisbileForPause is true; If true always</param>
+    /// <param _name="activate">If false, OSD will only be activated when OSDVisbileForPause is true; If true always</param>
     void ActivateOSD(bool activate);
 
     /// <summary>
     /// Deactivates the internal osd
     /// </summary>
-    /// <param name="deactivate">If false, OSD will only be deactivate when OSDVisbileForPause is true; If true always</param>
+    /// <param _name="deactivate">If false, OSD will only be deactivate when OSDVisbileForPause is true; If true always</param>
     void DeactivateOSD(bool deactivate);
 
     /// <summary>
     /// Sets that osd osd should be visible, because of pausing
     /// </summary>
-    /// <param name="osdVisibleForPause">true/false</param>
+    /// <param _name="osdVisibleForPause">true/false</param>
     void SetOSDVisibleForPause(bool osdVisibleForPause);
 
     /// <summary>
     /// Shows the new audio language
     /// </summary>
-    /// <param name="newAudioLanguage">Name of the new audio langauge</param>
+    /// <param _name="newAudioLanguage">Name of the new audio langauge</param>
     void ShowAudioChanged(String newAudioLanguage);
 
     /// <summary>
     /// Shows the new subtitle language
     /// </summary>
-    /// <param name="newSubtitleLanguage">Name of the new subtitle langauge</param>
+    /// <param _name="newSubtitleLanguage">Name of the new subtitle langauge</param>
     void ShowSubtitleChanged(String newSubtitleLanguage);
 
     /// <summary>
     /// Shows the new subtitle position
     /// </summary>
-    /// <param name="newSubtitlePosition">Value of the new subtitle position</param>
+    /// <param _name="newSubtitlePosition">Value of the new subtitle position</param>
     void ShowSubtitlePositionChanged(String newSubtitlePosition);
 
     /// <summary>
     /// Shows the new subtitle size
     /// </summary>
-    /// <param name="newSubtitleSize">Value of the new subtitle size</param>
+    /// <param _name="newSubtitleSize">Value of the new subtitle size</param>
     void ShowSubtitleSizeChanged(String newSubtitleSize);
 
     /// <summary>
     /// Shows the new audio delay
     /// </summary>
-    /// <param name="newAudioDelay">Value of the new audio delay</param>
+    /// <param _name="newAudioDelay">Value of the new audio delay</param>
     void ShowAudioDelayChanged(String newAudioDelay);
 
     /// <summary>
     /// Shows the new subtitle delay
     /// </summary>
-    /// <param name="newSubtitleDelay">Value of the new subtitle delay</param>
+    /// <param _name="newSubtitleDelay">Value of the new subtitle delay</param>
     void ShowSubtitleDelayChanged(String newSubtitleDelay);
 
     /// <summary>
     /// Shows the new status of the subtitles
     /// </summary>
-    /// <param name="enabled">New status of the subtitles</param>
+    /// <param _name="enabled">New status of the subtitles</param>
     void ShowSubtitleAcDeActivated(bool enabled);
 
     /// <summary>
     /// Shows the new speed value
     /// </summary>
-    /// <param name="newSpeed">Value of the new speed value</param>
+    /// <param _name="newSpeed">Value of the new speed value</param>
     void ShowSpeedChanged(String newSpeed);
 
     /// <summary>
     /// Shows the new display mode
     /// </summary>
-    /// <param name="newDisplayMode">Name of the new display mode</param>
+    /// <param _name="newDisplayMode">Name of the new display mode</param>
     void ShowDisplayModeChanged(String newDisplayMode);
 
     /// <summary>

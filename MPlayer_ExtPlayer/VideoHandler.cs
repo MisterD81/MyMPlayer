@@ -28,11 +28,13 @@ using System.Drawing;
 using System.Windows.Forms;
 using MediaPortal.GUI.Library;
 
-namespace MPlayer {
+namespace MPlayer
+{
   /// <summary>
   /// This class handles all video relevant tasks for the MPlayer external player plugin
   /// </summary>
-  internal class VideoHandler : IDisposable, IMessageHandler {
+  internal class VideoHandler : IDisposable, IMessageHandler
+  {
     #region variables
     /// <summary>
     /// Outer panel for the video display
@@ -148,9 +150,10 @@ namespace MPlayer {
     /// <summary>
     /// Constructor which initialises the video handler
     /// </summary>
-    /// <param name="player">Instance of external player</param>
-    /// <param name="osdHandler">Instance of the osdHandler</param>
-    public VideoHandler(MPlayer_ExtPlayer player, IOSDHandler osdHandler) {
+    /// <param _name="player">Instance of external player</param>
+    /// <param _name="osdHandler">Instance of the osdHandler</param>
+    public VideoHandler(MPlayer_ExtPlayer player, IOSDHandler osdHandler)
+    {
       _player = player;
       _osdHandler = osdHandler;
       _aspect_ratio = "1.0";
@@ -158,15 +161,18 @@ namespace MPlayer {
       _videoWidth = 0;
       _ar = GUIGraphicsContext.ARType;
       _mplayerBackgroundPanel = new Panel();
+      _mplayerBackgroundPanel.ForeColor = Color.Black;
       _mplayerBackgroundPanel.BackColor = Color.Black;
       _mplayerBackgroundPanel.Size = new System.Drawing.Size(0, 0);
       _mplayerBackgroundPanel.Location = new Point(0, 0);
       _mplayerOuterPanel = new Panel();
+      _mplayerOuterPanel.ForeColor = Color.Black;
       _mplayerOuterPanel.BackColor = Color.Black;
       _mplayerOuterPanel.Size = new System.Drawing.Size(0, 0);
       _mplayerOuterPanel.Location = new Point(0, 0);
       _mplayerInnerPanel = new Panel();
       _mplayerInnerPanel.Size = new System.Drawing.Size(0, 0);
+      _mplayerInnerPanel.ForeColor = Color.FromArgb(16, 16, 16);
       _mplayerInnerPanel.BackColor = Color.FromArgb(16, 16, 16);
       _mplayerOuterPanel.Controls.Add(_mplayerInnerPanel);
       _mplayerInnerPanel.Location = new Point(0, 0);
@@ -175,7 +181,8 @@ namespace MPlayer {
     /// <summary>
     /// Disposes the video handler
     /// </summary>
-    public void Dispose() {
+    public void Dispose()
+    {
       _mplayerInnerPanel.Dispose();
       _mplayerInnerPanel = null;
       _mplayerOuterPanel.Dispose();
@@ -189,11 +196,14 @@ namespace MPlayer {
     /// <summary>
     /// Has the file a video stream
     /// </summary>
-    public bool HasVideo {
-      get {
+    public bool HasVideo
+    {
+      get
+      {
         return _isVideo;
       }
-      set {
+      set
+      {
         _isVideo = value;
       }
     }
@@ -201,12 +211,16 @@ namespace MPlayer {
     /// <summary>
     /// Gets/Sets the x position of the video window
     /// </summary>
-    public int PositionX {
-      get {
+    public int PositionX
+    {
+      get
+      {
         return _positionX;
       }
-      set {
-        if (value != _positionX) {
+      set
+      {
+        if (value != _positionX)
+        {
           _positionX = value;
           _needUpdate = true;
         }
@@ -216,12 +230,16 @@ namespace MPlayer {
     /// <summary>
     /// Gets/Sets the y position of the video window
     /// </summary>
-    public int PositionY {
-      get {
+    public int PositionY
+    {
+      get
+      {
         return _positionY;
       }
-      set {
-        if (value != _positionY) {
+      set
+      {
+        if (value != _positionY)
+        {
           _positionY = value;
           _needUpdate = true;
         }
@@ -231,12 +249,16 @@ namespace MPlayer {
     /// <summary>
     /// Gets/Sets the width of the video window
     /// </summary>
-    public int RenderWidth {
-      get {
+    public int RenderWidth
+    {
+      get
+      {
         return _renderWidth;
       }
-      set {
-        if (value != _renderWidth) {
+      set
+      {
+        if (value != _renderWidth)
+        {
           _renderWidth = value;
           _needUpdate = true;
         }
@@ -246,12 +268,16 @@ namespace MPlayer {
     /// <summary>
     /// Gets/Sets the height of the video window
     /// </summary>
-    public int RenderHeight {
-      get {
+    public int RenderHeight
+    {
+      get
+      {
         return _renderHeight;
       }
-      set {
-        if (value != _renderHeight) {
+      set
+      {
+        if (value != _renderHeight)
+        {
           _renderHeight = value;
           _needUpdate = true;
         }
@@ -261,11 +287,14 @@ namespace MPlayer {
     /// <summary>
     /// Gets/Sets the width of the video
     /// </summary>
-    public int Width {
-      get {
+    public int Width
+    {
+      get
+      {
         return _videoWidth;
       }
-      set {
+      set
+      {
         this._videoWidth = value;
       }
     }
@@ -273,11 +302,14 @@ namespace MPlayer {
     /// <summary>
     /// Gets/Sets the height of the video
     /// </summary>
-    public int Height {
-      get {
+    public int Height
+    {
+      get
+      {
         return _videoHeight;
       }
-      set {
+      set
+      {
         this._videoHeight = value;
       }
     }
@@ -285,12 +317,16 @@ namespace MPlayer {
     /// <summary>
     /// Gets/Sets if the video should be as an fullscreen video
     /// </summary>
-    public bool FullScreen {
-      get {
+    public bool FullScreen
+    {
+      get
+      {
         return _isFullScreen;
       }
-      set {
-        if (value != _isFullScreen) {
+      set
+      {
+        if (value != _isFullScreen)
+        {
           _isFullScreen = value;
           _needUpdate = true;
         }
@@ -300,11 +336,14 @@ namespace MPlayer {
     /// <summary>
     /// Gets / Sets the aspect ratio
     /// </summary>
-    public String AspectRatio {
-      get {
+    public String AspectRatio
+    {
+      get
+      {
         return _aspect_ratio;
       }
-      set {
+      set
+      {
         _aspect_ratio = value;
       }
     }
@@ -312,11 +351,14 @@ namespace MPlayer {
     /// <summary>
     /// Gets/Sets the _contrast of the video window
     /// </summary>
-    public int Contrast {
-      get {
+    public int Contrast
+    {
+      get
+      {
         return _contrast;
       }
-      set {
+      set
+      {
         _contrast = value;
         int temp = (value * 2) - 100;
         _player.SendPausingKeepCommand("contrast " + temp + " 1");
@@ -326,11 +368,14 @@ namespace MPlayer {
     /// <summary>
     /// Gets/Sets the _brightness of the video window
     /// </summary>
-    public int Brightness {
-      get {
+    public int Brightness
+    {
+      get
+      {
         return _brightness;
       }
-      set {
+      set
+      {
         _brightness = value;
         int temp = (value * 2) - 100;
         _player.SendPausingKeepCommand("brightness " + temp + " 1");
@@ -340,11 +385,14 @@ namespace MPlayer {
     /// <summary>
     /// Gets/Sets the _gamma of the video window
     /// </summary>
-    public int Gamma {
-      get {
+    public int Gamma
+    {
+      get
+      {
         return _gamma;
       }
-      set {
+      set
+      {
         _gamma = value;
         int temp = (value * 2) - 100;
         _player.SendPausingKeepCommand("gamma " + temp + " 1");
@@ -354,12 +402,16 @@ namespace MPlayer {
     /// <summary>
     /// Gets A/R Geometry of the video window
     /// </summary>
-    public MediaPortal.GUI.Library.Geometry.Type ARType {
-      get {
+    public MediaPortal.GUI.Library.Geometry.Type ARType
+    {
+      get
+      {
         return GUIGraphicsContext.ARType;
       }
-      set {
-        if (_ar != value) {
+      set
+      {
+        if (_ar != value)
+        {
           _ar = value;
           _osdHandler.ShowDisplayModeChanged(value.ToString());
           _needUpdate = true;
@@ -373,21 +425,29 @@ namespace MPlayer {
     /// <summary>
     /// Places the video window
     /// </summary>
-    public void SetVideoWindow() {
-      if (_videoHeight < 0) {
+    public void SetVideoWindow()
+    {
+      if (_videoHeight < 0)
+      {
         return;
       }
-      if (_mplayerBackgroundPanel == null) return;
-      if (_mplayerOuterPanel == null) return;
-      if (_mplayerInnerPanel == null) return;
-      if (GUIGraphicsContext.IsFullScreenVideo != _isFullScreen) {
+      if (_mplayerBackgroundPanel == null)
+        return;
+      if (_mplayerOuterPanel == null)
+        return;
+      if (_mplayerInnerPanel == null)
+        return;
+      if (GUIGraphicsContext.IsFullScreenVideo != _isFullScreen)
+      {
         _isFullScreen = GUIGraphicsContext.IsFullScreenVideo;
         _needUpdate = true;
       }
-      if (!_needUpdate) return;
+      if (!_needUpdate)
+        return;
       _needUpdate = false;
 
-      if (_isFullScreen) {
+      if (_isFullScreen)
+      {
         _positionX = GUIGraphicsContext.OverScanTop;
         _positionY = GUIGraphicsContext.OverScanLeft;
         _renderWidth = GUIGraphicsContext.OverScanWidth;
@@ -422,19 +482,23 @@ namespace MPlayer {
       _mplayerInnerPanel.Location = new Point(sourceX, sourceY);
       _mplayerInnerPanel.ClientSize = new Size(sourceWidth, sourceHeight);
       _mplayerInnerPanel.Size = new Size(sourceWidth, sourceHeight);
-      if (_isFullScreen) {
+      if (_isFullScreen)
+      {
         _mplayerBackgroundPanel.Visible = true;
         Log.Info("MPlayer: Fullscreen (Destination): (" + _positionX + "," + _positionY + "," + _renderWidth + "," + _renderHeight + ") : " + GUIGraphicsContext.ARType);
         Log.Info("MPlayer: Fullscreen (Source): (" + _sourceRectangle.X + "," + _sourceRectangle.Y + "," + _sourceRectangle.Width + "," + _sourceRectangle.Height + ") : " + GUIGraphicsContext.ARType);
         _osdHandler.ActivateOSD(false);
-      } else {
+      }
+      else
+      {
         _mplayerBackgroundPanel.Visible = false;
         Log.Info("MPlayer: Video Window (Destination): (" + _positionX + "," + _positionY + "," + _renderWidth + "," + _renderHeight + ")");
         Log.Info("MPlayer: Video Window (Source): (" + _sourceRectangle.X + "," + _sourceRectangle.Y + "," + _sourceRectangle.Width + "," + _sourceRectangle.Height + ") : " + GUIGraphicsContext.ARType);
         _osdHandler.DeactivateOSD(true);
       }
       _mplayerOuterPanel.BringToFront();
-      if (_openGL) {
+      if (_openGL)
+      {
         _player.SendPausingKeepCommand("switch_ratio " + _aspect_ratio);
       }
     }
@@ -443,14 +507,16 @@ namespace MPlayer {
     /// Returns the handle for the video window
     /// </summary>
     /// <returns>Handle of the video window</returns>
-    public IntPtr GetVideoHandle() {
+    public IntPtr GetVideoHandle()
+    {
       return _mplayerInnerPanel.Handle;
     }
 
     /// <summary>
     /// Adss the video window to the mediaportal form
     /// </summary>
-    public void AddVideoWindowToForm() {
+    public void AddVideoWindowToForm()
+    {
       GUIGraphicsContext.form.SuspendLayout();
       GUIGraphicsContext.form.Controls.Add(_mplayerBackgroundPanel);
       GUIGraphicsContext.form.Controls.Add(_mplayerOuterPanel);
@@ -460,7 +526,8 @@ namespace MPlayer {
     /// <summary>
     /// Removes the video window from the mediaportal form
     /// </summary>
-    public void RemoveVideoWindowToForm() {
+    public void RemoveVideoWindowToForm()
+    {
       GUIGraphicsContext.form.SuspendLayout();
       GUIGraphicsContext.form.Controls.Remove(_mplayerBackgroundPanel);
       GUIGraphicsContext.form.Controls.Remove(_mplayerOuterPanel);
@@ -472,14 +539,18 @@ namespace MPlayer {
     /// <summary>
     /// Handles a message that is retrieved from the MPlayer process
     /// </summary>
-    /// <param name="message">Message to handle</param>
-    public void HandleMessage(string message) {
-      if (message.StartsWith("ID_VIDEO_ASPECT")) {
+    /// <param _name="message">Message to handle</param>
+    public void HandleMessage(string message)
+    {
+      if (message.StartsWith("ID_VIDEO_ASPECT"))
+      {
         _aspect_ratio = message.Substring(16);
         Log.Debug("MPlayer: Detected video aspect: " + _aspect_ratio);
-      } else if (message.StartsWith("VO: [directx] ") ||
+      }
+      else if (message.StartsWith("VO: [directx] ") ||
                  message.StartsWith("VO: [gl2] ") ||
-                 message.StartsWith("VO: [gl] ")) {
+                 message.StartsWith("VO: [gl] "))
+      {
         int pos = message.IndexOf("=> ");
         int newVideoWidth;
         int newVideoHeight;
@@ -489,9 +560,11 @@ namespace MPlayer {
         temp = temp.Substring(pos + 1);
         pos = temp.IndexOf(' ');
         Int32.TryParse(temp.Substring(0, pos), out newVideoHeight);
-        if (newVideoWidth != _videoWidth || newVideoHeight != _videoHeight) {
+        if (newVideoWidth != _videoWidth || newVideoHeight != _videoHeight)
+        {
           _openGL = message.StartsWith("VO: [gl2] ") || message.StartsWith("VO: [gl] ");
-          if (_openGL) {
+          if (_openGL)
+          {
             Log.Debug("MPlayer: Using OpenGL or OpenGL2");
           }
           _player.SendPausingKeepCommand("get_time_pos");
