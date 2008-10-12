@@ -34,38 +34,48 @@ using MediaPortal.GUI.Library;
 using MediaPortal.MPInstaller;
 using MediaPortal.Util;
 
-namespace MPlayer {
+namespace MPlayer
+{
   /// <summary>
   /// Installer plugin for MPI. It helps the user to configure the plugins
   /// </summary>
-  public class Installer : IMPIInternalPlugin {
+  public class Installer : IMPIInternalPlugin
+  {
 
     #region Load Plugin
     /// <summary>
     /// Loads a plugin
     /// </summary>
-    /// <param name="pluginFile">Filename of the plugin</param>
-    static public void LoadPlugins(string pluginFile) {
-      if (!File.Exists(pluginFile)) {
+    /// <param _name="pluginFile">Filename of the plugin</param>
+    static public void LoadPlugins(string pluginFile)
+    {
+      if (!File.Exists(pluginFile))
+      {
         MessageBox.Show("File not found " + pluginFile);
         return;
       }
-      try {
+      try
+      {
         Assembly pluginAssembly = Assembly.LoadFrom(pluginFile);
-        if (pluginAssembly != null) {
+        if (pluginAssembly != null)
+        {
           Type[] exportedTypes = pluginAssembly.GetExportedTypes();
 
-          foreach (Type type in exportedTypes) {
-            if (type.IsAbstract) {
+          foreach (Type type in exportedTypes)
+          {
+            if (type.IsAbstract)
+            {
               continue;
             }
-            if (type.GetInterface("MediaPortal.GUI.Library.ISetupForm") != null) {
+            if (type.GetInterface("MediaPortal.GUI.Library.ISetupForm") != null)
+            {
               object pluginObject = Activator.CreateInstance(type);
               ISetupForm pluginForm = pluginObject as ISetupForm;
             }
           }
         }
-      } catch (Exception unknownException) {
+      } catch (Exception unknownException)
+      {
         MessageBox.Show("Exception in plugin loading :{0}", unknownException.Message);
       }
     }
@@ -75,25 +85,28 @@ namespace MPlayer {
     /// <summary>
     /// On start install event
     /// </summary>
-    /// <param name="pk">Installer packacge struct</param>
+    /// <param _name="pk">Installer packacge struct</param>
     /// <returns>true, if successful</returns>
-    public bool OnStartInstall(ref MPpackageStruct pk) {
+    public bool OnStartInstall(ref MPpackageStruct pk)
+    {
       return true;
     }
 
     /// <summary>
     /// On end install event
     /// </summary>
-    /// <param name="pk">Installer packacge struct</param>
+    /// <param _name="pk">Installer packacge struct</param>
     /// <returns>true, if successful</returns>
-    public bool OnEndInstall(ref MPpackageStruct pk) {
+    public bool OnEndInstall(ref MPpackageStruct pk)
+    {
       String configPath = Config.GetFolder(Config.Dir.Plugins);
       LoadPlugins(configPath + @"\ExternalPlayers\MPlayer_ExtPlayer.dll");
       LoadPlugins(configPath + @"\Windows\MPlayer_GUIPlugin.dll");
       ConfigurationWizard wizard = new ConfigurationWizard();
       wizard.ShowDialog();
-      using (MediaPortal.Profile.Settings xmlWriter = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml"))) {
-        xmlWriter.SetValueAsBool("plugins", "My MPlayer GUI",true);
+      using (MediaPortal.Profile.Settings xmlWriter = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml")))
+      {
+        xmlWriter.SetValueAsBool("plugins", "My MPlayer GUI", true);
         xmlWriter.SetValueAsBool("plugins", "MPlayer", true);
         xmlWriter.SetValueAsBool("pluginsdlls", "MPlayer_GUIPlugin.dll", true);
         xmlWriter.SetValueAsBool("pluginsdlls", "MPlayer_ExtPlayer.dll", true);
@@ -108,29 +121,35 @@ namespace MPlayer {
     /// <summary>
     /// On start uninstall event
     /// </summary>
-    /// <param name="pk">Installer packacge struct</param>
+    /// <param _name="pk">Installer packacge struct</param>
     /// <returns>true, if successful</returns>
-    public bool OnStartUnInstall(ref MPpackageStruct pk) {
+    public bool OnStartUnInstall(ref MPpackageStruct pk)
+    {
       return true;
     }
 
     /// <summary>
     /// On end uninstall event
     /// </summary>
-    /// <param name="pk">Installer packacge struct</param>
+    /// <param _name="pk">Installer packacge struct</param>
     /// <returns>true, if successful</returns>
-    public bool OnEndUnInstall(ref MPpackageStruct pk) {
+    public bool OnEndUnInstall(ref MPpackageStruct pk)
+    {
       DialogResult result = MessageBox.Show("Do you want to remove the settings from the Mediaportal configuration file?", "My MPlayer", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-      if (result == DialogResult.Yes) {
+      if (result == DialogResult.Yes)
+      {
         String path = Config.GetFile(Config.Dir.Config, "MPlayer_ExtPlayer.xml");
-        if (File.Exists(path)) {
+        if (File.Exists(path))
+        {
           File.Delete(path);
         }
         path = Config.GetFile(Config.Dir.Config, "MPlayer_GUIPlugin.xml");
-        if (File.Exists(path)) {
+        if (File.Exists(path))
+        {
           File.Delete(path);
         }
-        using (MediaPortal.Profile.Settings xmlWriter = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml"),false)) {
+        using (MediaPortal.Profile.Settings xmlWriter = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml"), false))
+        {
           xmlWriter.RemoveEntry("mplayer", "generalArguments");
           xmlWriter.RemoveEntry("mplayer", "osd");
           xmlWriter.RemoveEntry("mplayer", "rebuildIndex");

@@ -29,12 +29,15 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using MediaPortal.UserInterface.Controls;
 
-namespace MPlayer {
+namespace MPlayer
+{
   /// <summary>
   /// This class is the configuration wizard for the installer
   /// </summary>
-  public partial class ConfigurationWizard : Form {
+  public partial class ConfigurationWizard : MPConfigForm
+  {
     #region variables
     /// <summary>
     /// Current step in the wizard
@@ -47,7 +50,8 @@ namespace MPlayer {
     /// Constructor, which initializes the wizard and load initial 
     /// configuration values
     /// </summary>
-    public ConfigurationWizard() {
+    public ConfigurationWizard()
+    {
       InitializeComponent();
       streamSection1.LoadConfiguration();
       extensionSection1.LoadConfiguration();
@@ -65,8 +69,10 @@ namespace MPlayer {
     /// <summary>
     /// Switches to the new selected step and updates the gui
     /// </summary>
-    private void switchToStep() {
-      switch (_currentStep) {
+    private void switchToStep()
+    {
+      switch (_currentStep)
+      {
         case 0:
           backButton.Enabled = false;
           nextButton.Enabled = true;
@@ -79,18 +85,20 @@ namespace MPlayer {
           guiConfiguration1.Visible = false;
           this.Text = "My MPlayer Configuration Wizard (1/7)";
           mainLabel.Text = "This configuration wizard will guide you through the configuration of My MPlayer.\n";
-          mainLabel.Text += "You only have to specify the location of you MPlayer installation. All other values are set to recommend values.\n";
+          mainLabel.Text += "You only have to specify the location of your MPlayer installation. All other values are set to recommend values.\n";
           mainLabel.Text += "In each step the wizard will give you some additional hints for the configuration of the settings.";
 
-          infoBox.Text = "My MPlayer offers two different OSD, which can be used. The first is the internal OSD of MPlayer. ";
+          infoBox.Text = "My MPlayer offers two different OSD, which can be used. The first one is the internal OSD of MPlayer. ";
           infoBox.Text += "This is also the recommend OSD. The second OSD is based on a special library. The main advantage is ";
           infoBox.Text += "that it looks like the standard OSD of MP and has more features (e.g. buffering status). ";
-          infoBox.Text += "The disadvantage is that it isn't quite stable than the other one and it also needs more cpu power.\r\n\r\n";
+          infoBox.Text += "The main disadvantage is that it needs more cpu power.\r\n\r\n";
           infoBox.Text += "The cachesize is a very important setting, if you want to use MPlayer in combination with internet streams or DVDs. ";
           infoBox.Text += "The reason is that the standard cache size of MPlayer is very small. It is highly recommend to use at least a value ";
           infoBox.Text += "of 2048 (KB)\r\n\r\n";
           infoBox.Text += "If you any encouter stuttering than you should try to activate the option 'Priority Boost', which ";
-          infoBox.Text += "increases the process priority of MPlayer";
+          infoBox.Text += "increases the process priority of MPlayer\r\n\r\n";
+          infoBox.Text += "Vista users should use the latest commandline version of MPlayer in combination with OpenGL or OpenGL2 video output driver. ";
+          infoBox.Text += "This will give you the best results.";
 
           break;
         case 1:
@@ -104,12 +112,12 @@ namespace MPlayer {
           streamSection1.Visible = false;
           guiConfiguration1.Visible = false;
           this.Text = "My MPlayer Configuration Wizard (2/7)";
-          mainLabel.Text = "The second step you can set the video options.";
+          mainLabel.Text = "In the second step you can set the video options.";
 
-          infoBox.Text = "MPlayer offers different video output drivers. Unfortunately in combination with only the available video ";
+          infoBox.Text = "MPlayer offers different video output drivers. Unfortunately in combination with MP only the available video ";
           infoBox.Text += "output drivers are available, because the other drivers don't support to embed the video in MediaPortal. ";
-          infoBox.Text += "The support for OpenGL and OpenGL2 is experimatal and therefor the DirectX driver is highly recommend. ";
-          infoBox.Text += "If you encouter any error, than you try disabling the options 'Double buffering' and 'Direct Rendering'. \r\n\r\n";
+          infoBox.Text += "If you are using XP than you should the DirectX driver. Vista users should use the OpenGL, OpenGL2 driver with Aero.";
+          infoBox.Text += "If you encouter any error, than you sould try disabling the options 'Double buffering' and 'Direct Rendering'. \r\n\r\n";
           infoBox.Text += "You can turn on the option 'Framedrop' for a better A/V sync, which means that MPlayer will skip some frames.";
 
           break;
@@ -213,18 +221,20 @@ namespace MPlayer {
     /// <summary>
     /// Handles the finish button click event
     /// </summary>
-    /// <param name="sender">Sender</param>
-    /// <param name="e">Event args</param>
-    private void finishButton_Click(object sender, EventArgs e) {
+    /// <param _name="sender">Sender</param>
+    /// <param _name="e">Event args</param>
+    private void finishButton_Click(object sender, EventArgs e)
+    {
       this.Close();
     }
 
     /// <summary>
     /// Handles the back button click event
     /// </summary>
-    /// <param name="sender">Sender</param>
-    /// <param name="e">Event args</param>
-    private void backButton_Click(object sender, EventArgs e) {
+    /// <param _name="sender">Sender</param>
+    /// <param _name="e">Event args</param>
+    private void backButton_Click(object sender, EventArgs e)
+    {
       _currentStep--;
       switchToStep();
     }
@@ -232,9 +242,10 @@ namespace MPlayer {
     /// <summary>
     /// Handles the next button click event
     /// </summary>
-    /// <param name="sender">Sender</param>
-    /// <param name="e">Event args</param>
-    private void nextButton_Click(object sender, EventArgs e) {
+    /// <param _name="sender">Sender</param>
+    /// <param _name="e">Event args</param>
+    private void nextButton_Click(object sender, EventArgs e)
+    {
       _currentStep++;
       switchToStep();
     }
@@ -242,9 +253,10 @@ namespace MPlayer {
     /// <summary>
     /// Handles the form closing event
     /// </summary>
-    /// <param name="sender">Sender</param>
-    /// <param name="e">Event args</param>
-    private void ConfigurationWizard_FormClosing(object sender, FormClosingEventArgs e) {
+    /// <param _name="sender">Sender</param>
+    /// <param _name="e">Event args</param>
+    private void ConfigurationWizard_FormClosing(object sender, FormClosingEventArgs e)
+    {
       generalSection1.SaveConfiguration();
       MediaPortal.Profile.Settings.SaveCache();
       videoSection1.SaveConfiguration();

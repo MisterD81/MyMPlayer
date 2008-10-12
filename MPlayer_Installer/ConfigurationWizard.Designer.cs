@@ -22,8 +22,10 @@
 
 #endregion
 
-namespace MPlayer {
-  partial class ConfigurationWizard {
+namespace MPlayer
+{
+  partial class ConfigurationWizard
+  {
     /// <summary>
     /// Erforderliche Designervariable.
     /// </summary>
@@ -32,9 +34,11 @@ namespace MPlayer {
     /// <summary>
     /// Verwendete Ressourcen bereinigen.
     /// </summary>
-    /// <param name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
-    protected override void Dispose(bool disposing) {
-      if (disposing && (components != null)) {
+    /// <param _name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
+    protected override void Dispose(bool disposing)
+    {
+      if (disposing && (components != null))
+      {
         components.Dispose();
       }
       base.Dispose(disposing);
@@ -46,7 +50,8 @@ namespace MPlayer {
     /// Erforderliche Methode für die Designerunterstützung.
     /// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
     /// </summary>
-    private void InitializeComponent() {
+    private void InitializeComponent()
+    {
       System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigurationWizard));
       this.generalSection1 = new MPlayer.ConfigurationPanel.GeneralSection();
       this.infoGroup = new System.Windows.Forms.GroupBox();
@@ -264,7 +269,6 @@ namespace MPlayer {
       this.Controls.Add(this.nextButton);
       this.Controls.Add(this.finishButton);
       this.Controls.Add(this.infoGroup);
-      this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.Name = "ConfigurationWizard";
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
       this.Text = "My MPlayer Configuration Wizard (1/7)";

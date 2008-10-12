@@ -57,12 +57,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ConfigurationWizard.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ConfigurationWizard.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\MPlayer_ExtPlayer\MPlayer_ExtPlayer.csproj">
       <Project>{77254E2B-4032-495A-AF2D-1804AB2127EF}</Project>
       <Name>MPlayer_ExtPlayer</Name>
@@ -71,9 +65,6 @@
       <Project>{53898324-E882-4D37-86C1-E4696B248A13}</Project>
       <Name>MPlayer_GUIPlugin</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="config.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
