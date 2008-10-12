@@ -41,7 +41,8 @@ namespace MPlayer
   /// <summary>
   /// Enumerations of all OSD Messages
   /// </summary>
-  public enum LocalizedMessages {
+  public enum LocalizedMessages
+  {
     /// <summary>
     /// Speed
     /// </summary>
@@ -89,27 +90,27 @@ namespace MPlayer
     /// <summary>
     /// Display mode
     /// </summary>
-    DisplayMode=11,
+    DisplayMode = 11,
     /// <summary>
     /// Mute
     /// </summary>
-    Mute=12,
+    Mute = 12,
     /// <summary>
     /// Volume
     /// </summary>
-    Volume=13,
+    Volume = 13,
     /// <summary>
     /// Play Stream button
     /// </summary>
-    PlayStream=14,
+    PlayStream = 14,
     /// <summary>
     /// Play Disc button
     /// </summary>
-    PlayDisc=15,
+    PlayDisc = 15,
     /// <summary>
     /// Delete button
     /// </summary>
-    Delete=16
+    Delete = 16
   }
 
   /// <summary>
@@ -138,7 +139,7 @@ namespace MPlayer
     /// </summary>
     static public void Dispose()
     {
-      if(_stringProvider != null)
+      if (_stringProvider != null)
         _stringProvider.Dispose();
     }
     #endregion
@@ -147,7 +148,7 @@ namespace MPlayer
     /// <summary>
     /// Public method to load the text from a strings/xml file into memory
     /// </summary>
-    /// <param name="language">Language</param>
+    /// <param _name="language">Language</param>
     /// <returns>
     /// true when text is loaded
     /// false when it was unable to load the text
@@ -187,7 +188,7 @@ namespace MPlayer
     /// <summary>
     /// Changes the current lagnuage
     /// </summary>
-    /// <param name="language">New Language</param>
+    /// <param _name="language">New Language</param>
     static public void ChangeLanguage(string language)
     {
       if (_stringProvider == null)
@@ -200,8 +201,8 @@ namespace MPlayer
     /// Get the translation for a given id and format the sting with
     /// the given parameters
     /// </summary>
-    /// <param name="dwCode">id of text</param>
-    /// <param name="parameters">parameters used in the formating</param>
+    /// <param _name="dwCode">id of text</param>
+    /// <param _name="parameters">parameters used in the formating</param>
     /// <returns>
     /// string containing the translated text
     /// </returns>
@@ -221,8 +222,7 @@ namespace MPlayer
       try
       {
         return String.Format(translation, parameters);
-      }
-      catch (System.FormatException e)
+      } catch (System.FormatException e)
       {
         Log.Error("Error formatting translation with id {0}", dwCode);
         Log.Error("Unformatted translation: {0}", translation);
@@ -234,7 +234,7 @@ namespace MPlayer
     /// <summary>
     /// Get the translation for a given id
     /// </summary>
-    /// <param name="dwCode">id of text</param>
+    /// <param _name="dwCode">id of text</param>
     /// <returns>
     /// string containing the translated text
     /// </returns>
@@ -257,15 +257,18 @@ namespace MPlayer
     /// <summary>
     /// Localize a label
     /// </summary>
-    /// <param name="strLabel">Label</param>
+    /// <param _name="strLabel">Label</param>
     static public void LocalizeLabel(ref string strLabel)
     {
       if (_stringProvider == null)
         Load(null);
 
-      if (strLabel == null) strLabel = String.Empty;
-      if (strLabel == "-") strLabel = "";
-      if (strLabel == "") return;
+      if (strLabel == null)
+        strLabel = String.Empty;
+      if (strLabel == "-")
+        strLabel = "";
+      if (strLabel == "")
+        return;
       // This can't be a valid string code if the first character isn't a number.
       // This check will save us from catching unnecessary exceptions.
       if (!char.IsNumber(strLabel, 0))
@@ -276,8 +279,7 @@ namespace MPlayer
       try
       {
         dwLabelID = System.Int32.Parse(strLabel);
-      }
-      catch (FormatException e)
+      } catch (FormatException e)
       {
         Log.Error(e);
         strLabel = String.Empty;
@@ -324,10 +326,10 @@ namespace MPlayer
           sortedLanguages.Add(culture.EnglishName, culture.EnglishName);
 
         _languages = new string[sortedLanguages.Count];
-        
+
         for (int i = 0; i < sortedLanguages.Count; i++)
         {
-          _languages[i] = (string) sortedLanguages.GetByIndex(i);
+          _languages[i] = (string)sortedLanguages.GetByIndex(i);
         }
       }
 
@@ -335,9 +337,9 @@ namespace MPlayer
     }
 
     /// <summary>
-    /// Retrieves the name of the culture
+    /// Retrieves the _name of the culture
     /// </summary>
-    /// <param name="language">Language</param>
+    /// <param _name="language">Language</param>
     /// <returns>Culture</returns>
     static public string GetCultureName(string language)
     {

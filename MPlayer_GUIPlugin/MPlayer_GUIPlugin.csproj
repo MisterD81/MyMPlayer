@@ -82,10 +82,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ConfigurationForm.resx">
-      <DependentUpon>ConfigurationForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationPanel\GUIConfiguration.resx">
       <SubType>Designer</SubType>
       <DependentUpon>GUIConfiguration.cs</DependentUpon>

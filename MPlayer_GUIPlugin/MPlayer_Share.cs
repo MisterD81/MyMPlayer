@@ -26,49 +26,54 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MPlayer {
+namespace MPlayer
+{
+  /// <summary>
+  /// Specific version of a share for the configuration dialog
+  /// </summary>
+  public class MPlayer_Share
+  {
+    #region variables
     /// <summary>
-    /// Specific version of a share for the configuration dialog
+    /// Name of the share
     /// </summary>
-    public class MPlayer_Share {
-        #region variables
-        /// <summary>
-        /// Name of the share
-        /// </summary>
-        private String name;
-        
-        /// <summary>
-        /// Path of the share
-        /// </summary>
-        private String path;
-        #endregion
+    private String _name;
 
-        #region Properties
-        /// <summary>
-        /// Gets/Sets the name of the share
-        /// </summary>
-        public String Name {
-            get { return name; }
-            set { this.name = value; }
-        }
-        
-        /// <summary>
-        /// Gets/Sets the path of the share
-        /// </summary>
-        public String Path {
-            get { return path; }
-            set { this.path = value; }
-        }
-        #endregion
+    /// <summary>
+    /// Path of the share
+    /// </summary>
+    private String _path;
+    #endregion
 
-        #region To-String method
-        /// <summary>
-        /// Returns the name of the share
-        /// </summary>
-        /// <returns>Name of the share</returns>
-        public override string ToString() {
-            return name;
-        }
-        #endregion
+    #region Properties
+    /// <summary>
+    /// Gets/Sets the _name of the share
+    /// </summary>
+    public String Name
+    {
+      get { return _name; }
+      set { this._name = value; }
     }
+
+    /// <summary>
+    /// Gets/Sets the _path of the share
+    /// </summary>
+    public String Path
+    {
+      get { return _path; }
+      set { this._path = value; }
+    }
+    #endregion
+
+    #region To-String method
+    /// <summary>
+    /// Returns the _name of the share
+    /// </summary>
+    /// <returns>Name of the share</returns>
+    public override string ToString()
+    {
+      return _name;
+    }
+    #endregion
+  }
 }

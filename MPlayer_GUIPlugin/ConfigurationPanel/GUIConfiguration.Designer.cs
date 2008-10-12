@@ -1,5 +1,7 @@
-﻿namespace MPlayer.ConfigurationPanel {
-  partial class GUIConfiguration {
+﻿namespace MPlayer.ConfigurationPanel
+{
+  partial class GUIConfiguration
+  {
     /// <summary> 
     /// Erforderliche Designervariable.
     /// </summary>
@@ -8,9 +10,11 @@
     /// <summary> 
     /// Verwendete Ressourcen bereinigen.
     /// </summary>
-    /// <param name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
-    protected override void Dispose(bool disposing) {
-      if (disposing && (components != null)) {
+    /// <param _name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
+    protected override void Dispose(bool disposing)
+    {
+      if (disposing && (components != null))
+      {
         components.Dispose();
       }
       base.Dispose(disposing);
@@ -22,7 +26,8 @@
     /// Erforderliche Methode für die Designerunterstützung. 
     /// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
     /// </summary>
-    private void InitializeComponent() {
+    private void InitializeComponent()
+    {
       this.myMusicShare = new System.Windows.Forms.CheckBox();
       this.myVideoShare = new System.Windows.Forms.CheckBox();
       this.groupBox1 = new System.Windows.Forms.GroupBox();

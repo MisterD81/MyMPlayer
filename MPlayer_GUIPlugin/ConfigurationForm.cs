@@ -32,18 +32,22 @@ using System.Windows.Forms;
 using MediaPortal.GUI.Library;
 using MediaPortal.Util;
 using MediaPortal.Configuration;
+using MediaPortal.UserInterface.Controls;
 
-namespace MPlayer {
+namespace MPlayer
+{
   /// <summary>
   /// Configuration of the window plugin for MPlayer
   /// </summary>
-  public partial class ConfigurationForm : Form {
+  public partial class ConfigurationForm : MPConfigForm
+  {
 
     #region ctor
     /// <summary>
     /// Standard constructor
     /// </summary>
-    public ConfigurationForm() {
+    public ConfigurationForm()
+    {
       InitializeComponent();
     }
     #endregion
@@ -52,18 +56,20 @@ namespace MPlayer {
     /// <summary>
     /// Handles the form load event
     /// </summary>
-    /// <param name="sender">Sender object</param>
-    /// <param name="e">Event Arguments</param>
-    private void ConfigurationForm_Load(object sender, System.EventArgs e) {
+    /// <param _name="sender">Sender object</param>
+    /// <param _name="e">Event Arguments</param>
+    private void ConfigurationForm_Load(object sender, System.EventArgs e)
+    {
       guiConfiguration1.LoadConfiguration();
     }
 
     /// <summary>
     /// Handles the OK-Button click event
     /// </summary>
-    /// <param name="sender">Sender object</param>
-    /// <param name="e">Event Arguments</param>
-    private void okButton_Click(object sender, System.EventArgs e) {
+    /// <param _name="sender">Sender object</param>
+    /// <param _name="e">Event Arguments</param>
+    private void okButton_Click(object sender, System.EventArgs e)
+    {
       guiConfiguration1.SaveConfiguration();
       this.Close();
     }
@@ -71,9 +77,10 @@ namespace MPlayer {
     /// <summary>
     /// Handles the Cancel-Button click event
     /// </summary>
-    /// <param name="sender">Sender object</param>
-    /// <param name="e">Event Arguments</param>
-    private void cancelButton_Click(object sender, EventArgs e) {
+    /// <param _name="sender">Sender object</param>
+    /// <param _name="e">Event Arguments</param>
+    private void cancelButton_Click(object sender, EventArgs e)
+    {
       this.Close();
     }
     #endregion
