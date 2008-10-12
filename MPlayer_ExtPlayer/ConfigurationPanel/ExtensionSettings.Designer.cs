@@ -1,5 +1,7 @@
-﻿namespace MPlayer.ConfigurationPanel {
-  partial class ExtensionSection {
+﻿namespace MPlayer.ConfigurationPanel
+{
+  partial class ExtensionSection
+  {
     /// <summary> 
     /// Erforderliche Designervariable.
     /// </summary>
@@ -8,9 +10,11 @@
     /// <summary> 
     /// Verwendete Ressourcen bereinigen.
     /// </summary>
-    /// <param name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
-    protected override void Dispose(bool disposing) {
-      if (disposing && (components != null)) {
+    /// <param _name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
+    protected override void Dispose(bool disposing)
+    {
+      if (disposing && (components != null))
+      {
         components.Dispose();
       }
       base.Dispose(disposing);
@@ -22,7 +26,8 @@
     /// Erforderliche Methode für die Designerunterstützung. 
     /// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
     /// </summary>
-    private void InitializeComponent() {
+    private void InitializeComponent()
+    {
       this.components = new System.ComponentModel.Container();
       System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExtensionSection));
       this.toolTip = new System.Windows.Forms.ToolTip(this.components);

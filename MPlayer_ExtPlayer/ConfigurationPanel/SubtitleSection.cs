@@ -31,19 +31,22 @@ using System.Text;
 using System.Windows.Forms;
 using MediaPortal.Configuration;
 
-namespace MPlayer.ConfigurationPanel {
+namespace MPlayer.ConfigurationPanel
+{
   /// <summary>
   /// This class represents the subtitle section of the configuration
   /// </summary>
-  public partial class SubtitleSection : UserControl {
+  public partial class SubtitleSection : UserControl
+  {
 
     #region ctor
     /// <summary>
     /// Constructor, which initilizes the control
     /// </summary>
-    public SubtitleSection() {
+    public SubtitleSection()
+    {
       InitializeComponent();
-      ConfigurationManager manager = ConfigurationManager.getInstance();
+      ConfigurationManager manager = ConfigurationManager.GetInstance();
       subtitleFont.Items.Clear();
       subtitleFont.Items.AddRange(manager.PossibleFonts);
     }
@@ -53,8 +56,10 @@ namespace MPlayer.ConfigurationPanel {
     /// <summary>
     /// Loads the configuration of this section
     /// </summary>
-    public void LoadConfiguration() {
-      using (MediaPortal.Profile.Settings xmlreader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml"))) {
+    public void LoadConfiguration()
+    {
+      using (MediaPortal.Profile.Settings xmlreader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml")))
+      {
         string subtitleFontName = xmlreader.GetValueAsString("mplayer", "subtitleFontName", "Arial");
         subtitleFont.SelectedItem = subtitleFontName;
         subtitles.Checked = xmlreader.GetValueAsBool("mplayer", "enableSubtitles", false);
@@ -67,8 +72,10 @@ namespace MPlayer.ConfigurationPanel {
     /// <summary>
     /// Stores the configuration of this section
     /// </summary>
-    public void SaveConfiguration() {
-      using (MediaPortal.Profile.Settings xmlWriter = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml"))) {
+    public void SaveConfiguration()
+    {
+      using (MediaPortal.Profile.Settings xmlWriter = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml")))
+      {
         xmlWriter.SetValue("mplayer", "subtitleFontName", subtitleFont.SelectedItem.ToString());
         xmlWriter.SetValueAsBool("mplayer", "enableSubtitles", subtitles.Checked);
         xmlWriter.SetValue("mplayer", "subtitleDelayStep", subtitleDelayStep.Value);

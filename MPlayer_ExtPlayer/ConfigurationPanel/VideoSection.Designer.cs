@@ -22,8 +22,10 @@
 
 #endregion
 
-namespace MPlayer.ConfigurationPanel {
-  partial class VideoSection {
+namespace MPlayer.ConfigurationPanel
+{
+  partial class VideoSection
+  {
     /// <summary> 
     /// Erforderliche Designervariable.
     /// </summary>
@@ -32,9 +34,11 @@ namespace MPlayer.ConfigurationPanel {
     /// <summary> 
     /// Verwendete Ressourcen bereinigen.
     /// </summary>
-    /// <param name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
-    protected override void Dispose(bool disposing) {
-      if (disposing && (components != null)) {
+    /// <param _name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
+    protected override void Dispose(bool disposing)
+    {
+      if (disposing && (components != null))
+      {
         components.Dispose();
       }
       base.Dispose(disposing);
@@ -46,7 +50,8 @@ namespace MPlayer.ConfigurationPanel {
     /// Erforderliche Methode für die Designerunterstützung. 
     /// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
     /// </summary>
-    private void InitializeComponent() {
+    private void InitializeComponent()
+    {
       this.components = new System.ComponentModel.Container();
       this.label6 = new System.Windows.Forms.Label();
       this.videoOutputDriver = new System.Windows.Forms.ComboBox();
@@ -94,7 +99,6 @@ namespace MPlayer.ConfigurationPanel {
       this.toolTip.SetToolTip(this.videoOutputDriver, "Defines the used video output driver. The following are supported:\r\n- DirectX, wh" +
               "ich is the recommend one\r\n- DirectX without HW-Acceleration\r\n- OpenGL\r\n- OpenGL " +
               "2");
-      this.videoOutputDriver.SelectedIndexChanged += new System.EventHandler(this.videoOutputDriver_SelectedIndexChanged);
       // 
       // framedrop
       // 

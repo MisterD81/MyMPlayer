@@ -22,8 +22,10 @@
 
 #endregion
 
-namespace MPlayer.ConfigurationPanel {
-  partial class StreamSection {
+namespace MPlayer.ConfigurationPanel
+{
+  partial class StreamSection
+  {
     /// <summary> 
     /// Erforderliche Designervariable.
     /// </summary>
@@ -32,9 +34,11 @@ namespace MPlayer.ConfigurationPanel {
     /// <summary> 
     /// Verwendete Ressourcen bereinigen.
     /// </summary>
-    /// <param name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
-    protected override void Dispose(bool disposing) {
-      if (disposing && (components != null)) {
+    /// <param _name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
+    protected override void Dispose(bool disposing)
+    {
+      if (disposing && (components != null))
+      {
         components.Dispose();
       }
       base.Dispose(disposing);
@@ -46,7 +50,8 @@ namespace MPlayer.ConfigurationPanel {
     /// Erforderliche Methode für die Designerunterstützung. 
     /// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
     /// </summary>
-    private void InitializeComponent() {
+    private void InitializeComponent()
+    {
       this.components = new System.ComponentModel.Container();
       this.label20 = new System.Windows.Forms.Label();
       this.unsvArguments = new System.Windows.Forms.TextBox();

@@ -30,18 +30,22 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using MediaPortal.Configuration;
+using OsDetection;
 
-namespace MPlayer.ConfigurationPanel {
+namespace MPlayer.ConfigurationPanel
+{
   /// <summary>
   /// This class represents the video section of the configuration
   /// </summary>
-  public partial class VideoSection : UserControl {
+  public partial class VideoSection : UserControl
+  {
 
     #region ctor
     /// <summary>
     /// Constructor, which initilizes the control
     /// </summary>
-    public VideoSection() {
+    public VideoSection()
+    {
       InitializeComponent();
     }
     #endregion
@@ -50,9 +54,17 @@ namespace MPlayer.ConfigurationPanel {
     /// <summary>
     /// Loads the configuration of this section
     /// </summary>
-    public void LoadConfiguration() {
-      using (MediaPortal.Profile.Settings xmlreader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml"))) {
-        videoOutputDriver.SelectedIndex = xmlreader.GetValueAsInt("mplayer", "videoOutputDriver", (int)VideoOutputDriver.DirectX);
+    public void LoadConfiguration()
+    {
+      using (MediaPortal.Profile.Settings xmlreader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml")))
+      {
+        VideoOutputDriver videoOutputDriverStandardValue = VideoOutputDriver.DirectX;
+        OSVersionInfo os = new OperatingSystemVersion();
+        if (os.OSVersion == OSVersion.Vista || os.OSVersion == OSVersion.Win2008)
+        {
+          videoOutputDriverStandardValue = VideoOutputDriver.OpenGL2;
+        }
+        videoOutputDriver.SelectedIndex = xmlreader.GetValueAsInt("mplayer", "videoOutputDriver", (int)videoOutputDriverStandardValue);
         postProcessing.SelectedIndex = xmlreader.GetValueAsInt("mplayer", "postProcessing", (int)PostProcessing.Maximum);
         aspectRatio.SelectedIndex = xmlreader.GetValueAsInt("mplayer", "aspectRatio", (int)AspectRatio.Automatic);
         deinterlace.SelectedIndex = xmlreader.GetValueAsInt("mplayer", "deinterlace", (int)Deinterlace.Adaptive);
@@ -66,8 +78,10 @@ namespace MPlayer.ConfigurationPanel {
     /// <summary>
     /// Stores the configuration of this section
     /// </summary>
-    public void SaveConfiguration() {
-      using (MediaPortal.Profile.Settings xmlWriter = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml"))) {
+    public void SaveConfiguration()
+    {
+      using (MediaPortal.Profile.Settings xmlWriter = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml")))
+      {
         xmlWriter.SetValue("mplayer", "videoOutputDriver", videoOutputDriver.SelectedIndex);
         xmlWriter.SetValue("mplayer", "postProcessing", postProcessing.SelectedIndex);
         xmlWriter.SetValue("mplayer", "aspectRatio", aspectRatio.SelectedIndex);
@@ -80,15 +94,5 @@ namespace MPlayer.ConfigurationPanel {
     }
     #endregion
 
-    #region event handling
-    /// <summary>
-    /// Handles the video output driver changed
-    /// </summary>
-    /// <param name="sender">Sender object</param>
-    /// <param name="e">Event Arguments</param>
-    private void videoOutputDriver_SelectedIndexChanged(object sender, EventArgs e) {
-      directRendering.Enabled = videoOutputDriver.SelectedIndex != (int)VideoOutputDriver.OpenGL;
-    }
-    #endregion
   }
 }

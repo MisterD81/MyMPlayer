@@ -32,25 +32,30 @@ using System.Windows.Forms;
 using DShowNET.Helper;
 using MediaPortal.Configuration;
 
-namespace MPlayer.ConfigurationPanel {
+namespace MPlayer.ConfigurationPanel
+{
   /// <summary>
   /// This class represents the audio section of the configuration
   /// </summary>
-  public partial class AudioSection : UserControl {
+  public partial class AudioSection : UserControl
+  {
 
     #region ctor
     /// <summary>
     /// Constructor, which initilizes the control
     /// </summary>
-    public AudioSection() {
+    public AudioSection()
+    {
       InitializeComponent();
       soundOutputDevice.Items.Clear();
       soundOutputDevice.Items.Add("Default DirectSound Device");
       //
       // Fetch available Audio Renderers
       //
-      foreach (Filter audioRenderer in Filters.AudioRenderers) {
-        if (audioRenderer.Name.StartsWith("DirectSound: ")) {
+      foreach (Filter audioRenderer in Filters.AudioRenderers)
+      {
+        if (audioRenderer.Name.StartsWith("DirectSound: "))
+        {
           soundOutputDevice.Items.Add(audioRenderer.Name.Remove(0, 13));
         }
       }
@@ -61,8 +66,10 @@ namespace MPlayer.ConfigurationPanel {
     /// <summary>
     /// Loads the configuration of this section
     /// </summary>
-    public void LoadConfiguration() {
-      using (MediaPortal.Profile.Settings xmlreader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml"))) {
+    public void LoadConfiguration()
+    {
+      using (MediaPortal.Profile.Settings xmlreader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml")))
+      {
         soundOutputDriver.SelectedIndex = xmlreader.GetValueAsInt("mplayer", "soundOutputDriver", (int)SoundOutputDriver.DirectSound);
         soundOutputDevice.SelectedIndex = xmlreader.GetValueAsInt("mplayer", "soundOutputDevice", 0);
         audioChannels.SelectedIndex = xmlreader.GetValueAsInt("mplayer", "audioChannels", (int)AudioChannels.Default);
@@ -75,8 +82,10 @@ namespace MPlayer.ConfigurationPanel {
     /// <summary>
     /// Stores the configuration of this section
     /// </summary>
-    public void SaveConfiguration() {
-      using (MediaPortal.Profile.Settings xmlWriter = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml"))) {
+    public void SaveConfiguration()
+    {
+      using (MediaPortal.Profile.Settings xmlWriter = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml")))
+      {
         xmlWriter.SetValue("mplayer", "soundOutputDriver", soundOutputDriver.SelectedIndex);
         xmlWriter.SetValue("mplayer", "soundOutputDevice", soundOutputDevice.SelectedIndex);
         xmlWriter.SetValue("mplayer", "audioChannels", audioChannels.SelectedIndex);
@@ -91,12 +100,16 @@ namespace MPlayer.ConfigurationPanel {
     /// <summary>
     /// Handles the Selected index changed event of the sound output driver combo box
     /// </summary>
-    /// <param name="sender">Sender object</param>
-    /// <param name="e"></param>
-    private void soundOutputDriver_SelectedIndexChanged(object sender, EventArgs e) {
-      if (soundOutputDriver.SelectedIndex == (int)SoundOutputDriver.DirectSound) {
+    /// <param _name="sender">Sender object</param>
+    /// <param _name="e"></param>
+    private void soundOutputDriver_SelectedIndexChanged(object sender, EventArgs e)
+    {
+      if (soundOutputDriver.SelectedIndex == (int)SoundOutputDriver.DirectSound)
+      {
         soundOutputDevice.Enabled = true;
-      } else {
+      }
+      else
+      {
         soundOutputDevice.Enabled = false;
       }
     }

@@ -31,17 +31,20 @@ using System.Text;
 using System.Windows.Forms;
 using MediaPortal.Configuration;
 
-namespace MPlayer.ConfigurationPanel {
+namespace MPlayer.ConfigurationPanel
+{
   /// <summary>
   /// This class represents the stream section of the configuration
   /// </summary>
-  public partial class StreamSection : UserControl {
+  public partial class StreamSection : UserControl
+  {
 
     #region ctor
     /// <summary>
     /// Constructor, which initilizes the control
     /// </summary>
-    public StreamSection() {
+    public StreamSection()
+    {
       InitializeComponent();
     }
     #endregion
@@ -50,8 +53,10 @@ namespace MPlayer.ConfigurationPanel {
     /// <summary>
     /// Loads the configuration of this section
     /// </summary>
-    public void LoadConfiguration() {
-      using (MediaPortal.Profile.Settings xmlreader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml"))) {
+    public void LoadConfiguration()
+    {
+      using (MediaPortal.Profile.Settings xmlreader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml")))
+      {
         dvdArguments.Text = xmlreader.GetValueAsString("mplayer", "dvdArguments", String.Empty);
         vcdArguments.Text = xmlreader.GetValueAsString("mplayer", "vcdArguments", String.Empty);
         svcdArguments.Text = xmlreader.GetValueAsString("mplayer", "svcdArguments", String.Empty);
@@ -70,8 +75,10 @@ namespace MPlayer.ConfigurationPanel {
     /// <summary>
     /// Stores the configuration of this section
     /// </summary>
-    public void SaveConfiguration() {
-      using (MediaPortal.Profile.Settings xmlWriter = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml"))) {
+    public void SaveConfiguration()
+    {
+      using (MediaPortal.Profile.Settings xmlWriter = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml")))
+      {
         xmlWriter.SetValue("mplayer", "dvdArguments", dvdArguments.Text);
         xmlWriter.SetValue("mplayer", "vcdArguments", vcdArguments.Text);
         xmlWriter.SetValue("mplayer", "svcdArguments", svcdArguments.Text);
