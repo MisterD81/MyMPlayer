@@ -29,11 +29,13 @@ using System.IO;
 using System.Text;
 using MediaPortal.GUI.Library;
 
-namespace ExternalOSDLibrary {
+namespace ExternalOSDLibrary
+{
   /// <summary>
   /// This class represents a GUIProgressControl
   /// </summary>
-  public class ProgressControlElement : BaseElement {
+  public class ProgressControlElement : BaseElement
+  {
     #region variables
     /// <summary>
     /// GUIProgressControl
@@ -72,7 +74,8 @@ namespace ExternalOSDLibrary {
     /// </summary>
     /// <param name="control">GUIControl</param>
     public ProgressControlElement(GUIControl control)
-      : base(control) {
+      : base(control)
+    {
       _progressControl = control as GUIProgressControl;
       _leftBitmap = loadBitmap(_progressControl.BackTextureLeftName);
       _midBitmap = loadBitmap(_progressControl.BackTextureMidName);
@@ -88,27 +91,34 @@ namespace ExternalOSDLibrary {
     /// Draws the element on the given graphics
     /// </summary>
     /// <param name="graph">Graphics</param>
-    public override void DrawElement(Graphics graph) {
-      if (_progressControl.Visible) {
+    public override void DrawElement(Graphics graph)
+    {
+      if (_progressControl.Visible)
+      {
         float fWidth = (float)_percentage;
-        DrawProgressBar(graph,fWidth,_percentage);
+        DrawProgressBar(graph, fWidth, _percentage);
       }
     }
 
     /// <summary>
     /// Disposes the object
     /// </summary>
-    public override void Dispose() {
-      if (_leftBitmap != null) {
+    public override void Dispose()
+    {
+      if (_leftBitmap != null)
+      {
         _leftBitmap.Dispose();
       }
-      if (_midBitmap != null) {
+      if (_midBitmap != null)
+      {
         _midBitmap.Dispose();
       }
-      if (_rightBitmap != null) {
+      if (_rightBitmap != null)
+      {
         _rightBitmap.Dispose();
       }
-      if (_backgroundBitmap != null) {
+      if (_backgroundBitmap != null)
+      {
         _backgroundBitmap.Dispose();
       }
     }
@@ -117,10 +127,12 @@ namespace ExternalOSDLibrary {
     /// Checks, if an update for the element is needed
     /// </summary>
     /// <returns>true, if an update is needed</returns>
-    protected override bool CheckElementSpecificForUpdate() {
+    protected override bool CheckElementSpecificForUpdate()
+    {
       bool result = false;
       int newPercentage = GetPercentage();
-      if (newPercentage != _percentage) {
+      if (newPercentage != _percentage)
+      {
         _percentage = newPercentage;
         result = true;
       }
@@ -134,7 +146,8 @@ namespace ExternalOSDLibrary {
     /// </summary>
     /// <param name="graph">Graphics</param>
     /// <param name="cacheFill">Status of the cache</param>
-    public override void DrawCacheStatus(Graphics graph, float cacheFill) {
+    public override void DrawCacheStatus(Graphics graph, float cacheFill)
+    {
       DrawProgressBar(graph, cacheFill, (int)cacheFill);
     }
     #endregion
@@ -146,12 +159,15 @@ namespace ExternalOSDLibrary {
     /// <param name="graph">Graphics</param>
     /// <param name="fWidth">Width, depending on the percentage</param>
     /// <param name="percent">Percentage</param>
-    private void DrawProgressBar(Graphics graph,float fWidth, int percent) {
+    private void DrawProgressBar(Graphics graph, float fWidth, int percent)
+    {
       fWidth /= 100.0f;
-      if (_backgroundBitmap != null) {
+      if (_backgroundBitmap != null)
+      {
         graph.DrawImage(_backgroundBitmap, _progressControl.XPosition, _progressControl.YPosition, _progressControl.Width, _progressControl.Height);
       }
-      if (_leftBitmap != null && _midBitmap != null && _rightBitmap != null) {
+      if (_leftBitmap != null && _midBitmap != null && _rightBitmap != null)
+      {
         int iWidthLeft = _leftBitmap.Width;
         int iHeightLeft = _leftBitmap.Height;
         int iWidthRight = _rightBitmap.Width;
@@ -171,22 +187,25 @@ namespace ExternalOSDLibrary {
         graph.DrawImage(_leftBitmap, iXPos, iYPos, iWidthLeft, iHeightLeft);
 
         iXPos += iWidthLeft;
-        if (percent > 0 && (int)fWidth > 1) {
+        if (percent > 0 && (int)fWidth > 1)
+        {
           graph.DrawImage(_midBitmap, iXPos, iYPos, (int)Math.Abs(fWidth), iHeightLeft);
           iXPos += (int)fWidth;
         }
         graph.DrawImage(_rightBitmap, iXPos, iYPos, iWidthRight, iHeightRight);
       }
     }
-    
+
     /// <summary>
     /// Calculates the percentage of the control
     /// </summary>
     /// <returns></returns>
-    private int GetPercentage() {
+    private int GetPercentage()
+    {
       int percent = 0;
       Int32.TryParse(GUIPropertyManager.Parse(_progressControl.Property), out percent);
-      if (percent > 100) percent = 100;
+      if (percent > 100)
+        percent = 100;
       return percent;
     }
     #endregion

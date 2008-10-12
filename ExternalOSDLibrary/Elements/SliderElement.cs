@@ -30,11 +30,13 @@ using System.Drawing.Imaging;
 using System.Text;
 using MediaPortal.GUI.Library;
 
-namespace ExternalOSDLibrary {
+namespace ExternalOSDLibrary
+{
   /// <summary>
   /// This class represents a GUISliderControl
   /// </summary>
-  public class SliderElement : BaseElement {
+  public class SliderElement : BaseElement
+  {
     #region variables
     /// <summary>
     /// GUISliderControl
@@ -78,7 +80,8 @@ namespace ExternalOSDLibrary {
     /// </summary>
     /// <param name="control">GUIControl</param>
     public SliderElement(GUIControl control)
-      : base(control) {
+      : base(control)
+    {
       _slider = control as GUISliderControl;
       Type buttonType = typeof(GUISliderControl);
       _backgroundBitmap = loadBitmap(_slider.BackGroundTextureName);
@@ -96,14 +99,17 @@ namespace ExternalOSDLibrary {
     /// Draws the element on the given graphics
     /// </summary>
     /// <param name="graph">Graphics</param>
-    public override void DrawElement(Graphics graph) {
-      if (_slider.Visible) {
+    public override void DrawElement(Graphics graph)
+    {
+      if (_slider.Visible)
+      {
         string strValue = "";
         float fPos = 0.0f;
         Font font = getFont("font13");
         float backgroundPositionX = (float)_slider.XPosition;
         float backgroundPositionY = (float)_slider.YPosition;
-        if (null != font) {
+        if (null != font)
+        {
           SolidBrush brush = new SolidBrush(Color.FromArgb(255, 255, 255, 255));
           graph.DrawString(GUIPropertyManager.Parse(strValue), font, brush, (float)_slider.XPosition, (float)_slider.YPosition);
           brush.Dispose();
@@ -122,10 +128,14 @@ namespace ExternalOSDLibrary {
         fPos *= fWidth;
         fPos += backgroundPositionX;
         //fPos += 10.0f;
-        if ((int)fWidth > 1) {
-          if (_slider.IsFocused) {
+        if ((int)fWidth > 1)
+        {
+          if (_slider.IsFocused)
+          {
             graph.DrawImage(_sliderFocusBitmap, fPos, backgroundPositionY);
-          } else {
+          }
+          else
+          {
             graph.DrawImage(_sliderBitmap, fPos, backgroundPositionY);
           }
         }
@@ -135,14 +145,18 @@ namespace ExternalOSDLibrary {
     /// <summary>
     /// Disposes the object
     /// </summary>
-    public override void Dispose() {
-      if (_backgroundBitmap != null) {
+    public override void Dispose()
+    {
+      if (_backgroundBitmap != null)
+      {
         _backgroundBitmap.Dispose();
       }
-      if (_sliderBitmap != null) {
+      if (_sliderBitmap != null)
+      {
         _sliderBitmap.Dispose();
       }
-      if (_sliderFocusBitmap != null) {
+      if (_sliderFocusBitmap != null)
+      {
         _sliderFocusBitmap.Dispose();
       }
     }
@@ -151,18 +165,22 @@ namespace ExternalOSDLibrary {
     /// Checks, if an update for the element is needed
     /// </summary>
     /// <returns>true, if an update is needed</returns>
-    protected override bool CheckElementSpecificForUpdate() {
+    protected override bool CheckElementSpecificForUpdate()
+    {
       bool result = false;
-      if (_slider.Percentage != _percentage) {
+      if (_slider.Percentage != _percentage)
+      {
         _percentage = _slider.Percentage;
         result = true;
       }
-      if (_slider.Focus != _focus) {
+      if (_slider.Focus != _focus)
+      {
         _focus = _slider.Focus;
         result = true;
       }
       String newStrValue = getStringValue();
-      if (newStrValue != _strValue) {
+      if (newStrValue != _strValue)
+      {
         _strValue = newStrValue;
         result = true;
       }
@@ -171,9 +189,11 @@ namespace ExternalOSDLibrary {
     #endregion
 
     #region private methods
-    private String getStringValue() {
+    private String getStringValue()
+    {
       String strValue = String.Empty;
-      switch (_slider.SpinType) {
+      switch (_slider.SpinType)
+      {
         // Float based slider
         case GUISpinControl.SpinType.SPIN_CONTROL_TYPE_FLOAT:
           strValue = String.Format("{0}", _slider.FloatValue);

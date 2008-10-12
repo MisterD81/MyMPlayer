@@ -29,11 +29,13 @@ using System.IO;
 using System.Text;
 using MediaPortal.GUI.Library;
 
-namespace ExternalOSDLibrary {
+namespace ExternalOSDLibrary
+{
   /// <summary>
   /// Base class for all gui elements
   /// </summary>
-  public abstract class BaseElement : IDisposable {
+  public abstract class BaseElement : IDisposable
+  {
     #region variables
     /// <summary>
     /// Indicates, if the element was visible
@@ -51,7 +53,8 @@ namespace ExternalOSDLibrary {
     /// Initialize the base element
     /// </summary>
     /// <param name="control">GUIControl</param>
-    public BaseElement(GUIControl control) {
+    public BaseElement(GUIControl control)
+    {
       _control = control;
     }
     #endregion
@@ -62,7 +65,7 @@ namespace ExternalOSDLibrary {
     /// </summary>
     /// <param name="graph">Graphics</param>
     public abstract void DrawElement(Graphics graph);
-    
+
     /// <summary>
     /// Checks, if an update for the element is needed
     /// </summary>
@@ -76,15 +79,20 @@ namespace ExternalOSDLibrary {
     /// if the alpha value is more than 150
     /// </summary>
     /// <param name="bitmap">Bitmap to update</param>
-    protected void updateBitmap(Bitmap bitmap) {
+    protected void updateBitmap(Bitmap bitmap)
+    {
       Color temp;
-      for (int i = 0; i < bitmap.Width; i++) {
-        for (int j = 0; j < bitmap.Height; j++) {
+      for (int i = 0; i < bitmap.Width; i++)
+      {
+        for (int j = 0; j < bitmap.Height; j++)
+        {
           temp = bitmap.GetPixel(i, j);
-          if (temp.R == 0 && temp.G == 0 && temp.B == 0 && temp.A > 150) {
+          if (temp.R == 0 && temp.G == 0 && temp.B == 0 && temp.A > 150)
+          {
             bitmap.SetPixel(i, j, Color.FromArgb(temp.A, 5, 5, 5));
           }
-          if (temp.R == 1 && temp.G == 1 && temp.B == 1 && temp.A > 150) {
+          if (temp.R == 1 && temp.G == 1 && temp.B == 1 && temp.A > 150)
+          {
             bitmap.SetPixel(i, j, Color.FromArgb(temp.A, 5, 5, 5));
           }
         }
@@ -96,13 +104,20 @@ namespace ExternalOSDLibrary {
     /// </summary>
     /// <param name="colorValue">Value of the color</param>
     /// <returns>Color struct</returns>
-    protected Color GetColor(long colorValue) {
+    protected Color GetColor(long colorValue)
+    {
       Color color = Color.FromArgb((int)colorValue);
-      if (color.R == 0 && color.G == 0 && color.B == 0) {
+      if (color.R == 0 && color.G == 0 && color.B == 0)
+      {
         color = Color.FromArgb(5, 5, 5);
       }
-      if (color.R == 1 && color.G == 1 && color.B == 1) {
+      else if (color.R == 1 && color.G == 1 && color.B == 1)
+      {
         color = Color.FromArgb(5, 5, 5);
+      }
+      else
+      {
+        color = Color.FromArgb(color.R, color.G, color.B);
       }
       return color;
     }
@@ -112,7 +127,8 @@ namespace ExternalOSDLibrary {
     /// </summary>
     /// <param name="name">Name of the font</param>
     /// <returns>Font </returns>
-    protected Font getFont(String name) {
+    protected Font getFont(String name)
+    {
       GUIFont guiFont = GUIFontManager.GetFont(name);
       return new Font(guiFont.FileName, guiFont.FontSize, guiFont.FontStyle);
     }
@@ -122,11 +138,13 @@ namespace ExternalOSDLibrary {
     /// </summary>
     /// <param name="fileName">Filename of the bitmap</param>
     /// <returns>Bitmap</returns>
-    protected Bitmap loadBitmap(String fileName) {
+    protected Bitmap loadBitmap(String fileName)
+    {
       Bitmap result = null;
       String realFileName = GUIPropertyManager.Parse(fileName);
       String location = GUIGraphicsContext.Skin + @"\media\" + realFileName;
-      if (File.Exists(location)) {
+      if (File.Exists(location))
+      {
         result = new Bitmap(location);
         updateBitmap(result);
       }
@@ -140,23 +158,28 @@ namespace ExternalOSDLibrary {
     /// </summary>
     /// <param name="graph">Graphics</param>
     /// <param name="cacheFill">Status of the cache</param>
-    public virtual void DrawCacheStatus(Graphics graph, float cacheFill) {
+    public virtual void DrawCacheStatus(Graphics graph, float cacheFill)
+    {
     }
 
     /// <summary>
     /// Checks, if an update for the element is needed
     /// </summary>
     /// <returns>true, if an update is needed</returns>
-    public bool CheckForUpdate() {
+    public bool CheckForUpdate()
+    {
       bool newVisible = _control.Visible;
-      if (newVisible == _wasVisible) {
-        if (newVisible) {
+      if (newVisible == _wasVisible)
+      {
+        if (newVisible)
+        {
           return CheckElementSpecificForUpdate();
         }
         return false;
       }
       _wasVisible = newVisible;
-      if (newVisible) {
+      if (newVisible)
+      {
         CheckElementSpecificForUpdate();
       }
       return true;

@@ -32,11 +32,13 @@ using MediaPortal.Dialogs;
 using MediaPortal.GUI.Library;
 using System.Windows;
 
-namespace ExternalOSDLibrary {
+namespace ExternalOSDLibrary
+{
   /// <summary>
   /// This class handles all related tasks for the GUIDialogMenu (Context menu) window
   /// </summary>
-  public class DialogWindow : BaseWindow {
+  public class DialogWindow : BaseWindow
+  {
     #region variables
     /// <summary>
     /// Dialog Menu window
@@ -48,7 +50,8 @@ namespace ExternalOSDLibrary {
     /// <summary>
     /// Constructor, which creates all elements
     /// </summary>
-    public DialogWindow() {
+    public DialogWindow()
+    {
       _dialogWindow = GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_DIALOG_MENU) as GUIDialogMenu;
       _controlList = _dialogWindow.controlList;
       GenerateElements();
@@ -60,7 +63,8 @@ namespace ExternalOSDLibrary {
     /// Indicates if the window is currently visible
     /// </summary>
     /// <returns>true, if window is visible; false otherwise</returns>
-    protected override bool CheckSpecificVisibility() {
+    protected override bool CheckSpecificVisibility()
+    {
       return GUIWindowManager.RoutedWindow == _dialogWindow.GetID;
     }
     #endregion

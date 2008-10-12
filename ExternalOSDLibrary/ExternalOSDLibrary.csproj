@@ -53,7 +53,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseWindow.cs" />
-    <Compile Include="Elements\GroupElement.cs" />
     <Compile Include="Elements\VerticalScrollbarElement.cs" />
     <Compile Include="Elements\TextScrollUpElement.cs" />
     <Compile Include="Elements\ListElement.cs" />

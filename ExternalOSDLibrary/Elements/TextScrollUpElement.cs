@@ -30,27 +30,29 @@ using System.Drawing.Imaging;
 using System.Text;
 using MediaPortal.GUI.Library;
 
-namespace ExternalOSDLibrary {
+namespace ExternalOSDLibrary
+{
   /// <summary>
   /// This class represents a GUITextScrollUpControl
   /// </summary>
-  public class TextScrollUpElement : BaseElement {
+  public class TextScrollUpElement : BaseElement
+  {
     #region variables
     /// <summary>
     /// GUITextScrollUpControl
     /// </summary>
     private GUITextScrollUpControl _textScrollUp;
-    
+
     /// <summary>
     /// Font
     /// </summary>
     private Font _font;
-    
+
     /// <summary>
     /// Brush
     /// </summary>
     private Brush _brush;
-   
+
     /// <summary>
     /// Label of the text scrollup element
     /// </summary>
@@ -63,7 +65,8 @@ namespace ExternalOSDLibrary {
     /// </summary>
     /// <param name="control">GUIControl</param>
     public TextScrollUpElement(GUIControl control)
-      : base(control) {
+      : base(control)
+    {
       _textScrollUp = control as GUITextScrollUpControl;
       Type textScrollUpType = typeof(GUITextScrollUpControl);
       _font = getFont(_textScrollUp.FontName);
@@ -78,16 +81,23 @@ namespace ExternalOSDLibrary {
     /// Draws the element on the given graphics
     /// </summary>
     /// <param name="graph">Graphics</param>
-    public override void DrawElement(Graphics graph) {
-      if (_textScrollUp.Visible) {
+    public override void DrawElement(Graphics graph)
+    {
+      if (_textScrollUp.Visible)
+      {
         SizeF textSize = graph.MeasureString(_label, _font);
         RectangleF rectangle;
-        if (_textScrollUp.TextAlignment == GUIControl.Alignment.ALIGN_LEFT) {
-          rectangle = new RectangleF((float)_textScrollUp.Location.X, (float)_textScrollUp.Location.Y, _textScrollUp.Width, Math.Max(textSize.Height,_textScrollUp.Height));
-        } else if (_textScrollUp.TextAlignment == GUIControl.Alignment.ALIGN_RIGHT) {
-          rectangle = new RectangleF((float)_textScrollUp.Location.X - textSize.Width, (float)_textScrollUp.Location.Y, _textScrollUp.Width, Math.Max(textSize.Height,_textScrollUp.Height));
-        } else {
-          rectangle = new RectangleF((float)_textScrollUp.Location.X - (textSize.Width / 2), (float)_textScrollUp.Location.Y - (textSize.Height / 2), _textScrollUp.Width, Math.Max(textSize.Height,_textScrollUp.Height));
+        if (_textScrollUp.TextAlignment == GUIControl.Alignment.ALIGN_LEFT)
+        {
+          rectangle = new RectangleF((float)_textScrollUp.Location.X, (float)_textScrollUp.Location.Y, _textScrollUp.Width, Math.Max(textSize.Height, _textScrollUp.Height));
+        }
+        else if (_textScrollUp.TextAlignment == GUIControl.Alignment.ALIGN_RIGHT)
+        {
+          rectangle = new RectangleF((float)_textScrollUp.Location.X - textSize.Width, (float)_textScrollUp.Location.Y, _textScrollUp.Width, Math.Max(textSize.Height, _textScrollUp.Height));
+        }
+        else
+        {
+          rectangle = new RectangleF((float)_textScrollUp.Location.X - (textSize.Width / 2), (float)_textScrollUp.Location.Y - (textSize.Height / 2), _textScrollUp.Width, Math.Max(textSize.Height, _textScrollUp.Height));
         }
         graph.DrawString(GUIPropertyManager.Parse(_label), _font, _brush, rectangle, StringFormat.GenericTypographic);
       }
@@ -96,7 +106,8 @@ namespace ExternalOSDLibrary {
     /// <summary>
     /// Disposes the object
     /// </summary>
-    public override void Dispose() {
+    public override void Dispose()
+    {
       _font.Dispose();
       _brush.Dispose();
     }
@@ -105,10 +116,12 @@ namespace ExternalOSDLibrary {
     /// Checks, if an update for the element is needed
     /// </summary>
     /// <returns>true, if an update is needed</returns>
-    protected override bool CheckElementSpecificForUpdate() {
+    protected override bool CheckElementSpecificForUpdate()
+    {
       bool result = false;
       String newLabel = GUIPropertyManager.Parse(_textScrollUp.Property);
-      if (!newLabel.Equals(_label)) {
+      if (!newLabel.Equals(_label))
+      {
         _label = _textScrollUp.Property;
         result = true;
       }

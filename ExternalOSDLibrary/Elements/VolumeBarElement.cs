@@ -30,22 +30,24 @@ using System.Drawing.Imaging;
 using System.Text;
 using MediaPortal.GUI.Library;
 
-namespace ExternalOSDLibrary {
+namespace ExternalOSDLibrary
+{
   /// <summary>
   /// This class represents a GUIVolumeBar
   /// </summary>
-  public class VolumeBarElement : BaseElement {
+  public class VolumeBarElement : BaseElement
+  {
     #region variables
     /// <summary>
     /// GUIVolumeBar
     /// </summary>
     private GUIVolumeBar _volumeBar;
- 
+
     /// <summary>
     /// Bitmap of the volumebar
     /// </summary>
     private Bitmap _bitmap;
- 
+
     /// <summary>
     /// Alignment of the volume bar
     /// </summary>
@@ -55,12 +57,12 @@ namespace ExternalOSDLibrary {
     /// Index of the first image
     /// </summary>
     private int _image1;
-    
+
     /// <summary>
     /// Index of the second image
     /// </summary>
     private int _image2;
-    
+
     /// <summary>
     /// Maximum value of the volume
     /// </summary>
@@ -78,7 +80,8 @@ namespace ExternalOSDLibrary {
     /// </summary>
     /// <param name="control">GUIControl</param>
     public VolumeBarElement(GUIControl control)
-      : base(control) {
+      : base(control)
+    {
       _volumeBar = control as GUIVolumeBar;
       _alignment = _volumeBar.TextAlignment;
       _bitmap = loadBitmap(_volumeBar.TextureName);
@@ -95,8 +98,10 @@ namespace ExternalOSDLibrary {
     /// Draws the element on the given graphics
     /// </summary>
     /// <param name="graph">Graphics</param>
-    public override void DrawElement(Graphics graph) {
-      if (_volumeBar.Visible) {
+    public override void DrawElement(Graphics graph)
+    {
+      if (_volumeBar.Visible)
+      {
         int imageHeight = _volumeBar.ImageHeight;
         int realImageHeight = _volumeBar.TextureHeight / imageHeight;
         int image1 = _volumeBar.Image1;
@@ -109,7 +114,8 @@ namespace ExternalOSDLibrary {
         sourceRectangle.Y = image1 * realImageHeight;
         sourceRectangle.Width = _volumeBar.TextureWidth;
         sourceRectangle.Height = realImageHeight;
-        switch (_alignment) {
+        switch (_alignment)
+        {
           case GUIControl.Alignment.ALIGN_LEFT:
             destinationRectangle.X = _volumeBar.XPosition;
             break;
@@ -123,14 +129,17 @@ namespace ExternalOSDLibrary {
         destinationRectangle.Y = _volumeBar.YPosition;
         destinationRectangle.Width = _volumeBar.TextureWidth;
         destinationRectangle.Height = realImageHeight;
-        for (int index = 0; index < current; ++index) {
+        for (int index = 0; index < current; ++index)
+        {
           graph.DrawImage(_bitmap, destinationRectangle, sourceRectangle, GraphicsUnit.Pixel);
           destinationRectangle.X += _volumeBar.TextureWidth;
         }
-        if (image2 != image1) {
+        if (image2 != image1)
+        {
           sourceRectangle.Y = image2 * realImageHeight;
         }
-        for (int index = current + 1; index < maximum; ++index) {
+        for (int index = current + 1; index < maximum; ++index)
+        {
           graph.DrawImage(_bitmap, destinationRectangle, sourceRectangle, GraphicsUnit.Pixel);
           destinationRectangle.X += _volumeBar.TextureWidth;
         }
@@ -140,8 +149,10 @@ namespace ExternalOSDLibrary {
     /// <summary>
     /// Disposes the object
     /// </summary>
-    public override void Dispose() {
-      if (_bitmap != null) {
+    public override void Dispose()
+    {
+      if (_bitmap != null)
+      {
         _bitmap.Dispose();
       }
     }
@@ -150,22 +161,27 @@ namespace ExternalOSDLibrary {
     /// Checks, if an update for the element is needed
     /// </summary>
     /// <returns>true, if an update is needed</returns>
-    protected override bool CheckElementSpecificForUpdate() {
+    protected override bool CheckElementSpecificForUpdate()
+    {
       bool result = false;
-      if (_volumeBar.Image1 != _image1) {
+      if (_volumeBar.Image1 != _image1)
+      {
         _image1 = _volumeBar.Image1;
         result = true;
       }
-      if (_volumeBar.Image2 != _image2) {
+      if (_volumeBar.Image2 != _image2)
+      {
         _image2 = _volumeBar.Image2;
         result = true;
       }
-      if (_volumeBar.Current != _current) {
+      if (_volumeBar.Current != _current)
+      {
         _current = _volumeBar.Current;
         result = true;
       }
-      if (_volumeBar.Maximum!= _maximum) {
-        _maximum= _volumeBar.Maximum;
+      if (_volumeBar.Maximum != _maximum)
+      {
+        _maximum = _volumeBar.Maximum;
         result = true;
       }
       return result;

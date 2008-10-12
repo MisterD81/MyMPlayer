@@ -28,11 +28,13 @@ using System.Drawing;
 using System.Text;
 using MediaPortal.GUI.Library;
 
-namespace ExternalOSDLibrary {
+namespace ExternalOSDLibrary
+{
   /// <summary>
   /// This class represents a GUIVerticalScrollBarElement
   /// </summary>
-  public class VerticalScrollBarElement : BaseElement {
+  public class VerticalScrollBarElement : BaseElement
+  {
     #region variables
     /// <summary>
     /// GUIVerticalScrollbar
@@ -66,11 +68,15 @@ namespace ExternalOSDLibrary {
     /// </summary>
     /// <param name="control">GUIControl</param>
     public VerticalScrollBarElement(GUIControl control)
-      : base(control) {
+      : base(control)
+    {
       _verticalScrollBar = control as GUIVerticalScrollbar;
-      _scrollBarBackground = loadBitmap(_verticalScrollBar.BackGroundTextureName); ;
-      _scrollBarTop = loadBitmap(_verticalScrollBar.BackTextureTopName); ;
-      _scrollBarBottom = loadBitmap(_verticalScrollBar.BackTextureBottomName); ;
+      _scrollBarBackground = loadBitmap(_verticalScrollBar.BackGroundTextureName);
+      ;
+      _scrollBarTop = loadBitmap(_verticalScrollBar.BackTextureTopName);
+      ;
+      _scrollBarBottom = loadBitmap(_verticalScrollBar.BackTextureBottomName);
+      ;
       _percentage = _verticalScrollBar.Percentage;
       Log.Debug("VideoPlayerOSD: Found vertical scroll bar element ");
     }
@@ -81,9 +87,12 @@ namespace ExternalOSDLibrary {
     /// Draws the element on the given graphics
     /// </summary>
     /// <param name="graph">Graphics</param>
-    public override void DrawElement(Graphics graph) {
-      if (_verticalScrollBar.Visible) {
-        if (_scrollBarBackground != null && _scrollBarTop != null && _scrollBarBottom != null) {
+    public override void DrawElement(Graphics graph)
+    {
+      if (_verticalScrollBar.Visible)
+      {
+        if (_scrollBarBackground != null && _scrollBarTop != null && _scrollBarBottom != null)
+        {
           int iHeight = _verticalScrollBar.Height;
 
           graph.DrawImage(_scrollBarBackground, _verticalScrollBar.XPosition, _verticalScrollBar.YPosition, _verticalScrollBar.Width, iHeight);
@@ -111,14 +120,18 @@ namespace ExternalOSDLibrary {
     /// <summary>
     /// Disposes the object
     /// </summary>
-    public override void Dispose() {
-      if (_scrollBarBackground != null) {
+    public override void Dispose()
+    {
+      if (_scrollBarBackground != null)
+      {
         _scrollBarBackground.Dispose();
       }
-      if (_scrollBarTop != null) {
+      if (_scrollBarTop != null)
+      {
         _scrollBarTop.Dispose();
       }
-      if (_scrollBarBottom != null) {
+      if (_scrollBarBottom != null)
+      {
         _scrollBarBottom.Dispose();
       }
     }
@@ -127,11 +140,13 @@ namespace ExternalOSDLibrary {
     /// Checks, if an update for the element is needed
     /// </summary>
     /// <returns>true, if an update is needed</returns>
-    protected override bool CheckElementSpecificForUpdate() {
+    protected override bool CheckElementSpecificForUpdate()
+    {
       bool result = false;
       int oldPercentage = (int)_percentage;
       int newPercentage = (int)_verticalScrollBar.Percentage;
-      if (oldPercentage != newPercentage) {
+      if (oldPercentage != newPercentage)
+      {
         _percentage = _verticalScrollBar.Percentage;
         result = true;
       }

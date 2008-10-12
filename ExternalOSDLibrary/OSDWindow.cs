@@ -32,11 +32,13 @@ using MediaPortal.GUI.Library;
 using MediaPortal.GUI.Video;
 using System.Windows;
 
-namespace ExternalOSDLibrary {
+namespace ExternalOSDLibrary
+{
   /// <summary>
   /// This class handles all related tasks for the GUIVideoOSD window
   /// </summary>
-  public class VideoOSDWindow : BaseWindow {
+  public class VideoOSDWindow : BaseWindow
+  {
     #region variables
     /// <summary>
     /// Video OSD window
@@ -48,7 +50,8 @@ namespace ExternalOSDLibrary {
     /// <summary>
     /// Constructor, which creates all elements
     /// </summary>
-    public VideoOSDWindow() {
+    public VideoOSDWindow()
+    {
       _osdWindow = GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_OSD) as GUIVideoOSD;
       _controlList = _osdWindow.controlList;
       GenerateElements();
@@ -60,7 +63,8 @@ namespace ExternalOSDLibrary {
     /// Indicates if the window is currently visible
     /// </summary>
     /// <returns>true, if window is visible; false otherwise</returns>
-    protected override bool CheckSpecificVisibility() {
+    protected override bool CheckSpecificVisibility()
+    {
       return GUIWindowManager.VisibleOsd == GUIWindow.Window.WINDOW_OSD;
     }
     #endregion

@@ -32,11 +32,13 @@ using MediaPortal.GUI.Library;
 using MediaPortal.GUI.Video;
 using System.Windows;
 
-namespace ExternalOSDLibrary {
+namespace ExternalOSDLibrary
+{
   /// <summary>
   /// This class is a windows form on which the osd is displayed
   /// </summary>
-  public class OSDForm : Form {
+  public class OSDForm : Form
+  {
     #region variables
     /// <summary>
     /// Event handler for the position changed event
@@ -58,14 +60,16 @@ namespace ExternalOSDLibrary {
     /// <summary>
     /// Constructor, which sets the initial layout and registers the event handler
     /// </summary>
-    public OSDForm() {
+    public OSDForm()
+    {
       this.SuspendLayout();
       _positionChanged = new EventHandler(parent_PositionChanged);
       _parent = GUIGraphicsContext.form;
       this.BackColor = System.Drawing.Color.FromArgb(1, 1, 1);
+      this.ForeColor = System.Drawing.Color.FromArgb(1, 1, 1);
       this.TransparencyKey = this.BackColor;
       this.ControlBox = false;
-      this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+      this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
       this.MaximizeBox = false;
       this.MinimizeBox = false;
       this.ShowIcon = false;
@@ -82,7 +86,8 @@ namespace ExternalOSDLibrary {
     /// <summary>
     /// Gets/Sets the image, which should be displayed
     /// </summary>
-    public Bitmap Image {
+    public Bitmap Image
+    {
       get { return _image; }
       set { _image = value; }
     }
@@ -94,7 +99,8 @@ namespace ExternalOSDLibrary {
     /// </summary>
     /// <param name="sender">Sender object</param>
     /// <param name="e">Event arguments</param>
-    private void OSDForm_GotFocus(object sender, EventArgs e) {
+    private void OSDForm_GotFocus(object sender, EventArgs e)
+    {
       _parent.Focus();
     }
 
@@ -103,7 +109,8 @@ namespace ExternalOSDLibrary {
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="args"></param>
-    private void parent_PositionChanged(Object sender, EventArgs args) {
+    private void parent_PositionChanged(Object sender, EventArgs args)
+    {
       this.Location = _parent.PointToScreen(new Point(0, 0));
       this.Size = _parent.ClientSize;
       this.BringToFront();
@@ -115,11 +122,14 @@ namespace ExternalOSDLibrary {
     /// Clean up any resources being used.
     /// </summary>
     /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-    protected override void Dispose(bool disposing) {
-      try {
+    protected override void Dispose(bool disposing)
+    {
+      try
+      {
         _parent.LocationChanged -= _positionChanged;
         _parent.SizeChanged -= _positionChanged;
-      } catch (Exception ex) {
+      } catch (Exception ex)
+      {
         Log.Error(ex);
       }
       base.Dispose(disposing);
@@ -129,14 +139,18 @@ namespace ExternalOSDLibrary {
     /// Paints the image
     /// </summary>
     /// <param name="e">Event arguments</param>
-    protected override void OnPaint(PaintEventArgs e) {
-      try {
-        if (_image != null) {
+    protected override void OnPaint(PaintEventArgs e)
+    {
+      try
+      {
+        if (_image != null)
+        {
           Graphics graph = e.Graphics;
           graph.SmoothingMode = SmoothingMode.AntiAlias;
           graph.DrawImage(_image, 0, 0, Size.Width, Size.Height);
         }
-      } catch (Exception ex) {
+      } catch (Exception ex)
+      {
         Log.Error(ex);
       }
     }
@@ -146,7 +160,8 @@ namespace ExternalOSDLibrary {
     /// <summary>
     /// Shows the form correctly
     /// </summary>
-    public void ShowForm() {
+    public void ShowForm()
+    {
       this.Enabled = true;
       this.Show(_parent);
       parent_PositionChanged(null, null);

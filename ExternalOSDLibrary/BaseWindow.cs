@@ -29,16 +29,23 @@ using System.Drawing.Drawing2D;
 using MediaPortal.GUI.Library;
 using System.Windows;
 
-namespace ExternalOSDLibrary {
+namespace ExternalOSDLibrary
+{
   /// <summary>
   /// Base class for all MP windows that can be handled by this library
   /// </summary>
-  public abstract class BaseWindow : IDisposable {
+  public abstract class BaseWindow : IDisposable
+  {
     #region variables
     /// <summary>
     /// List of all elements of the window
     /// </summary>
     protected List<BaseElement> _elementList;
+
+    /// <summary>
+    /// List of all eimage elements of the window
+    /// </summary>
+    protected List<BaseElement> _imageElementList;
 
     /// <summary>
     /// Indicates, if the window is visible
@@ -60,21 +67,57 @@ namespace ExternalOSDLibrary {
     /// <summary>
     /// Generates the elements of a window, which are stored in the UIElementCollection
     /// </summary>
-    protected void GenerateElements() {
+    protected void GenerateElements()
+    {
+      _imageElementList = new List<BaseElement>();
       _elementList = new List<BaseElement>();
-      GUIControl temp;
-      BaseElement element;
-      foreach (UIElement uiElement in _controlList) {
-        temp = uiElement as GUIControl;
-        if (temp != null) {
-          element = GenerateElement(temp);
-          if (element != null) {
-            _elementList.Add(element);
+      GUIControl controlElement;
+      GUIControl groupControlElement;
+      GUIGroup groupElement;
+      foreach (UIElement uiElement in _controlList)
+      {
+        controlElement = uiElement as GUIControl;
+        if (controlElement != null)
+        {
+          if (controlElement.GetType() == typeof(GUIGroup))
+          {
+            groupElement = controlElement as GUIGroup;
+            foreach (UIElement uiElement2 in groupElement.Children)
+            {
+              groupControlElement = uiElement as GUIControl;
+              if (groupControlElement != null)
+              {
+                AnalyzeElement(groupControlElement);
+              }
+            }
+          }
+          else
+          {
+            AnalyzeElement(controlElement);
           }
         }
       }
     }
 
+    /// <summary>
+    /// Analyzes the found element and creates the corresponding element of this osd.
+    /// </summary>
+    /// <param name="guiControlElement">Control element to analyze</param>
+    private void AnalyzeElement(GUIControl guiControlElement)
+    {
+      BaseElement element = GenerateElement(guiControlElement);
+      if (element != null)
+      {
+        if (element.GetType() == typeof(ImageElement))
+        {
+          _imageElementList.Add(element);
+        }
+        else
+        {
+          _elementList.Add(element);
+        }
+      }
+    }
     /// <summary>
     /// Generates a single element based on the type of the GUIControl
     /// Supported Types:
@@ -89,35 +132,55 @@ namespace ExternalOSDLibrary {
     /// - GUIVolumeBar
     /// - GUILabelControl
     /// - GUIImage
-    /// - GUIGroup
+    /// - GUIGroup are handled directly
     /// </summary>
     /// <param name="control">Control</param>
     /// <returns>Elmenet based on the GUIControl</returns>
-    public static BaseElement GenerateElement(GUIControl control) {
-      if (control.GetType() == typeof(GUIImage)) {
+    public static BaseElement GenerateElement(GUIControl control)
+    {
+      if (control.GetType() == typeof(GUIImage))
+      {
         return new ImageElement(control);
-      } else if (control.GetType() == typeof(GUILabelControl)) {
+      }
+      else if (control.GetType() == typeof(GUILabelControl))
+      {
         return new LabelElement(control);
-      } else if (control.GetType() == typeof(GUIVolumeBar)) {
+      }
+      else if (control.GetType() == typeof(GUIVolumeBar))
+      {
         return new VolumeBarElement(control);
-      } else if (control.GetType() == typeof(GUIProgressControl)) {
+      }
+      else if (control.GetType() == typeof(GUIProgressControl))
+      {
         return new ProgressControlElement(control);
-      } else if (control.GetType() == typeof(GUIFadeLabel)) {
+      }
+      else if (control.GetType() == typeof(GUIFadeLabel))
+      {
         return new FadeLabelElement(control);
-      } else if (control.GetType() == typeof(GUIButtonControl)) {
+      }
+      else if (control.GetType() == typeof(GUIButtonControl))
+      {
         return new ButtonElement(control);
-      } else if (control.GetType() == typeof(GUIToggleButtonControl)) {
+      }
+      else if (control.GetType() == typeof(GUIToggleButtonControl))
+      {
         return new ToggleButtonElement(control);
-      } else if (control.GetType() == typeof(GUISliderControl)) {
+      }
+      else if (control.GetType() == typeof(GUISliderControl))
+      {
         return new SliderElement(control);
-      } else if (control.GetType() == typeof(GUICheckMarkControl)) {
+      }
+      else if (control.GetType() == typeof(GUICheckMarkControl))
+      {
         return new CheckMarkElement(control);
-      } else if (control.GetType() == typeof(GUITextScrollUpControl)) {
+      }
+      else if (control.GetType() == typeof(GUITextScrollUpControl))
+      {
         return new TextScrollUpElement(control);
-      } else if (control.GetType() == typeof(GUIListControl)) {
+      }
+      else if (control.GetType() == typeof(GUIListControl))
+      {
         return new ListElement(control);
-      } else if (control.GetType() == typeof(GUIGroup)) {
-        return new GroupElement(control);
       }
       Log.Debug("VIDEOPLAYER_OSD FOUND UNEXPECTED TYPE: " + control.GetType().ToString());
       return null;
@@ -129,14 +192,23 @@ namespace ExternalOSDLibrary {
     /// Draws the window on the given graphics
     /// </summary>
     /// <param name="graph">Graphics of the bitmap</param>
-    public void DrawWindow(Graphics graph) {
-      try {
-        if (_visible) {
-          foreach (BaseElement element in _elementList) {
+    public void DrawWindow(Graphics graph)
+    {
+      try
+      {
+        if (_visible)
+        {
+          foreach (BaseElement element in _imageElementList)
+          {
+            element.DrawElement(graph);
+          }
+          foreach (BaseElement element in _elementList)
+          {
             element.DrawElement(graph);
           }
         }
-      } catch (Exception ex) {
+      } catch (Exception ex)
+      {
         Log.Error(ex);
       }
     }
@@ -145,9 +217,11 @@ namespace ExternalOSDLibrary {
     /// Indicates if the window is currently visible
     /// </summary>
     /// <returns>true, if window is visible; false otherwise</returns>
-    public bool CheckVisibility() {
+    public bool CheckVisibility()
+    {
       bool result = CheckSpecificVisibility();
-      if (result != _visible) {
+      if (result != _visible)
+      {
         _visible = result;
         _visibleChanged = true;
       }
@@ -158,15 +232,23 @@ namespace ExternalOSDLibrary {
     /// Checks, if an update is needed for this window
     /// </summary>
     /// <returns>true, if an update is needed; false otherwise</returns>
-    public bool CheckForUpdate() {
+    public bool CheckForUpdate()
+    {
       CheckVisibility();
       bool result = false;
-      if (_visibleChanged) {
+      if (_visibleChanged)
+      {
         _visibleChanged = false;
         result = true;
       }
-      if (_visible) {
-        foreach (BaseElement element in _elementList) {
+      if (_visible)
+      {
+        foreach (BaseElement element in _imageElementList)
+        {
+          result = result | element.CheckForUpdate();
+        }
+        foreach (BaseElement element in _elementList)
+        {
           result = result | element.CheckForUpdate();
         }
       }
@@ -186,8 +268,14 @@ namespace ExternalOSDLibrary {
     /// <summary>
     /// Disposes the object
     /// </summary>
-    public virtual void Dispose() {
-      foreach (BaseElement element in _elementList) {
+    public virtual void Dispose()
+    {
+      foreach (BaseElement element in _imageElementList)
+      {
+        element.Dispose();
+      }
+      foreach (BaseElement element in _elementList)
+      {
         element.Dispose();
       }
     }

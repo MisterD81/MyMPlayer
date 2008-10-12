@@ -32,11 +32,13 @@ using MediaPortal.GUI.Library;
 using MediaPortal.GUI.Video;
 using System.Windows;
 
-namespace ExternalOSDLibrary {
+namespace ExternalOSDLibrary
+{
   /// <summary>
   /// This class handles all related tasks for the GUIVideoFullscreen window
   /// </summary>
-  public class FullscreenWindow : BaseWindow {
+  public class FullscreenWindow : BaseWindow
+  {
     #region variables
     /// <summary>
     /// Fullscreen window
@@ -49,6 +51,16 @@ namespace ExternalOSDLibrary {
     private ImageElement _background;
 
     /// <summary>
+    /// Background image - alternative
+    /// </summary>
+    private ImageElement _background2;
+
+    /// <summary>
+    /// Background image - alternative
+    /// </summary>
+    private ImageElement _background3;
+
+    /// <summary>
     /// Label for the additional infos
     /// </summary>
     private LabelElement _label;
@@ -59,6 +71,11 @@ namespace ExternalOSDLibrary {
     private List<BaseElement> _cacheElements;
 
     /// <summary>
+    /// List of all elements for cache informations
+    /// </summary>
+    private List<BaseElement> _imageCacheElements;
+
+    /// <summary>
     /// ID of the label
     /// </summary>
     private static int LABEL_ID = 10;
@@ -67,6 +84,11 @@ namespace ExternalOSDLibrary {
     /// ID of the background image
     /// </summary>
     private static int BACKGROUND_ID = 0;
+
+    /// <summary>
+    /// ID of the background image
+    /// </summary>
+    private static int BACKGROUND_ID2 = 104;
 
     /// <summary>
     /// ID of the Progress bar
@@ -88,7 +110,8 @@ namespace ExternalOSDLibrary {
     /// <summary>
     /// Constructor, which creates all elements
     /// </summary>
-    public FullscreenWindow() {
+    public FullscreenWindow()
+    {
       _fullscreenWindow = GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_FULLSCREEN_VIDEO) as GUIVideoFullscreen;
       _controlList = _fullscreenWindow.controlList;
       GenerateElements();
@@ -96,14 +119,20 @@ namespace ExternalOSDLibrary {
       GUIControl temp2;
       GUIGroup help;
       _cacheElements = new List<BaseElement>();
-      foreach (UIElement element in _controlList) {
+      _imageCacheElements = new List<BaseElement>();
+      foreach (UIElement element in _controlList)
+      {
         temp = element as GUIControl;
-        if (temp != null) {
-          if (temp.GetType() == typeof(GUIGroup)) {
+        if (temp != null)
+        {
+          if (temp.GetType() == typeof(GUIGroup))
+          {
             help = temp as GUIGroup;
-            foreach (UIElement uiElement in help.Children) {
+            foreach (UIElement uiElement in help.Children)
+            {
               temp2 = uiElement as GUIControl;
-              if (temp2 != null) {
+              if (temp2 != null)
+              {
                 checkElement(temp2);
               }
             }
@@ -111,26 +140,72 @@ namespace ExternalOSDLibrary {
           checkElement(temp);
         }
       }
+      if (_background == null)
+      {
+        _background = _background2;
+      }
+      if (_background == null)
+      {
+        _background = _background3;
+      }
     }
     #endregion
 
-    private void checkElement(GUIControl temp) {
-      if (temp.GetID == LABEL_ID) {
-        if (temp.GetType() == typeof(GUILabelControl)) {
+    private void checkElement(GUIControl temp)
+    {
+      Log.Info(temp.GetType().ToString() + " : " + temp.GetID);
+      if (temp.GetID == LABEL_ID)
+      {
+        if (temp.GetType() == typeof(GUILabelControl))
+        {
           _label = new LabelElement(temp);
-        } else {
+        }
+        else
+        {
           Log.Info("VIDEO OSD: TYPE LABEL NOT FOUND FOR LABEL_ID=10 IN FULLSCREEN WINDOW. FOUND: " + temp.GetType());
         }
       }
-      if (temp.GetID == BACKGROUND_ID) {
-        if (temp.GetType() == typeof(GUIImage)) {
+      if (temp.GetID == BACKGROUND_ID)
+      {
+        if (temp.GetType() == typeof(GUIImage))
+        {
           _background = new ImageElement(temp);
-        } else {
+        }
+        else
+        {
           Log.Info("VIDEO OSD: TYPE IMAGE NOT FOUND FOR BACKGROUND_ID=0 IN FULLSCREEN WINDOW. FOUND: " + temp.GetType());
         }
       }
-      if (temp.GetID == PROGRESS_ID || (temp.GetID > PANEL_START && temp.GetID < PANEL_END)) {
-        _cacheElements.Add(GenerateElement(temp));
+      if (temp.GetID == BACKGROUND_ID2)
+      {
+        if (temp.GetType() == typeof(GUIImage))
+        {
+          _background2 = new ImageElement(temp);
+        }
+        else
+        {
+          Log.Info("VIDEO OSD: TYPE IMAGE NOT FOUND FOR BACKGROUND_ID=104 IN FULLSCREEN WINDOW. FOUND: " + temp.GetType());
+        }
+      }
+      if (temp.GetType() == typeof(GUIImage))
+      {
+        GUIImage imageElement = temp as GUIImage;
+        if (imageElement.FileName.Equals("osd_bg_top.png"))
+        {
+          _background3 = new ImageElement(temp);
+        }
+      }
+      if ((temp.GetID == PROGRESS_ID) && (temp.GetType() == typeof(GUIProgressControl) || temp.GetType() == typeof(GUILabelControl))
+        || (temp.GetID > PANEL_START && temp.GetID < PANEL_END))
+      {
+        if (temp.GetType() == typeof(GUIImage))
+        {
+          _imageCacheElements.Add(GenerateElement(temp));
+        }
+        else
+        {
+          _cacheElements.Add(GenerateElement(temp));
+        }
       }
     }
 
@@ -139,7 +214,8 @@ namespace ExternalOSDLibrary {
     /// Indicates if the window is currently visible
     /// </summary>
     /// <returns>true, if window is visible; false otherwise</returns>
-    protected override bool CheckSpecificVisibility() {
+    protected override bool CheckSpecificVisibility()
+    {
       return GUIWindowManager.ActiveWindow == _fullscreenWindow.GetID;
     }
     #endregion
@@ -151,30 +227,40 @@ namespace ExternalOSDLibrary {
     /// <param name="graph">Graphics</param>
     /// <param name="label">Label content</param>
     /// <param name="strikeOut">Strikeout the content, if true</param>
-    public void DrawAlternativeOSD(Graphics graph, String label, bool strikeOut) {
-      RectangleF imageRectangle = _background.GetImageRectangle();
-      RectangleF labelRectangle = _label.GetStringRectangle(graph, label);
-      // Is label greater than image?
-      if (labelRectangle.Width > (imageRectangle.Width - 40)) {
-        // We must adjust the rectangle and the position of the label
-        float diff = labelRectangle.Width - imageRectangle.Width + 40;
-        imageRectangle.X -= diff;
-        imageRectangle.Width += diff;
-        labelRectangle.X -= diff;
-        labelRectangle.X += 20;
-      } else if (labelRectangle.X + labelRectangle.Width > (imageRectangle.X + imageRectangle.Width - 20)) {
-        // It fits, but is it in the right place?
-        float diff = labelRectangle.X + labelRectangle.Width - imageRectangle.X - imageRectangle.Width + 20;
-        labelRectangle.X -= diff;
+    public void DrawAlternativeOSD(Graphics graph, String label, bool strikeOut)
+    {
+      if (_background != null && _label != null)
+      {
+
+        RectangleF imageRectangle = _background.GetImageRectangle();
+        RectangleF labelRectangle = _label.GetStringRectangle(graph, label);
+        // Is label greater than image?
+        if (labelRectangle.Width > (imageRectangle.Width - 40))
+        {
+          // We must adjust the rectangle and the position of the label
+          float diff = labelRectangle.Width - imageRectangle.Width + 40;
+          imageRectangle.X -= diff;
+          imageRectangle.Width += diff;
+          labelRectangle.X -= diff;
+          labelRectangle.X += 20;
+        }
+        else if (labelRectangle.X + labelRectangle.Width > (imageRectangle.X + imageRectangle.Width - 20))
+        {
+          // It fits, but is it in the right place?
+          float diff = labelRectangle.X + labelRectangle.Width - imageRectangle.X - imageRectangle.Width + 20;
+          labelRectangle.X -= diff;
+        }
+        if (labelRectangle.X < 0)
+        {
+          labelRectangle.X = 0;
+        }
+        if (imageRectangle.X < 0)
+        {
+          imageRectangle.X = 0;
+        }
+        _background.DrawElementAlternative(graph, imageRectangle);
+        _label.DrawElementAlternative(graph, label, strikeOut, labelRectangle);
       }
-      if (labelRectangle.X < 0) {
-        labelRectangle.X = 0;
-      }
-      if (imageRectangle.X < 0) {
-        imageRectangle.X = 0;
-      }
-      _background.DrawElementAlternative(graph, imageRectangle);
-      _label.DrawElementAlternative(graph, label, strikeOut, labelRectangle);
     }
 
     /// <summary>
@@ -182,8 +268,14 @@ namespace ExternalOSDLibrary {
     /// </summary>
     /// <param name="graph">Graphics</param>
     /// <param name="cacheFill">Status of the cache</param>
-    public void DrawCacheStatus(Graphics graph, float cacheFill) {
-      foreach (BaseElement element in _cacheElements) {
+    public void DrawCacheStatus(Graphics graph, float cacheFill)
+    {
+      foreach (BaseElement element in _imageCacheElements)
+      {
+        element.DrawCacheStatus(graph, cacheFill);
+      }
+      foreach (BaseElement element in _cacheElements)
+      {
         element.DrawCacheStatus(graph, cacheFill);
       }
     }
@@ -191,10 +283,12 @@ namespace ExternalOSDLibrary {
     /// <summary>
     /// Dispose the object
     /// </summary>
-    public override void Dispose() {
+    public override void Dispose()
+    {
       _label.Dispose();
       _background.Dispose();
-      foreach (BaseElement element in _cacheElements) {
+      foreach (BaseElement element in _cacheElements)
+      {
         element.Dispose();
       }
       base.Dispose();

@@ -30,11 +30,13 @@ using System.Drawing.Imaging;
 using System.Text;
 using MediaPortal.GUI.Library;
 
-namespace ExternalOSDLibrary {
+namespace ExternalOSDLibrary
+{
   /// <summary>
   /// This class represents a GUICheckMarkControl
   /// </summary>
-  public class CheckMarkElement : BaseElement {
+  public class CheckMarkElement : BaseElement
+  {
     #region variables
     /// <summary>
     /// GUICheckMarkControl
@@ -93,7 +95,8 @@ namespace ExternalOSDLibrary {
     /// </summary>
     /// <param name="control">GUIControl</param>
     public CheckMarkElement(GUIControl control)
-      : base(control) {
+      : base(control)
+    {
       _checkMark = control as GUICheckMarkControl;
       _checkFocusBitmap = loadBitmap(_checkMark.CheckMarkTextureName);
       _checkNoFocusBitmap = loadBitmap(_checkMark.CheckMarkTextureNameNF);
@@ -113,42 +116,57 @@ namespace ExternalOSDLibrary {
     /// Draws the element on the given graphics
     /// </summary>
     /// <param name="graph">Graphics</param>
-    public override void DrawElement(Graphics graph) {
-      if (_checkMark.Visible) {
+    public override void DrawElement(Graphics graph)
+    {
+      if (_checkMark.Visible)
+      {
         int dwTextPosX = _checkMark.XPosition;
         int dwCheckMarkPosX = _checkMark.XPosition;
         Rectangle _rectangle = new Rectangle();
         _rectangle.X = _checkMark.YPosition;
         _rectangle.Y = _checkMark.YPosition;
         _rectangle.Height = _checkFocusBitmap.Height;
-        if (null != _font) {
+        if (null != _font)
+        {
           SizeF sizeF;
-          if (_checkMark.TextAlignment == GUIControl.Alignment.ALIGN_LEFT) {
+          if (_checkMark.TextAlignment == GUIControl.Alignment.ALIGN_LEFT)
+          {
             sizeF = graph.MeasureString(GUIPropertyManager.Parse(_label), _font);
             dwCheckMarkPosX += ((int)(sizeF.Width) + 5);
-          } else {
+          }
+          else
+          {
             dwTextPosX = (dwCheckMarkPosX + _checkFocusBitmap.Width + 5);
             sizeF = graph.MeasureString(GUIPropertyManager.Parse(_label), _font);
           }
-          if (_disabled) {
+          if (_disabled)
+          {
             SolidBrush brush = new SolidBrush(_disabledColor);
             graph.DrawString(GUIPropertyManager.Parse(_label), _font, brush, dwTextPosX, _checkMark.YPosition);
             brush.Dispose();
-          } else {
-            if (_focus) {
+          }
+          else
+          {
+            if (_focus)
+            {
               SolidBrush brush = new SolidBrush(_textColor);
               graph.DrawString(GUIPropertyManager.Parse(_label), _font, brush, dwTextPosX, _checkMark.YPosition);
               brush.Dispose();
-            } else {
+            }
+            else
+            {
               SolidBrush brush = new SolidBrush(_disabledColor);
               graph.DrawString(GUIPropertyManager.Parse(_label), _font, brush, dwTextPosX, _checkMark.YPosition);
               brush.Dispose();
             }
           }
         }
-        if (_selected) {
+        if (_selected)
+        {
           graph.DrawImage(_checkFocusBitmap, dwCheckMarkPosX, _checkMark.YPosition);
-        } else {
+        }
+        else
+        {
           graph.DrawImage(_checkNoFocusBitmap, dwCheckMarkPosX, _checkMark.YPosition);
         }
       }
@@ -157,11 +175,14 @@ namespace ExternalOSDLibrary {
     /// <summary>
     /// Disposes the object
     /// </summary>
-    public override void Dispose() {
-      if (_checkFocusBitmap != null) {
+    public override void Dispose()
+    {
+      if (_checkFocusBitmap != null)
+      {
         _checkFocusBitmap.Dispose();
       }
-      if (_checkNoFocusBitmap != null) {
+      if (_checkNoFocusBitmap != null)
+      {
         _checkNoFocusBitmap.Dispose();
       }
     }
@@ -170,22 +191,27 @@ namespace ExternalOSDLibrary {
     /// Checks, if an update for the element is needed
     /// </summary>
     /// <returns>true, if an update is needed</returns>
-    protected override bool CheckElementSpecificForUpdate() {
+    protected override bool CheckElementSpecificForUpdate()
+    {
       bool result = false;
       String newLabel = GUIPropertyManager.Parse(_checkMark.Label);
-      if (!newLabel.Equals(_label)) {
+      if (!newLabel.Equals(_label))
+      {
         _label = newLabel;
         result = true;
       }
-      if (_checkMark.Focus != _focus) {
+      if (_checkMark.Focus != _focus)
+      {
         _focus = _checkMark.Focus;
         result = true;
       }
-      if (_checkMark.Disabled != _disabled) {
+      if (_checkMark.Disabled != _disabled)
+      {
         _disabled = _checkMark.Disabled;
         result = true;
       }
-      if (_checkMark.Selected != _selected) {
+      if (_checkMark.Selected != _selected)
+      {
         _selected = _checkMark.Selected;
         result = true;
       }

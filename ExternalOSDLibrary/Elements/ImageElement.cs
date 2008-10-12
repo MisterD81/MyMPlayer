@@ -30,11 +30,13 @@ using System.Runtime.InteropServices;
 using System.Text;
 using MediaPortal.GUI.Library;
 
-namespace ExternalOSDLibrary {
+namespace ExternalOSDLibrary
+{
   /// <summary>
   /// This class represents a GUIImage
   /// </summary>
-  public class ImageElement : BaseElement {
+  public class ImageElement : BaseElement
+  {
     #region variables
     /// <summary>
     /// GUIImage 
@@ -53,7 +55,8 @@ namespace ExternalOSDLibrary {
     /// </summary>
     /// <param name="control">GUIControl</param>
     public ImageElement(GUIControl control)
-      : base(control) {
+      : base(control)
+    {
       _image = control as GUIImage;
       _bitmap = loadBitmap(_image.FileName);
       Log.Debug("VideoPlayerOSD: Found image element: " + _image.FileName);
@@ -65,8 +68,10 @@ namespace ExternalOSDLibrary {
     /// Draws the element on the given graphics
     /// </summary>
     /// <param name="graph">Graphics</param>
-    public override void DrawElement(Graphics graph) {
-      if (_image.Visible && !_image.FileName.Equals("black.bmp")) {
+    public override void DrawElement(Graphics graph)
+    {
+      if (_image.Visible && !_image.FileName.Equals("black.bmp"))
+      {
         DrawElementAlternative(graph, GetImageRectangle());
       }
     }
@@ -74,8 +79,10 @@ namespace ExternalOSDLibrary {
     /// <summary>
     /// Disposes the object
     /// </summary>
-    public override void Dispose() {
-      if (_bitmap != null) {
+    public override void Dispose()
+    {
+      if (_bitmap != null)
+      {
         _bitmap.Dispose();
       }
     }
@@ -84,7 +91,8 @@ namespace ExternalOSDLibrary {
     /// Checks, if an update for the element is needed
     /// </summary>
     /// <returns>true, if an update is needed</returns>
-    protected override bool CheckElementSpecificForUpdate() {
+    protected override bool CheckElementSpecificForUpdate()
+    {
       return false;
     }
 
@@ -95,7 +103,8 @@ namespace ExternalOSDLibrary {
     /// Gets the rectangle of the image
     /// </summary>
     /// <returns>Rectangle of the image</returns>
-    public RectangleF GetImageRectangle() {
+    public RectangleF GetImageRectangle()
+    {
       return new RectangleF(_image.XPosition, _image.YPosition, _image.Width, _image.Height);
     }
 
@@ -104,8 +113,10 @@ namespace ExternalOSDLibrary {
     /// </summary>
     /// <param name="graph">Graphics</param>
     /// <param name="rectangle">Rectangle of the image</param>
-    public void DrawElementAlternative(Graphics graph, RectangleF rectangle) {
-      if (_bitmap != null) {
+    public void DrawElementAlternative(Graphics graph, RectangleF rectangle)
+    {
+      if (_bitmap != null)
+      {
         graph.DrawImage(_bitmap, rectangle);
       }
     }
@@ -117,7 +128,8 @@ namespace ExternalOSDLibrary {
     /// </summary>
     /// <param name="graph">Graphics</param>
     /// <param name="cacheFill">Status of the cache</param>
-    public override void DrawCacheStatus(Graphics graph, float cacheFill) {
+    public override void DrawCacheStatus(Graphics graph, float cacheFill)
+    {
       DrawElementAlternative(graph, GetImageRectangle());
     }
     #endregion

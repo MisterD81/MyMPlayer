@@ -30,11 +30,13 @@ using System.Drawing.Imaging;
 using System.Text;
 using MediaPortal.GUI.Library;
 
-namespace ExternalOSDLibrary {
+namespace ExternalOSDLibrary
+{
   /// <summary>
   /// This class represents a GUIButtoncontrol
   /// </summary>
-  public class ButtonElement : BaseElement {
+  public class ButtonElement : BaseElement
+  {
     #region variables
     /// <summary>
     /// GUIButtonControl
@@ -93,7 +95,8 @@ namespace ExternalOSDLibrary {
     /// </summary>
     /// <param name="control">GUIControl</param>
     public ButtonElement(GUIControl control)
-      : base(control) {
+      : base(control)
+    {
       _button = control as GUIButtonControl;
       _font = getFont(_button.FontName);
       _focusBitmap = loadBitmap(_button.TexutureFocusName);
@@ -113,22 +116,31 @@ namespace ExternalOSDLibrary {
     /// Draws the element on the given graphics
     /// </summary>
     /// <param name="graph">Graphics</param>
-    public override void DrawElement(Graphics graph) {
-      if (_button.Visible) {
-        if (_focus) {
-          if (_focusBitmap != null) {
+    public override void DrawElement(Graphics graph)
+    {
+      if (_button.Visible)
+      {
+        if (_focus)
+        {
+          if (_focusBitmap != null)
+          {
             graph.DrawImage(_focusBitmap, (float)_button.Location.X, (float)_button.Location.Y, (float)_button.Size.Width, (float)_button.Size.Height);
           }
-          if (_hoverBitmap != null) {
+          if (_hoverBitmap != null)
+          {
             graph.DrawImage(_hoverBitmap, _button.HoverX, _button.HoverY, _button.HoverWidth, _button.HoverHeight);
           }
-        } else {
-          if (_noFocusBitmap != null) {
+        }
+        else
+        {
+          if (_noFocusBitmap != null)
+          {
             graph.DrawImage(_noFocusBitmap, (float)_button.Location.X, (float)_button.Location.Y, (float)_button.Size.Width, (float)_button.Size.Height);
           }
         }
         int labelWidth = _button.Width - 2 * _button.TextOffsetX;
-        if (labelWidth <= 0) {
+        if (labelWidth <= 0)
+        {
           return;
         }
         SolidBrush brush = new SolidBrush(_button.Disabled ? _disabledColor : _button.Focus ? _textColor : _textColorNoFocus);
@@ -136,7 +148,8 @@ namespace ExternalOSDLibrary {
         // render the text on the button
         int x = 0;
 
-        switch (_button.TextAlignment) {
+        switch (_button.TextAlignment)
+        {
           case GUIControl.Alignment.ALIGN_LEFT:
             x = _button.TextOffsetX + _button.XPosition;
             break;
@@ -154,14 +167,18 @@ namespace ExternalOSDLibrary {
     /// <summary>
     /// Disposes the object
     /// </summary>
-    public override void Dispose() {
-      if (_focusBitmap != null) {
+    public override void Dispose()
+    {
+      if (_focusBitmap != null)
+      {
         _focusBitmap.Dispose();
       }
-      if (_noFocusBitmap != null) {
+      if (_noFocusBitmap != null)
+      {
         _noFocusBitmap.Dispose();
       }
-      if (_hoverBitmap != null) {
+      if (_hoverBitmap != null)
+      {
         _hoverBitmap.Dispose();
       }
       _font.Dispose();
@@ -171,14 +188,17 @@ namespace ExternalOSDLibrary {
     /// Checks, if an update for the element is needed
     /// </summary>
     /// <returns>true, if an update is needed</returns>
-    protected override bool CheckElementSpecificForUpdate() {
+    protected override bool CheckElementSpecificForUpdate()
+    {
       bool result = false;
       String newLabel = GUIPropertyManager.Parse(_button.Label);
-      if (!newLabel.Equals(_label)) {
+      if (!newLabel.Equals(_label))
+      {
         _label = newLabel;
         result = true;
       }
-      if (_button.Focus != _focus) {
+      if (_button.Focus != _focus)
+      {
         _focus = _button.Focus;
         result = true;
       }

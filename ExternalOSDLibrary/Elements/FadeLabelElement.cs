@@ -28,22 +28,24 @@ using System.Drawing;
 using System.Text;
 using MediaPortal.GUI.Library;
 
-namespace ExternalOSDLibrary {
+namespace ExternalOSDLibrary
+{
   /// <summary>
   /// This class represents a GUIFadeLabel
   /// </summary>
-  public class FadeLabelElement : BaseElement {
+  public class FadeLabelElement : BaseElement
+  {
     #region variables
     /// <summary>
     /// GUIFadeLabel
     /// </summary>
     private GUIFadeLabel _label;
-   
+
     /// <summary>
     /// Font
     /// </summary>
     private Font _font;
-  
+
     /// <summary>
     /// Brush
     /// </summary>
@@ -61,7 +63,8 @@ namespace ExternalOSDLibrary {
     /// </summary>
     /// <param name="control">GUIControl</param>
     public FadeLabelElement(GUIControl control)
-      : base(control) {
+      : base(control)
+    {
       _label = control as GUIFadeLabel;
       _font = getFont(_label.FontName);
       _brush = new SolidBrush(GetColor(_label.TextColor));
@@ -75,27 +78,35 @@ namespace ExternalOSDLibrary {
     /// Draws the element on the given graphics
     /// </summary>
     /// <param name="graph">Graphics</param>
-    public override void DrawElement(Graphics graph) {
-      if (_label.Visible) {
+    public override void DrawElement(Graphics graph)
+    {
+      if (_label.Visible)
+      {
         GUIControl.Alignment alignment = _label.TextAlignment;
         RectangleF rectangle;
         String text = GUIPropertyManager.Parse(_label.Label);
         SizeF sizeF = graph.MeasureString(text, _font);
-        if (alignment == GUIControl.Alignment.ALIGN_LEFT) {
-          rectangle = new RectangleF((float)_label.XPosition, (float)_label.YPosition, _label._width, Math.Max(sizeF.Height,_label._height));
-        } else if (alignment == GUIControl.Alignment.ALIGN_RIGHT) {
+        if (alignment == GUIControl.Alignment.ALIGN_LEFT)
+        {
+          rectangle = new RectangleF((float)_label.XPosition, (float)_label.YPosition, _label._width, Math.Max(sizeF.Height, _label._height));
+        }
+        else if (alignment == GUIControl.Alignment.ALIGN_RIGHT)
+        {
           rectangle = new RectangleF((float)_label.Location.X - sizeF.Width, (float)_label.Location.Y, _label.Width, Math.Max(sizeF.Height, _label.Height));
-        } else {
+        }
+        else
+        {
           rectangle = new RectangleF((float)_label.Location.X - (sizeF.Width / 2), (float)_label.Location.Y - (sizeF.Height / 2), _label.Width, Math.Max(sizeF.Height, _label.Height));
         }
-        graph.DrawString(text, _font, _brush, rectangle,StringFormat.GenericTypographic);
+        graph.DrawString(text, _font, _brush, rectangle, StringFormat.GenericTypographic);
       }
     }
 
     /// <summary>
     /// Disposes the object
     /// </summary>
-    public override void Dispose() {
+    public override void Dispose()
+    {
       _font.Dispose();
       _brush.Dispose();
     }
@@ -104,10 +115,12 @@ namespace ExternalOSDLibrary {
     /// Checks, if an update for the element is needed
     /// </summary>
     /// <returns>true, if an update is needed</returns>
-    protected override bool CheckElementSpecificForUpdate() {
+    protected override bool CheckElementSpecificForUpdate()
+    {
       bool result = false;
       String newLabel = GUIPropertyManager.Parse(_label.Label);
-      if (!newLabel.Equals(_labelString)) {
+      if (!newLabel.Equals(_labelString))
+      {
         _labelString = newLabel;
         result = true;
       }

@@ -28,11 +28,13 @@ using System.Drawing;
 using System.Text;
 using MediaPortal.GUI.Library;
 
-namespace ExternalOSDLibrary {
+namespace ExternalOSDLibrary
+{
   /// <summary>
   /// This class represents a GUILabelControl
   /// </summary>
-  public class LabelElement : BaseElement {
+  public class LabelElement : BaseElement
+  {
     #region variables
     /// <summary>
     /// GUILabelControl
@@ -61,12 +63,13 @@ namespace ExternalOSDLibrary {
     /// </summary>
     /// <param name="control">GUIControl</param>
     public LabelElement(GUIControl control)
-      : base(control) {
+      : base(control)
+    {
       _label = control as GUILabelControl;
       _font = getFont(_label.FontName);
       _brush = new SolidBrush(GetColor(_label.TextColor));
       _labelString = _label.Label;
-      Log.Debug("VideoPlayerOSD: Found label element: " + _label.Name + "/" + _font.Name);
+      Log.Debug("VideoPlayerOSD: Found label element: " + _label.Name + "/" + _font.Name + "/" + _labelString);
     }
     #endregion
 
@@ -75,8 +78,10 @@ namespace ExternalOSDLibrary {
     /// Draws the element on the given graphics
     /// </summary>
     /// <param name="graph">Graphics</param>
-    public override void DrawElement(Graphics graph) {
-      if (_label.Visible) {
+    public override void DrawElement(Graphics graph)
+    {
+      if (_label.Visible)
+      {
         DrawStandard(graph, _labelString);
       }
     }
@@ -84,7 +89,8 @@ namespace ExternalOSDLibrary {
     /// <summary>
     /// Disposes the object
     /// </summary>
-    public override void Dispose() {
+    public override void Dispose()
+    {
       _font.Dispose();
     }
 
@@ -92,10 +98,12 @@ namespace ExternalOSDLibrary {
     /// Checks, if an update for the element is needed
     /// </summary>
     /// <returns>true, if an update is needed</returns>
-    protected override bool CheckElementSpecificForUpdate() {
+    protected override bool CheckElementSpecificForUpdate()
+    {
       bool result = false;
       String newLabel = GUIPropertyManager.Parse(_label.Label);
-      if (!newLabel.Equals(_labelString)) {
+      if (!newLabel.Equals(_labelString))
+      {
         _labelString = newLabel;
         result = true;
       }
@@ -111,9 +119,11 @@ namespace ExternalOSDLibrary {
     /// <param name="label">Label content</param>
     /// <param name="strikeout">Strikeout the label, when true</param>
     /// <param name="rectangle">Rectangle for the label</param>
-    public void DrawElementAlternative(Graphics graph, String label, bool strikeout, RectangleF rectangle) {
+    public void DrawElementAlternative(Graphics graph, String label, bool strikeout, RectangleF rectangle)
+    {
       Font temp = _font;
-      if (strikeout) {
+      if (strikeout)
+      {
         FontStyle style = _font.Style | FontStyle.Strikeout;
         temp = new Font(_font.FontFamily.Name, _font.Size, style);
       }
@@ -126,9 +136,25 @@ namespace ExternalOSDLibrary {
     /// <param name="graph">Graphics</param>
     /// <param name="label">Label</param>
     /// <returns>Rectangle</returns>
-    public RectangleF GetStringRectangle(Graphics graph, String label) {
+    public RectangleF GetStringRectangle(Graphics graph, String label)
+    {
+      GUIControl.Alignment alignment = _label.TextAlignment;
       SizeF size = graph.MeasureString(label, _font);
-      return new RectangleF((float)_label.Location.X, (float)_label.Location.Y, size.Width, _label.Height);
+      RectangleF rectangle;
+      if (alignment == GUIControl.Alignment.ALIGN_LEFT)
+      {
+        rectangle = new RectangleF((float)_label.Location.X, (float)_label.Location.Y, size.Width, _label.Height);
+      }
+      else if (alignment == GUIControl.Alignment.ALIGN_RIGHT)
+      {
+        rectangle = new RectangleF((float)_label.Location.X - size.Width, (float)_label.Location.Y, size.Width, _label.Height);
+      }
+      else
+      {
+        rectangle = new RectangleF((float)_label.Location.X - (size.Width / 2), (float)_label.Location.Y - (size.Height / 2), size.Width, _label.Height);
+      }
+
+      return rectangle;
     }
     #endregion
 
@@ -138,8 +164,10 @@ namespace ExternalOSDLibrary {
     /// </summary>
     /// <param name="graph">Graphics</param>
     /// <param name="cacheFill">Status of the cache</param>
-    public override void DrawCacheStatus(Graphics graph, float cacheFill) {
-      if (_label.Label.Contains("#currentremaining")) {
+    public override void DrawCacheStatus(Graphics graph, float cacheFill)
+    {
+      if (_label.Label.Contains("#currentremaining"))
+      {
         DrawStandard(graph, String.Format("{0:00.00}", cacheFill) + " %");
       }
     }
@@ -151,14 +179,20 @@ namespace ExternalOSDLibrary {
     /// </summary>
     /// <param name="graph">Graphics</param>
     /// <param name="label">Label</param>
-    private void DrawStandard(Graphics graph, String label) {
+    private void DrawStandard(Graphics graph, String label)
+    {
       GUIControl.Alignment alignment = _label.TextAlignment;
       RectangleF rectangle;
-      if (alignment == GUIControl.Alignment.ALIGN_LEFT) {
+      if (alignment == GUIControl.Alignment.ALIGN_LEFT)
+      {
         rectangle = new RectangleF((float)_label.Location.X, (float)_label.Location.Y, _label.Width, _label.Height);
-      } else if (alignment == GUIControl.Alignment.ALIGN_RIGHT) {
+      }
+      else if (alignment == GUIControl.Alignment.ALIGN_RIGHT)
+      {
         rectangle = new RectangleF((float)_label.Location.X - _label.TextWidth, (float)_label.Location.Y, _label.Width, _label.Height);
-      } else {
+      }
+      else
+      {
         rectangle = new RectangleF((float)_label.Location.X - (_label.TextWidth / 2), (float)_label.Location.Y - (_label.TextHeight / 2), _label.Width, _label.Height);
       }
       DrawElementAlternative(graph, label, false, rectangle);
