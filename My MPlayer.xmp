@@ -8,7 +8,7 @@
 			<Source>ExternalOSDLibrary\bin\Release\ExternalOSDLibrary.dll</Source>
 			<Id>04010</Id>
 			<Option />
-			<Guid>453db17c-0f44-4eec-ad8f-3839b17eed45</Guid>
+			<Guid>9cac9b7c-0b4d-4503-9667-c1d95e053aaf</Guid>
 		</File>
 		<File>
 			<FileName>MPlayer_ExtPlayer.dll</FileName>
@@ -17,7 +17,7 @@
 			<Source>MPlayer_ExtPlayer\bin\Release\MPlayer_ExtPlayer.dll</Source>
 			<Id>01050</Id>
 			<Option />
-			<Guid>68aefd1e-4bf0-419c-8c22-06b35a187117</Guid>
+			<Guid>5aa67425-7096-42ba-bca0-7197dff522bc</Guid>
 		</File>
 		<File>
 			<FileName>MPlayer_ExtPlayer.xml</FileName>
@@ -26,7 +26,7 @@
 			<Source>MPlayer_ExtPlayer\SampleConfiguration\MPlayer_ExtPlayer.xml</Source>
 			<Id>04010</Id>
 			<Option />
-			<Guid>785e397b-177b-4d67-9836-82a5280ba5fc</Guid>
+			<Guid>a7e0ba55-c55a-41d6-a285-8aadf2a6a906</Guid>
 		</File>
 		<File>
 			<FileName>MPlayer_GUIPlugin.dll</FileName>
@@ -35,7 +35,7 @@
 			<Source>MPlayer_GUIPlugin\bin\Release\MPlayer_GUIPlugin.dll</Source>
 			<Id>01010</Id>
 			<Option />
-			<Guid>6c8d0e69-0311-4b3d-9564-68ef07c4cec4</Guid>
+			<Guid>3f2a0620-421c-41f5-8548-b872321b601b</Guid>
 		</File>
 		<File>
 			<FileName>MPlayer_GUIPlugin.xml</FileName>
@@ -44,7 +44,7 @@
 			<Source>MPlayer_GUIPlugin\SampleConfiguration\MPlayer_GUIPlugin.xml</Source>
 			<Id>04010</Id>
 			<Option />
-			<Guid>e89cb061-c90f-4887-9e77-3d4b324414c0</Guid>
+			<Guid>412da249-65df-4136-a244-af7dff6263ba</Guid>
 		</File>
 		<File>
 			<FileName>MPlayer_Installer.dll</FileName>
@@ -62,7 +62,7 @@
 			<Source>My MPlayer-License.txt</Source>
 			<Id>03010</Id>
 			<Option />
-			<Guid>1c810d43-6381-465d-8d8e-31402590667a</Guid>
+			<Guid>9de0d6c6-8264-4246-bc95-1d3d1f23ddc0</Guid>
 		</File>
 		<File>
 			<FileName>myMPlayer.xml</FileName>
@@ -71,7 +71,7 @@
 			<Source>MPlayer_GUIPlugin\SkinFiles\Blue3Wide\myMPlayer.xml</Source>
 			<Id>02010</Id>
 			<Option>OutputFileName=|DefaultFile=True|</Option>
-			<Guid>efd4c713-0889-4158-9c6e-27d7fca6a4f6</Guid>
+			<Guid>a4cdc319-3bd4-4975-9b57-f9a6994b7fb2</Guid>
 		</File>
 		<File>
 			<FileName>myMPlayer.xml</FileName>
@@ -80,7 +80,7 @@
 			<Source>MPlayer_GUIPlugin\SkinFiles\Blue3\myMPlayer.xml</Source>
 			<Id>02010</Id>
 			<Option />
-			<Guid>a9299a53-53c2-4131-bc64-cbb52cdda501</Guid>
+			<Guid>29ed952d-542b-46b0-a96a-c142b81fa348</Guid>
 		</File>
 		<File>
 			<FileName>myMPlayer.xml</FileName>
@@ -89,7 +89,7 @@
 			<Source>MPlayer_GUIPlugin\SkinFiles\BlueTwo 16x9\myMPlayer.xml</Source>
 			<Id>02010</Id>
 			<Option />
-			<Guid>00de52ce-7476-480c-86ef-dc393764bab8</Guid>
+			<Guid>d6c43fcb-9496-459c-95ac-aa3734ce8923</Guid>
 		</File>
 		<File>
 			<FileName>myMPlayer.xml</FileName>
@@ -98,7 +98,7 @@
 			<Source>MPlayer_GUIPlugin\SkinFiles\BlueTwo 4x3\myMPlayer.xml</Source>
 			<Id>02010</Id>
 			<Option />
-			<Guid>8511fc3c-b2e5-43e7-93cc-ebe65af18cd1</Guid>
+			<Guid>5be7fa78-27e2-4afe-be9a-080b6489d2f2</Guid>
 		</File>
 		<File>
 			<FileName>myMPlayer.xml</FileName>
@@ -107,7 +107,7 @@
 			<Source>MPlayer_GUIPlugin\SkinFiles\XFace\myMPlayer.xml</Source>
 			<Id>02010</Id>
 			<Option />
-			<Guid>276a59df-8ce3-4a4e-b492-3b4ba47f17a4</Guid>
+			<Guid>e83d44a5-bfe3-4ff3-b4ab-fbb5dc158f76</Guid>
 		</File>
 		<File>
 			<FileName>myMPlayer.xml</FileName>
@@ -116,7 +116,7 @@
 			<Source>MPlayer_GUIPlugin\SkinFiles\PM III\myMPlayer.xml</Source>
 			<Id>02010</Id>
 			<Option />
-			<Guid>66c28c41-be2c-4051-8a28-0f1395a635da</Guid>
+			<Guid>5a5443aa-c087-46c0-a78f-9d45dd335125</Guid>
 		</File>
 		<File>
 			<FileName>strings_de.xml</FileName>
@@ -125,7 +125,7 @@
 			<Source>MPlayer_ExtPlayer\Language\strings_de.xml</Source>
 			<Id>04010</Id>
 			<Option />
-			<Guid>89d4cf23-1714-4c51-b86e-309bcbc5c1d3</Guid>
+			<Guid>14c6ac5e-70ad-4bdf-908d-228c7cd5ea05</Guid>
 		</File>
 		<File>
 			<FileName>strings_en.xml</FileName>
@@ -134,7 +134,7 @@
 			<Source>MPlayer_ExtPlayer\Language\strings_en.xml</Source>
 			<Id>04010</Id>
 			<Option />
-			<Guid>7d1f404e-0c3b-4092-9588-9cb5d1ea20f4</Guid>
+			<Guid>ecd64dbe-63f9-4dff-91d2-56a36f717617</Guid>
 		</File>
 		<File>
 			<FileName>strings_es.xml</FileName>
@@ -143,7 +143,7 @@
 			<Source>MPlayer_ExtPlayer\Language\strings_es.xml</Source>
 			<Id>04010</Id>
 			<Option />
-			<Guid>e4c42103-96f1-4e28-80be-804d75a0f809</Guid>
+			<Guid>617bf83f-4747-4d23-9bec-479c544e04cf</Guid>
 		</File>
 		<File>
 			<FileName>strings_fr.xml</FileName>
@@ -152,7 +152,7 @@
 			<Source>MPlayer_ExtPlayer\Language\strings_fr.xml</Source>
 			<Id>04010</Id>
 			<Option />
-			<Guid>8025ab85-fa61-4c7d-b76a-56e3c31a236c</Guid>
+			<Guid>a39cee98-f5d0-47c1-8302-b3dd9d949bb4</Guid>
 		</File>
 		<File>
 			<FileName>strings_it.xml</FileName>
@@ -161,7 +161,7 @@
 			<Source>MPlayer_ExtPlayer\Language\strings_it.xml</Source>
 			<Id>04010</Id>
 			<Option />
-			<Guid>72454429-8c04-41eb-ac1a-1c2e8c5cb754</Guid>
+			<Guid>a870763a-f2ac-4e23-a217-494a3b654ad3</Guid>
 		</File>
 	</FileList>
 	<StringList />

@@ -23,8 +23,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MPlayer
 {
@@ -52,7 +50,7 @@ namespace MPlayer
     public String Name
     {
       get { return _name; }
-      set { this._name = value; }
+      set { _name = value; }
     }
 
     /// <summary>
@@ -61,7 +59,7 @@ namespace MPlayer
     public String Path
     {
       get { return _path; }
-      set { this._path = value; }
+      set { _path = value; }
     }
     #endregion
 

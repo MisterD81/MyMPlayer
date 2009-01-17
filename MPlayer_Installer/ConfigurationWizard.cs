@@ -23,11 +23,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using MediaPortal.UserInterface.Controls;
 
@@ -83,7 +78,7 @@ namespace MPlayer
           extensionSection1.Visible = false;
           streamSection1.Visible = false;
           guiConfiguration1.Visible = false;
-          this.Text = "My MPlayer Configuration Wizard (1/7)";
+          Text = "My MPlayer Configuration Wizard (1/7)";
           mainLabel.Text = "This configuration wizard will guide you through the configuration of My MPlayer.\n";
           mainLabel.Text += "You only have to specify the location of your MPlayer installation. All other values are set to recommend values.\n";
           mainLabel.Text += "In each step the wizard will give you some additional hints for the configuration of the settings.";
@@ -111,7 +106,7 @@ namespace MPlayer
           extensionSection1.Visible = false;
           streamSection1.Visible = false;
           guiConfiguration1.Visible = false;
-          this.Text = "My MPlayer Configuration Wizard (2/7)";
+          Text = "My MPlayer Configuration Wizard (2/7)";
           mainLabel.Text = "In the second step you can set the video options.";
 
           infoBox.Text = "MPlayer offers different video output drivers. Unfortunately in combination with MP only the available video ";
@@ -131,7 +126,7 @@ namespace MPlayer
           extensionSection1.Visible = false;
           streamSection1.Visible = false;
           guiConfiguration1.Visible = false;
-          this.Text = "My MPlayer Configuration Wizard (3/7)";
+          Text = "My MPlayer Configuration Wizard (3/7)";
           mainLabel.Text = "The next step is to configure the subtitle options. These are indepent from you selected options in My Movies of MP.";
 
           infoBox.Text = "The subtitle configuration of this plugin isn't only important for the displayed subtitles. ";
@@ -151,7 +146,7 @@ namespace MPlayer
           extensionSection1.Visible = false;
           streamSection1.Visible = false;
           guiConfiguration1.Visible = false;
-          this.Text = "My MPlayer Configuration Wizard (4/7)";
+          Text = "My MPlayer Configuration Wizard (4/7)";
           mainLabel.Text = "In step 4 you can configure the audio options of MPlayer.";
 
           infoBox.Text = "MPlayer offers also different audio output drivers. If you select the DirectSound driver, than you can ";
@@ -170,7 +165,7 @@ namespace MPlayer
           extensionSection1.Visible = true;
           streamSection1.Visible = false;
           guiConfiguration1.Visible = false;
-          this.Text = "My MPlayer Configuration Wizard (5/7)";
+          Text = "My MPlayer Configuration Wizard (5/7)";
           mainLabel.Text = "After configuring the general options, you can now configure how My MPlayer is integrated in MP.\n";
           mainLabel.Text += "Only extensions where the option \"External player use\" is selected are played in My Movie or My Music.\n";
           mainLabel.Text += "Otherwise they are only played by the gui plugin of My MPlayer. ";
@@ -190,7 +185,7 @@ namespace MPlayer
           extensionSection1.Visible = false;
           streamSection1.Visible = true;
           guiConfiguration1.Visible = false;
-          this.Text = "My MPlayer Configuration Wizard (6/7)";
+          Text = "My MPlayer Configuration Wizard (6/7)";
           mainLabel.Text = "In the last step of the configuration of the external player you can specify additional arguments \n";
           mainLabel.Text += "for the playback of the specified streams.";
 
@@ -207,7 +202,7 @@ namespace MPlayer
           extensionSection1.Visible = false;
           streamSection1.Visible = false;
           guiConfiguration1.Visible = true;
-          this.Text = "My MPlayer Configuration Wizard (7/7)";
+          Text = "My MPlayer Configuration Wizard (7/7)";
           mainLabel.Text = "In the last step of this wizard, you can configure the gui plugin of My MPlayer.";
 
           infoBox.Text = "";
@@ -225,7 +220,7 @@ namespace MPlayer
     /// <param _name="e">Event args</param>
     private void finishButton_Click(object sender, EventArgs e)
     {
-      this.Close();
+      Close();
     }
 
     /// <summary>

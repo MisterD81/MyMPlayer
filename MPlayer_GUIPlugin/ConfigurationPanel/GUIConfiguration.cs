@@ -1,13 +1,31 @@
+#region Copyright (C) 2006-2008 MisterD
+
+/* 
+ *	Copyright (C) 2006-2008 MisterD
+ *
+ *  This Program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2, or (at your option)
+ *  any later version.
+ *   
+ *  This Program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  GNU General Public License for more details.
+ *   
+ *  You should have received a copy of the GNU General Public License
+ *  along with GNU Make; see the file COPYING.  If not, write to
+ *  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA. 
+ *  http://www.gnu.org/copyleft/gpl.html
+ *
+ */
+
+#endregion
+
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using MediaPortal.GUI.Library;
-using MediaPortal.Util;
 using MediaPortal.Configuration;
 
 namespace MPlayer.ConfigurationPanel
@@ -84,8 +102,11 @@ namespace MPlayer.ConfigurationPanel
       if (shareList.SelectedIndex > -1)
       {
         lastShare = shareList.SelectedItem as MPlayer_Share;
-        shareName.Text = lastShare.Name;
-        shareLocation.Text = lastShare.Path;
+        if (lastShare != null)
+        {
+          shareName.Text = lastShare.Name;
+          shareLocation.Text = lastShare.Path;
+        }
         shareName.Enabled = true;
         shareLocation.Enabled = true;
       }
@@ -156,17 +177,21 @@ namespace MPlayer.ConfigurationPanel
     {
       try
       {
-        MPlayer_Share share = null;
+        MPlayer_Share share;
         XmlDocument doc = new XmlDocument();
         string path = Config.GetFile(Config.Dir.Config, "MPlayer_GUIPlugin.xml");
         doc.Load(path);
-        XmlNodeList listShare = doc.DocumentElement.SelectNodes("/mplayergui/Share");
-        foreach (XmlNode nodeShare in listShare)
+        if (doc.DocumentElement != null)
         {
-          share = new MPlayer_Share();
-          share.Name = nodeShare.Attributes["name"].Value;
-          share.Path = nodeShare.Attributes["path"].Value;
-          shareList.Items.Add(share);
+          XmlNodeList listShare = doc.DocumentElement.SelectNodes("/mplayergui/Share");
+          if (listShare != null)
+            foreach (XmlNode nodeShare in listShare)
+            {
+              share = new MPlayer_Share();
+              share.Name = nodeShare.Attributes["name"].Value;
+              share.Path = nodeShare.Attributes["path"].Value;
+              shareList.Items.Add(share);
+            }
         }
         using (MediaPortal.Profile.Settings xmlreader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml")))
         {
@@ -200,8 +225,11 @@ namespace MPlayer.ConfigurationPanel
       {
         temp = shareList.Items[i] as MPlayer_Share;
         writer.WriteStartElement("Share"); //<Share>
-        writer.WriteAttributeString("name", temp.Name);
-        writer.WriteAttributeString("path", temp.Path);
+        if (temp != null)
+        {
+          writer.WriteAttributeString("name", temp.Name);
+          writer.WriteAttributeString("path", temp.Path);
+        }
         writer.WriteEndElement(); //</Share>
       }
       writer.WriteEndElement(); //</mplayer>

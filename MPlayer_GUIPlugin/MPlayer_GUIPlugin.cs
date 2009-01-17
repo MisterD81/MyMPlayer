@@ -25,26 +25,15 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Windows.Forms;
 using System.Xml;
 using MediaPortal.GUI.Library;
 using System.Collections;
 using MediaPortal.Util;
-using MediaPortal.Database;
-using SQLite.NET;
 using MediaPortal.Dialogs;
 using MediaPortal.Playlists;
 using MediaPortal.Player;
-using MediaPortal.Dispatcher;
-using MediaPortal.Video.Database;
-using MediaPortal.Music.Database;
-using MediaPortal.TV.Database;
-using MediaPortal.GUI.View;
 using MediaPortal.GUI.Video;
-using MediaPortal.GUI.Music;
 using MediaPortal.Configuration;
-using ExternalOSDLibrary;
 
 namespace MPlayer
 {
@@ -82,7 +71,7 @@ namespace MPlayer
     /// <summary>
     /// Virutal Directory
     /// </summary>
-    private VirtualDirectory m_directory = new VirtualDirectory();
+    private readonly VirtualDirectory m_directory = new VirtualDirectory();
 
     /// <summary>
     /// ViewAs Button
@@ -138,7 +127,7 @@ namespace MPlayer
     /// <summary>
     /// Playlistplayer instance
     /// </summary>
-    private static PlayListPlayer playlistPlayer;
+    private static readonly PlayListPlayer playlistPlayer;
 
     /// <summary>
     /// Current virtual Path
@@ -148,17 +137,17 @@ namespace MPlayer
     /// <summary>
     /// Display _name of the plugin
     /// </summary>
-    private string displayName;
+    private readonly string displayName;
 
     /// <summary>
     /// Indicates if the my video Shares are used
     /// </summary>
-    private bool useMyVideoShares;
+    private readonly bool useMyVideoShares;
 
     /// <summary>
     /// Indicates if the my music Shares are used
     /// </summary>
-    private bool useMyMusicShares;
+    private readonly bool useMyMusicShares;
 
     /// <summary>
     /// List of _path of all shares
@@ -168,7 +157,7 @@ namespace MPlayer
     /// <summary>
     /// Indicates if playlists should be treat as folders
     /// </summary>
-    private bool treatPlaylistsAsFolders;
+    private readonly bool treatPlaylistsAsFolders;
 
     /// <summary>
     /// Disable sorting of elements. Onlöy needed for playlists.
@@ -257,16 +246,16 @@ namespace MPlayer
       if (message.Message == GUIMessage.MessageType.GUI_MSG_WINDOW_INIT)
       {
 
-        bool mplayerPlayerAvailable = false;
+        bool mplayerPlayerAvailable;
         using (MediaPortal.Profile.Settings xmlreader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml")))
         {
           mplayerPlayerAvailable = xmlreader.GetValueAsBool("plugins", "MPlayer", false);
         }
 
-        mplayerPlayerAvailable = (mplayerPlayerAvailable & System.IO.File.Exists(Config.GetFile(Config.Dir.Plugins, "ExternalPlayers", "MPlayer_ExtPlayer.dll")));
+        mplayerPlayerAvailable = (mplayerPlayerAvailable & File.Exists(Config.GetFile(Config.Dir.Plugins, "ExternalPlayers", "MPlayer_ExtPlayer.dll")));
         if (!mplayerPlayerAvailable)
         {
-          GUIDialogOK dlgOk = (GUIDialogOK)GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_DIALOG_OK);
+          GUIDialogOK dlgOk = (GUIDialogOK)GUIWindowManager.GetWindow((int)Window.WINDOW_DIALOG_OK);
           dlgOk.SetHeading("My MPlayer GUI");
           dlgOk.SetLine(1, "MPlayer External Player not available!");
           dlgOk.SetLine(2, "Please activate it in the Setup");
@@ -281,7 +270,7 @@ namespace MPlayer
     /// Tries to start the playback of an disc
     /// </summary>
     /// <returns>true, if successful</returns>
-    private bool OnPlayDisc()
+    private void OnPlayDisc()
     {
       String url = "";
       string[] drives = Environment.GetLogicalDrives();
@@ -291,32 +280,30 @@ namespace MPlayer
         if (Utils.getDriveType(driveElement) == 5)
         {
           string driveLetter = driveElement.Substring(0, 1);
-          if (System.IO.File.Exists(String.Format(@"{0}:\VIDEO_TS\VIDEO_TS.IFO", driveLetter)))
+          if (File.Exists(String.Format(@"{0}:\VIDEO_TS\VIDEO_TS.IFO", driveLetter)))
           {
             url = "dvd://" + driveLetter + ":.mplayer";
             discFound = true;
             break;
           }
-          else if (System.IO.File.Exists(String.Format(@"{0}:\MPEGAV\AVSEQ01.DAT", driveLetter)))
+          if (File.Exists(String.Format(@"{0}:\MPEGAV\AVSEQ01.DAT", driveLetter)))
           {
             url = "vcd://" + String.Format(@"{0}:\MPEGAV\AVSEQ01.DAT", driveLetter) + ".mplayer";
             discFound = true;
             break;
           }
-          else if (System.IO.File.Exists(String.Format(@"{0}:\MPEG2\AVSEQ01.MPG", driveLetter)))
+          if (File.Exists(String.Format(@"{0}:\MPEG2\AVSEQ01.MPG", driveLetter)))
           {
             url = "svcd://" + String.Format(@"{0}:\MPEG2\AVSEQ01.MPG", driveLetter) + ".mplayer";
             discFound = true;
             break;
           }
-          else if (System.IO.File.Exists(String.Format(@"{0}:\MPEG2\AVSEQ01.MPEG", driveLetter)))
+          if (File.Exists(String.Format(@"{0}:\MPEG2\AVSEQ01.MPEG", driveLetter)))
           {
             url = "svcd://" + String.Format(@"{0}:\MPEG2\AVSEQ01.MPEG", driveLetter) + ".mplayer";
             discFound = true;
             break;
           }
-
-
         }
       }
       if (discFound)
@@ -327,26 +314,26 @@ namespace MPlayer
         }
         g_Player.Play(url);
         GUIGraphicsContext.IsFullScreenVideo = true;
-        GUIWindowManager.ActivateWindow((int)GUIWindow.Window.WINDOW_FULLSCREEN_VIDEO);
-        return true;
+        GUIWindowManager.ActivateWindow((int)Window.WINDOW_FULLSCREEN_VIDEO);
+        return;
       }
       //no disc in drive...
-      GUIDialogOK dlgOk = (GUIDialogOK)GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_DIALOG_OK);
+      GUIDialogOK dlgOk = (GUIDialogOK)GUIWindowManager.GetWindow((int)Window.WINDOW_DIALOG_OK);
       dlgOk.SetHeading(3);//my videos
       dlgOk.SetLine(1, 219);//no disc
       dlgOk.DoModal(GetID);
-      return false;
+      return;
     }
 
     /// <summary>
     /// Tries to start the playback of an internet stream
     /// </summary>
     /// <returns>true, if successful</returns>
-    private bool OnPlayStream()
+    private static void OnPlayStream()
     {
-      VirtualKeyboard keyboard = (VirtualKeyboard)GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_VIRTUAL_KEYBOARD);
+      VirtualKeyboard keyboard = (VirtualKeyboard)GUIWindowManager.GetWindow((int)Window.WINDOW_VIRTUAL_KEYBOARD);
       if (null == keyboard)
-        return false;
+        return;
       keyboard.Reset();
       keyboard.Text = String.Empty;
       keyboard.DoModal(GUIWindowManager.ActiveWindow);
@@ -368,11 +355,11 @@ namespace MPlayer
           if (g_Player.Player != null && g_Player.IsVideo)
           {
             GUIGraphicsContext.IsFullScreenVideo = true;
-            GUIWindowManager.ActivateWindow((int)GUIWindow.Window.WINDOW_FULLSCREEN_VIDEO);
+            GUIWindowManager.ActivateWindow((int)Window.WINDOW_FULLSCREEN_VIDEO);
           }
         }
       }
-      return false;
+      return;
     }
 
     /// <summary>
@@ -385,7 +372,7 @@ namespace MPlayer
     {
       if (control == btnViewAs)
       {
-        bool shouldContinue = false;
+        bool shouldContinue;
         do
         {
           shouldContinue = false;
@@ -428,23 +415,18 @@ namespace MPlayer
 
       if (control == btnSortBy)
       {
-        bool shouldContinue = false;
-        do
+        switch (CurrentSortMethod)
         {
-          shouldContinue = false;
-          switch (CurrentSortMethod)
-          {
-            case VideoSort.SortMethod.Name:
-              CurrentSortMethod = VideoSort.SortMethod.Date;
-              break;
-            case VideoSort.SortMethod.Date:
-              CurrentSortMethod = VideoSort.SortMethod.Size;
-              break;
-            case VideoSort.SortMethod.Size:
-              CurrentSortMethod = VideoSort.SortMethod.Name;
-              break;
-          }
-        } while (shouldContinue);
+          case VideoSort.SortMethod.Name:
+            CurrentSortMethod = VideoSort.SortMethod.Date;
+            break;
+          case VideoSort.SortMethod.Date:
+            CurrentSortMethod = VideoSort.SortMethod.Size;
+            break;
+          case VideoSort.SortMethod.Size:
+            CurrentSortMethod = VideoSort.SortMethod.Name;
+            break;
+        }
         OnSort();
         GUIControl.FocusControl(GetID, control.GetID);
       }
@@ -462,7 +444,6 @@ namespace MPlayer
       {
         GUIMessage msg = new GUIMessage(GUIMessage.MessageType.GUI_MSG_ITEM_SELECTED, GetID, 0, controlId, 0, 0, null);
         OnMessage(msg);
-        int iItem = (int)msg.Param1;
         if (actionType == Action.ActionType.ACTION_SHOW_INFO)
         {
           //OnInfo(iItem);
@@ -496,30 +477,26 @@ namespace MPlayer
       if (item.IsFolder && !item.IsRemote)
       {
         // Check if folder is actually a DVD. If so don't browse this folder, but play the DVD!
-        if ((System.IO.File.Exists(path + @"\VIDEO_TS\VIDEO_TS.IFO")) && (item.Label != ".."))
+        if ((File.Exists(path + @"\VIDEO_TS\VIDEO_TS.IFO")) && (item.Label != ".."))
         {
           isFolderAMovie = true;
           path = "dvd://" + path;
           //_path = item.Path + @"\VIDEO_TS\VIDEO_TS.IFO";
         }
-        else if ((System.IO.File.Exists(path + @"\MPEGAV\AVSEQ01.DAT")) && (item.Label != ".."))
+        else if ((File.Exists(path + @"\MPEGAV\AVSEQ01.DAT")) && (item.Label != ".."))
         {
           isFolderAMovie = true;
           path = "vcd://" + String.Format(@"{0}\MPEGAV\AVSEQ01.DAT", item.Path);
         }
-        else if ((System.IO.File.Exists(path + @"\MPEG2\AVSEQ01.MPG")) && (item.Label != ".."))
+        else if ((File.Exists(path + @"\MPEG2\AVSEQ01.MPG")) && (item.Label != ".."))
         {
           isFolderAMovie = true;
           path = "svcd://" + String.Format(@"{0}\MPEG2\AVSEQ01.MPG", item.Path);
         }
-        else if ((System.IO.File.Exists(path + @"\MPEG2\AVSEQ01.MPEG")) && (item.Label != ".."))
+        else if ((File.Exists(path + @"\MPEG2\AVSEQ01.MPEG")) && (item.Label != ".."))
         {
           isFolderAMovie = true;
           path = "svcd://" + String.Format(@"{0}\MPEG2\AVSEQ01.MPEG", item.Path);
-        }
-        else
-        {
-          isFolderAMovie = false;
         }
       }
 
@@ -545,7 +522,7 @@ namespace MPlayer
         if (g_Player.IsVideo)
         {
           GUIGraphicsContext.IsFullScreenVideo = true;
-          GUIWindowManager.ActivateWindow((int)GUIWindow.Window.WINDOW_FULLSCREEN_VIDEO);
+          GUIWindowManager.ActivateWindow((int)Window.WINDOW_FULLSCREEN_VIDEO);
         }
         return;
       }
@@ -640,14 +617,14 @@ namespace MPlayer
     protected override void OnPageLoad()
     {
       base.OnPageLoad();
-      GUIVideoOverlay videoOverlay = (GUIVideoOverlay)GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_VIDEO_OVERLAY);
+      GUIVideoOverlay videoOverlay = (GUIVideoOverlay)GUIWindowManager.GetWindow((int)Window.WINDOW_VIDEO_OVERLAY);
       if ((videoOverlay != null) && (videoOverlay.Focused))
         videoOverlay.Focused = false;
 
       LoadDirectory(virtualPath);
       if (btnSortBy != null)
       {
-        btnSortBy.SortChanged += new SortEventHandler(SortChanged);
+        btnSortBy.SortChanged += SortChanged;
       }
       CurrentSortAsc = true;
       GUIControl.SetControlLabel(GetID, btnPlayStream.GetID, LocalizeStrings.Get((int)LocalizedMessages.PlayStream));
@@ -688,16 +665,20 @@ namespace MPlayer
     /// Reads all extensions from external player plugin
     /// </summary>
     /// <returns>Lsit of all extensions</returns>
-    private ArrayList GetExtenstions()
+    private static ArrayList GetExtenstions()
     {
       ArrayList extensions = new ArrayList();
       XmlDocument doc = new XmlDocument();
       string path = Config.GetFile(Config.Dir.Config, "MPlayer_ExtPlayer.xml");
       doc.Load(path);
-      XmlNodeList listExtensions = doc.DocumentElement.SelectNodes("/mplayer/extensions/Extension");
-      foreach (XmlNode nodeExtension in listExtensions)
+      if (doc.DocumentElement != null)
       {
-        extensions.Add(nodeExtension.Attributes["name"].Value);
+        XmlNodeList listExtensions = doc.DocumentElement.SelectNodes("/mplayer/extensions/Extension");
+        if (listExtensions != null)
+          foreach (XmlNode nodeExtension in listExtensions)
+          {
+            extensions.Add(nodeExtension.Attributes["name"].Value);
+          }
       }
       return extensions;
     }
@@ -713,7 +694,7 @@ namespace MPlayer
 
       if (!loader.Load(playlist, playListFileName))
       {
-        GUIDialogOK dlgOK = (GUIDialogOK)GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_DIALOG_OK);
+        GUIDialogOK dlgOK = (GUIDialogOK)GUIWindowManager.GetWindow((int)Window.WINDOW_DIALOG_OK);
         if (dlgOK != null)
         {
           dlgOK.SetHeading(6);
@@ -735,7 +716,7 @@ namespace MPlayer
           if (g_Player.Player != null && g_Player.IsVideo)
           {
             GUIGraphicsContext.IsFullScreenVideo = true;
-            GUIWindowManager.ActivateWindow((int)GUIWindow.Window.WINDOW_FULLSCREEN_VIDEO);
+            GUIWindowManager.ActivateWindow((int)Window.WINDOW_FULLSCREEN_VIDEO);
           }
         }
         return;
@@ -759,8 +740,7 @@ namespace MPlayer
 
       if (playlistPlayer.GetPlaylist(PlayListType.PLAYLIST_VIDEO).Count > 0)
       {
-        playlist = playlistPlayer.GetPlaylist(PlayListType.PLAYLIST_VIDEO);
-        PlayListItem item = playlist[0];
+        playlistPlayer.GetPlaylist(PlayListType.PLAYLIST_VIDEO);
         playlistPlayer.CurrentPlaylistType = PlayListType.PLAYLIST_VIDEO;
         playlistPlayer.Reset();
         playlistPlayer.Play(0);
@@ -768,7 +748,7 @@ namespace MPlayer
         if (g_Player.Player != null && g_Player.IsVideo)
         {
           GUIGraphicsContext.IsFullScreenVideo = true;
-          GUIWindowManager.ActivateWindow((int)GUIWindow.Window.WINDOW_FULLSCREEN_VIDEO);
+          GUIWindowManager.ActivateWindow((int)Window.WINDOW_FULLSCREEN_VIDEO);
         }
       }
     }
@@ -782,10 +762,8 @@ namespace MPlayer
       disableSorting = false;
       String _currentFolder = newFolderName;
 
-      string objectCount = String.Empty;
-      ArrayList itemlist = new ArrayList();
       GUIControl.ClearControl(GetID, facadeView.GetID);
-      itemlist = m_directory.GetDirectory(_currentFolder);
+      ArrayList itemlist = m_directory.GetDirectory(_currentFolder);
       ArrayList itemfiltered = new ArrayList();
       for (int x = 0; x < itemlist.Count; ++x)
       {
@@ -800,7 +778,7 @@ namespace MPlayer
             {
               if (!item1.IsRemote && !item2.IsRemote)
               {
-                if (MediaPortal.Util.Utils.ShouldStack(item1.Path, item2.Path))
+                if (Utils.ShouldStack(item1.Path, item2.Path))
                 {
                   if (String.Compare(item1.Path, item2.Path, true) > 0)
                   {
@@ -818,7 +796,7 @@ namespace MPlayer
         {
           string label = item1.Label;
 
-          MediaPortal.Util.Utils.RemoveStackEndings(ref label);
+          Utils.RemoveStackEndings(ref label);
           item1.Label = label;
           if (treatPlaylistsAsFolders && PlayListFactory.IsPlayList(item1.Path))
           {
@@ -927,10 +905,10 @@ namespace MPlayer
         return;
       }
 
-      string movieFileName = System.IO.Path.GetFileName(item.Path);
+      string movieFileName = Path.GetFileName(item.Path);
       string movieTitle = movieFileName;
       // delete single file
-      GUIDialogYesNo dlgYesNo = (GUIDialogYesNo)GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_DIALOG_YES_NO);
+      GUIDialogYesNo dlgYesNo = (GUIDialogYesNo)GUIWindowManager.GetWindow((int)Window.WINDOW_DIALOG_YES_NO);
       if (null == dlgYesNo)
         return;
       dlgYesNo.SetHeading(GUILocalizeStrings.Get(925));
@@ -965,20 +943,19 @@ namespace MPlayer
           return;
         if (item.Label != "..")
         {
-          ArrayList items = new ArrayList();
-          items = m_directory.GetDirectoryUnProtected(item.Path, false);
+          ArrayList items = m_directory.GetDirectoryUnProtected(item.Path, false);
           foreach (GUIListItem subItem in items)
           {
             DoDeleteItem(subItem);
           }
-          MediaPortal.Util.Utils.DirectoryDelete(item.Path);
+          Utils.DirectoryDelete(item.Path);
         }
       }
       else
       {
         if (item.IsRemote)
           return;
-        MediaPortal.Util.Utils.FileDelete(item.Path);
+        Utils.FileDelete(item.Path);
       }
     }
 
@@ -1002,21 +979,25 @@ namespace MPlayer
       {
         AddSection("music");
       }
-      Share share = null;
+      Share share;
       XmlDocument doc = new XmlDocument();
       string path = Config.GetFile(Config.Dir.Config, "MPlayer_GUIPlugin.xml");
       doc.Load(path);
-      XmlNodeList listShare = doc.DocumentElement.SelectNodes("/mplayergui/Share");
-      foreach (XmlNode nodeShare in listShare)
+      if (doc.DocumentElement != null)
       {
-        share = new Share();
-        share.Name = nodeShare.Attributes["name"].Value;
-        share.Path = nodeShare.Attributes["path"].Value;
-        if (!sharePaths.Contains(share.Path.ToLower()))
-        {
-          sharePaths.Add(share.Path.ToLower());
-          m_directory.Add(share);
-        }
+        XmlNodeList listShare = doc.DocumentElement.SelectNodes("/mplayergui/Share");
+        if (listShare != null)
+          foreach (XmlNode nodeShare in listShare)
+          {
+            share = new Share();
+            share.Name = nodeShare.Attributes["name"].Value;
+            share.Path = nodeShare.Attributes["path"].Value;
+            if (!sharePaths.Contains(share.Path.ToLower()))
+            {
+              sharePaths.Add(share.Path.ToLower());
+              m_directory.Add(share);
+            }
+          }
       }
     }
 
@@ -1048,7 +1029,7 @@ namespace MPlayer
           share.Name = xmlreader.GetValueAsString(section, strShareName, String.Empty);
           share.Path = xmlreader.GetValueAsString(section, strSharePath, String.Empty);
 
-          string pinCode = MediaPortal.Util.Utils.DecryptPin(xmlreader.GetValueAsString(section, strPincode, string.Empty));
+          string pinCode = Utils.DecryptPin(xmlreader.GetValueAsString(section, strPincode, string.Empty));
           if (pinCode != string.Empty)
             share.Pincode = Convert.ToInt32(pinCode);
           else
