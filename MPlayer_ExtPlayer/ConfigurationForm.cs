@@ -23,18 +23,6 @@
 #endregion
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.Xml;
-using DShowNET.Helper;
-using MediaPortal.GUI.Library;
-using MediaPortal.Util;
-using MediaPortal.Configuration;
 using MediaPortal.UserInterface.Controls;
 
 namespace MPlayer {
@@ -58,7 +46,7 @@ namespace MPlayer {
     /// </summary>
     /// <param _name="sender">Sender object</param>
     /// <param _name="e">Event Arguments</param>
-    private void ConfigurationForm_Load(object sender, System.EventArgs e) {
+    private void ConfigurationForm_Load(object sender, EventArgs e) {
       loadConfiguration();
     }
 
@@ -67,9 +55,9 @@ namespace MPlayer {
     /// </summary>
     /// <param _name="sender">Sender object</param>
     /// <param _name="e">Event Arguments</param>
-    private void okButton_Click(object sender, System.EventArgs e) {
+    private void okButton_Click(object sender, EventArgs e) {
       saveConfiguration();
-      this.Close();
+      Close();
     }
 
     /// <summary>
@@ -78,7 +66,7 @@ namespace MPlayer {
     /// <param _name="sender">Sender object</param>
     /// <param _name="e">Event Arguments</param>
     private void cancelButton_Click(object sender, EventArgs e) {
-      this.Close();
+      Close();
     }
     #endregion
 

@@ -1,13 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using MediaPortal.Configuration;
-using MPlayer;
 
 namespace MPlayer.ConfigurationPanel
 {
@@ -46,40 +40,44 @@ namespace MPlayer.ConfigurationPanel
     public void LoadConfiguration()
     {
       ListBox workingList = null;
-      ExtensionSettings settings = null;
+      ExtensionSettings settings;
       PlayMode mode = PlayMode.Unrecognized;
       XmlDocument doc = new XmlDocument();
       string path = Config.GetFile(Config.Dir.Config, "MPlayer_ExtPlayer.xml");
       doc.Load(path);
-      XmlNodeList listExtensionFamilies = doc.DocumentElement.SelectNodes("/mplayer/extensions");
-      foreach (XmlNode nodeFamily in listExtensionFamilies)
+      if (doc.DocumentElement != null)
       {
-        if (nodeFamily.Attributes["family"].Value.Equals("Video"))
-        {
-          workingList = videoExtList;
-          mode = PlayMode.Video;
-        }
-        else if (nodeFamily.Attributes["family"].Value.Equals("Audio"))
-        {
-          workingList = audioExtList;
-          mode = PlayMode.Audio;
-        }
-        workingList.Items.Clear();
-        XmlNodeList listExtensions = nodeFamily.SelectNodes("Extension");
-        foreach (XmlNode nodeExtension in listExtensions)
-        {
-          settings = new ExtensionSettings();
-          settings.Name = nodeExtension.Attributes["name"].Value;
-          settings.Arguments = nodeExtension.Attributes["arguments"].Value;
-          settings.ExtPlayerUse = Boolean.Parse(nodeExtension.Attributes["extPlayerUse"].Value);
-          settings.PlayMode = mode;
-          if (!workingList.Items.Contains(settings.Name))
+        XmlNodeList listExtensionFamilies = doc.DocumentElement.SelectNodes("/mplayer/extensions");
+        if (listExtensionFamilies != null)
+          foreach (XmlNode nodeFamily in listExtensionFamilies)
           {
-            workingList.Items.Add(settings);
+            if (nodeFamily.Attributes["family"].Value.Equals("Video"))
+            {
+              workingList = videoExtList;
+              mode = PlayMode.Video;
+            }
+            else if (nodeFamily.Attributes["family"].Value.Equals("Audio"))
+            {
+              workingList = audioExtList;
+              mode = PlayMode.Audio;
+            }
+            if (workingList != null) workingList.Items.Clear();
+            XmlNodeList listExtensions = nodeFamily.SelectNodes("Extension");
+            if (listExtensions != null)
+              foreach (XmlNode nodeExtension in listExtensions)
+              {
+                settings = new ExtensionSettings();
+                settings.Name = nodeExtension.Attributes["name"].Value;
+                settings.Arguments = nodeExtension.Attributes["arguments"].Value;
+                settings.ExtPlayerUse = Boolean.Parse(nodeExtension.Attributes["extPlayerUse"].Value);
+                settings.PlayMode = mode;
+                if (workingList != null && !workingList.Items.Contains(settings.Name))
+                  {
+                    workingList.Items.Add(settings);
+                  }
+              }
           }
-        }
       }
-
     }
 
     /// <summary>
@@ -103,9 +101,12 @@ namespace MPlayer.ConfigurationPanel
       {
         temp = videoExtList.Items[i] as ExtensionSettings;
         writer.WriteStartElement("Extension"); //<Extension>
-        writer.WriteAttributeString("name", temp.Name);
-        writer.WriteAttributeString("arguments", temp.Arguments);
-        writer.WriteAttributeString("extPlayerUse", temp.ExtPlayerUse.ToString());
+        if (temp != null)
+        {
+          writer.WriteAttributeString("name", temp.Name);
+          writer.WriteAttributeString("arguments", temp.Arguments);
+          writer.WriteAttributeString("extPlayerUse", temp.ExtPlayerUse.ToString());
+        }
         writer.WriteEndElement(); //</Extension>
       }
       writer.WriteEndElement(); //</extensions>
@@ -115,9 +116,12 @@ namespace MPlayer.ConfigurationPanel
       {
         temp = audioExtList.Items[i] as ExtensionSettings;
         writer.WriteStartElement("Extension"); //<Extension>
-        writer.WriteAttributeString("name", temp.Name);
-        writer.WriteAttributeString("arguments", temp.Arguments);
-        writer.WriteAttributeString("extPlayerUse", temp.ExtPlayerUse.ToString());
+        if (temp != null)
+        {
+          writer.WriteAttributeString("name", temp.Name);
+          writer.WriteAttributeString("arguments", temp.Arguments);
+          writer.WriteAttributeString("extPlayerUse", temp.ExtPlayerUse.ToString());
+        }
         writer.WriteEndElement(); //</Extension>
       }
       writer.WriteEndElement(); //</extensions>
@@ -144,9 +148,12 @@ namespace MPlayer.ConfigurationPanel
       if (videoExtList.SelectedIndex > -1)
       {
         lastVideoSettings = videoExtList.SelectedItem as ExtensionSettings;
-        videoExtension.Text = lastVideoSettings.Name;
-        videoArgument.Text = lastVideoSettings.Arguments;
-        videoPlayerUse.Checked = lastVideoSettings.ExtPlayerUse;
+        if (lastVideoSettings != null)
+        {
+          videoExtension.Text = lastVideoSettings.Name;
+          videoArgument.Text = lastVideoSettings.Arguments;
+          videoPlayerUse.Checked = lastVideoSettings.ExtPlayerUse;
+        }
         videoExtension.Enabled = true;
         videoArgument.Enabled = true;
         videoPlayerUse.Enabled = true;
@@ -234,9 +241,12 @@ namespace MPlayer.ConfigurationPanel
       if (audioExtList.SelectedIndex > -1)
       {
         lastAudioSettings = audioExtList.SelectedItem as ExtensionSettings;
-        audioExtension.Text = lastAudioSettings.Name;
-        audioArgument.Text = lastAudioSettings.Arguments;
-        audioPlayerUse.Checked = lastAudioSettings.ExtPlayerUse;
+        if (lastAudioSettings != null)
+        {
+          audioExtension.Text = lastAudioSettings.Name;
+          audioArgument.Text = lastAudioSettings.Arguments;
+          audioPlayerUse.Checked = lastAudioSettings.ExtPlayerUse;
+        }
         audioExtension.Enabled = true;
         audioArgument.Enabled = true;
         audioPlayerUse.Enabled = true;
@@ -276,18 +286,19 @@ namespace MPlayer.ConfigurationPanel
       if (audioExtList.SelectedIndex > -1)
       {
         ExtensionSettings settings = audioExtList.SelectedItem as ExtensionSettings;
-        if (!settings.Name.Equals(".cda"))
-        {
-          audioExtList.Items.RemoveAt(audioExtList.SelectedIndex);
-          if (audioExtList.Items.Count > 0)
+        if (settings != null)
+          if (!settings.Name.Equals(".cda"))
           {
-            audioExtList.SelectedIndex = 0;
+            audioExtList.Items.RemoveAt(audioExtList.SelectedIndex);
+            if (audioExtList.Items.Count > 0)
+            {
+              audioExtList.SelectedIndex = 0;
+            }
+            else
+            {
+              audioExtList.SelectedIndex = -1;
+            }
           }
-          else
-          {
-            audioExtList.SelectedIndex = -1;
-          }
-        }
       }
     }
 

@@ -23,7 +23,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using MediaPortal.Player;
 using MediaPortal.GUI.Library;
@@ -39,7 +38,7 @@ namespace MPlayer
     /// <summary>
     /// Time the _osd is displayed
     /// </summary>
-    private int _displayDuration;
+    private readonly int _displayDuration;
 
     /// <summary>
     /// Is OSD visible
@@ -64,22 +63,17 @@ namespace MPlayer
     /// <summary>
     /// Message handler for MP messages
     /// </summary>
-    private SendMessageHandler _mpMessageHandler;
+    private readonly SendMessageHandler _mpMessageHandler;
 
     /// <summary>
     /// Volumehandler for the volume changes in MP
     /// </summary>
-    private VolumeHandler _mpVolumeHandler;
-
-    /// <summary>
-    /// Configuration Manager;
-    /// </summary>
-    private ConfigurationManager _configManager;
+    private readonly VolumeHandler _mpVolumeHandler;
 
     /// <summary>
     /// Reference to the main player component
     /// </summary>
-    private MPlayer_ExtPlayer _player;
+    private readonly MPlayer_ExtPlayer _player;
     #endregion
 
     #region ctor
@@ -91,14 +85,13 @@ namespace MPlayer
     public InternalOSDHandler(MPlayer_ExtPlayer player, bool playerUse)
     {
       _player = player;
-      _configManager = ConfigurationManager.GetInstance();
       _displayDuration = 2000;
       _osdVisible = false;
       _osdVisibleForPause = false;
       _mpVolumeHandler = VolumeHandler.Instance;
       if (playerUse)
       {
-        _mpMessageHandler = new SendMessageHandler(OnMessage);
+        _mpMessageHandler = OnMessage;
         GUIWindowManager.Receivers += _mpMessageHandler;
       }
     }
@@ -129,14 +122,14 @@ namespace MPlayer
           {
             if (_mpVolumeHandler.IsMuted)
             {
-              SendOSDText(LocalizedMessages.Mute, _configManager.SeekStepTimeout);
+              SendOSDText(LocalizedMessages.Mute);
             }
             else
             {
-              double currentVolume = (double)_mpVolumeHandler.Volume;
-              double maximumVolume = (double)_mpVolumeHandler.Maximum;
+              double currentVolume = _mpVolumeHandler.Volume;
+              double maximumVolume = _mpVolumeHandler.Maximum;
               double percentage = currentVolume / maximumVolume * 100;
-              SendOSDText(LocalizedMessages.Volume, percentage.ToString("00") + "%", _configManager.SeekStepTimeout);
+              SendOSDText(LocalizedMessages.Volume, percentage.ToString("00") + "%");
             }
           }
           break;
@@ -168,24 +161,13 @@ namespace MPlayer
     }
 
     /// <summary>
-    /// Sends a localized OSD command with a specific value and duration to the mplayer proccess
-    /// </summary>
-    /// <param _name="message">Message type</param>
-    /// <param _name="value">Value of the message</param>
-    /// <param _name="duration">Duration to display</param>
-    private void SendOSDText(LocalizedMessages message, String value, int duration)
-    {
-      SendOSDText(LocalizeStrings.Get((int)message) + ": " + value, duration);
-    }
-
-    /// <summary>
     /// Sends a localized OSD command with a specific duration to the mplayer proccess
     /// </summary>
     /// <param _name="message">Message type</param>
     /// <param _name="duration">Duration to display</param>
-    private void SendOSDText(LocalizedMessages message, int duration)
+    private void SendOSDText(LocalizedMessages message)
     {
-      SendOSDText(LocalizeStrings.Get((int)message), duration);
+      SendOSDText(LocalizeStrings.Get((int)message));
     }
 
     /// <summary>
@@ -195,7 +177,7 @@ namespace MPlayer
     /// <param _name="value">Value of the message</param>
     private void SendOSDText(LocalizedMessages message, String value)
     {
-      SendOSDText(LocalizeStrings.Get((int)message) + ": " + value, _displayDuration);
+      SendOSDText(LocalizeStrings.Get((int)message) + ": " + value);
     }
 
     /// <summary>
@@ -205,7 +187,7 @@ namespace MPlayer
     /// <param _name="value">Value of the message</param>
     private void SendOSDText(LocalizedMessages message, LocalizedMessages value)
     {
-      SendOSDText(LocalizeStrings.Get((int)message) + ": " + LocalizeStrings.Get((int)value), _displayDuration);
+      SendOSDText(LocalizeStrings.Get((int)message) + ": " + LocalizeStrings.Get((int)value));
     }
 
     /// <summary>
@@ -213,7 +195,7 @@ namespace MPlayer
     /// </summary>
     /// <param _name="text">_osd command</param>
     /// <param _name="duration">Duration to display</param>
-    private void SendOSDText(string text, int duration)
+    private void SendOSDText(string text)
     {
       if (_player.FullScreen)
       {
@@ -264,11 +246,11 @@ namespace MPlayer
             String description = g_Player.GetStepDescription();
             if (!String.IsNullOrEmpty(description))
             {
-              SendOSDText(LocalizedMessages.Seek, description, _configManager.SeekStepTimeout);
+              SendOSDText(LocalizedMessages.Seek, description);
             }
             else
             {
-              SendOSDText("", 1);
+              SendOSDText("");
             }
           }
           break;
@@ -287,7 +269,7 @@ namespace MPlayer
                 }
                 else
                 {
-                  SendOSDText("", 1);
+                  SendOSDText("");
                 }
               }
             }

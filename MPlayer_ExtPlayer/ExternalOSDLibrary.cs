@@ -23,7 +23,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using MediaPortal.GUI.Library;
@@ -43,14 +42,9 @@ namespace MPlayer
     private OSDController _osd;
 
     /// <summary>
-    /// Reference to the main player component
-    /// </summary>
-    private MPlayer_ExtPlayer _player;
-
-    /// <summary>
     /// Reference to the internal osd, because it has to be deactivated
     /// </summary>
-    private InternalOSDHandler _internalOSDHandler;
+    private readonly InternalOSDHandler _internalOSDHandler;
 
     /// <summary>
     /// Indicates if the cache status is displayed
@@ -67,9 +61,8 @@ namespace MPlayer
     public ExternalOSDLibrary(MPlayer_ExtPlayer player)
     {
       _showingCacheStatus = false;
-      _player = player;
       _internalOSDHandler = new InternalOSDHandler(player, false);
-      using (WaitCursor cursor = new WaitCursor())
+      using (new WaitCursor())
       {
         Thread thread = new Thread(OsdGetInstance);
         thread.Start();
@@ -97,6 +90,7 @@ namespace MPlayer
     public void Dispose()
     {
       _osd.Deactivate();
+      _osd.Dispose();
     }
     #endregion
 

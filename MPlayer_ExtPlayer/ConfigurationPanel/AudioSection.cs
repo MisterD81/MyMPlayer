@@ -23,11 +23,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
 using DShowNET.Helper;
 using MediaPortal.Configuration;
@@ -104,15 +99,9 @@ namespace MPlayer.ConfigurationPanel
     /// <param _name="e"></param>
     private void soundOutputDriver_SelectedIndexChanged(object sender, EventArgs e)
     {
-      if (soundOutputDriver.SelectedIndex == (int)SoundOutputDriver.DirectSound)
-      {
-        soundOutputDevice.Enabled = true;
-      }
-      else
-      {
-        soundOutputDevice.Enabled = false;
-      }
+      soundOutputDevice.Enabled = soundOutputDriver.SelectedIndex == (int)SoundOutputDriver.DirectSound;
     }
+
     #endregion
   }
 }

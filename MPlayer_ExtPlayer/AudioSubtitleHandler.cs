@@ -25,7 +25,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Threading;
 using MediaPortal.Player;
 using MediaPortal.GUI.Library;
 using OsDetection;
@@ -67,22 +66,22 @@ namespace MPlayer
     /// <summary>
     /// Mapping from Audio ID to File Audio IDs
     /// </summary>
-    private Dictionary<int, int> _audioID;
+    private readonly Dictionary<int, int> _audioID;
 
     /// <summary>
     /// Names of the Audio Streams
     /// </summary>
-    private Dictionary<int, String> _audioNames;
+    private readonly Dictionary<int, String> _audioNames;
 
     /// <summary>
     /// Mapping from Subtitle ID to File Subtitle IDs
     /// </summary>
-    private Dictionary<int, int> _subtitleID;
+    private readonly Dictionary<int, int> _subtitleID;
 
     /// <summary>
     /// Names of the Subtitle Stream
     /// </summary>
-    private Dictionary<int, String> _subtitleNames;
+    private readonly Dictionary<int, String> _subtitleNames;
 
     /// <summary>
     /// Display subtitles
@@ -102,12 +101,12 @@ namespace MPlayer
     /// <summary>
     /// Step to change the audio delay in milliseconds
     /// </summary>
-    private int _audioDelayStep;
+    private readonly int _audioDelayStep;
 
     /// <summary>
     /// Step to change the subtitle delay in millisceonds
     /// </summary>
-    private int _subtitleDelayStep;
+    private readonly int _subtitleDelayStep;
 
     /// <summary>
     /// Current subtitle position
@@ -122,22 +121,22 @@ namespace MPlayer
     /// <summary>
     /// Reference to the main player component
     /// </summary>
-    private MPlayer_ExtPlayer _player;
+    private readonly MPlayer_ExtPlayer _player;
 
     /// <summary>
     /// Configuration Manager;
     /// </summary>
-    private ConfigurationManager _configManager;
+    private readonly ConfigurationManager _configManager;
 
     /// <summary>
     /// Instance of the current OSD Handler
     /// </summary>
-    private IOSDHandler _osdHandler;
+    private readonly IOSDHandler _osdHandler;
 
     /// <summary>
     /// Message handler for MP messages
     /// </summary>
-    private SendMessageHandler _mpMessageHandler;
+    private readonly SendMessageHandler _mpMessageHandler;
     #endregion
 
     #region ctor
@@ -169,7 +168,7 @@ namespace MPlayer
       OSVersionInfo os = new OperatingSystemVersion();
       if (os.OSVersion == OSVersion.Vista || os.OSVersion == OSVersion.Win2008)
       {
-        _mpMessageHandler = new SendMessageHandler(OnMessage);
+        _mpMessageHandler = OnMessage;
         GUIWindowManager.Receivers += _mpMessageHandler;
       }
       _volume = 100;
@@ -402,6 +401,7 @@ namespace MPlayer
           audioName = info.DisplayName;
         } catch
         {
+          Log.Info("MPlayer: Error while getting CulturInfo for: " + temp);
         }
         return audioName;
       } catch (Exception e)
@@ -477,7 +477,7 @@ namespace MPlayer
     /// </summary>
     /// <param _name="languageName">Identification of the lanugae (2 or 3 characters)</param>
     /// <returns></returns>
-    private String getLanguageName(String languageName)
+    private static String getLanguageName(String languageName)
     {
       String result = languageName;
       String temp = languageName.Substring(0, 2);
@@ -487,6 +487,7 @@ namespace MPlayer
         result = info.DisplayName;
       } catch
       {
+        Log.Info("MPlayer: Error while getting CulturInfo for: " + temp);
       }
       return result;
     }
@@ -507,11 +508,11 @@ namespace MPlayer
           }
           else
           {
-            double currentVolume = (double)VolumeHandler.Instance.Volume;
-            double maximumVolume = (double)VolumeHandler.Instance.Maximum;
+            double currentVolume = VolumeHandler.Instance.Volume;
+            double maximumVolume = VolumeHandler.Instance.Maximum;
             percentage = currentVolume / maximumVolume * 100;
           }
-          this.Volume = (int)percentage;
+          Volume = (int)percentage;
           break;
       }
     }
@@ -578,11 +579,11 @@ namespace MPlayer
           }
           else
           {
-            double currentVolume = (double)VolumeHandler.Instance.Volume;
-            double maximumVolume = (double)VolumeHandler.Instance.Maximum;
+            double currentVolume = VolumeHandler.Instance.Volume;
+            double maximumVolume = VolumeHandler.Instance.Maximum;
             percentage = currentVolume / maximumVolume * 100;
           }
-          this.Volume = (int)percentage;
+          Volume = (int)percentage;
         }
         if (_subtitlesEnabled)
         {

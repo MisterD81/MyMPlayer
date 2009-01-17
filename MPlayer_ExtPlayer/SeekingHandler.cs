@@ -23,7 +23,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using MediaPortal.GUI.Library;
@@ -69,12 +68,12 @@ namespace MPlayer
     /// <summary>
     /// Reference to the main player component
     /// </summary>
-    private MPlayer_ExtPlayer _player;
+    private readonly MPlayer_ExtPlayer _player;
 
     /// <summary>
     /// Instance of the current OSD Handler
     /// </summary>
-    private IOSDHandler _osdHandler;
+    private readonly IOSDHandler _osdHandler;
 
     /// <summary>
     /// Indicates if an absolute seek should be performed

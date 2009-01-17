@@ -25,12 +25,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Threading;
 using MediaPortal.Player;
 using MediaPortal.GUI.Library;
-using ExternalOSDLibrary;
 
 namespace MPlayer
 {
@@ -80,7 +78,7 @@ namespace MPlayer
     /// <summary>
     /// Configuration Manager
     /// </summary>
-    private ConfigurationManager _configManager;
+    private readonly ConfigurationManager _configManager;
 
     /// <summary>
     /// Handler for all video rlevant tasks
@@ -159,7 +157,7 @@ namespace MPlayer
     /// </summary>
     public override string VersionNumber
     {
-      get { return "0.90"; }
+      get { return "1.0"; }
     }
     #endregion
 
@@ -262,10 +260,10 @@ namespace MPlayer
         {
           _isVisible = false;
         }
-        _exitHandler = new EventHandler(MplayerProcess_Exited);
+        _exitHandler = MplayerProcess_Exited;
         _mplayerProcess.Exited += _exitHandler;
         _mplayerProcess.Start();
-        _dataReceivedHandler = new DataReceivedEventHandler(MplayerProcess_OutputDataReceived);
+        _dataReceivedHandler = MplayerProcess_OutputDataReceived;
         _mplayerProcess.OutputDataReceived += _dataReceivedHandler;
         _mplayerProcess.BeginOutputReadLine();
         _input = _mplayerProcess.StandardInput;
@@ -495,7 +493,7 @@ namespace MPlayer
       _messageHandlers.Add(_audioSubtitleHandler);
       _messageHandlers.Add(_seekingHandler);
       _messageHandlers.Add(_osdHandler);
-      _actionHandler = new OnActionHandler(OnNewAction);
+      _actionHandler = OnNewAction;
       GUIWindowManager.OnNewAction += _actionHandler;
     }
     #endregion
@@ -528,7 +526,7 @@ namespace MPlayer
     internal void SendCommand(string command)
     {
       Log.Debug("MPlayer: Send command: " + command);
-      int linefeed = 10;
+      const int linefeed = 10;
       _input.Write(command + (char)linefeed);
     }
 
@@ -713,7 +711,7 @@ namespace MPlayer
     /// <summary>
     /// Gets A/R Geometry of the video window
     /// </summary>
-    public override MediaPortal.GUI.Library.Geometry.Type ARType
+    public override Geometry.Type ARType
     {
       get { return _videoHandler.ARType; }
       set

@@ -23,11 +23,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
 using MediaPortal.Configuration;
 using OsDetection;
@@ -63,14 +58,7 @@ namespace MPlayer.ConfigurationPanel
         rebuildIndex.Checked = xmlreader.GetValueAsBool("mplayer", "rebuildIndex", false);
         priorityBoost.Checked = xmlreader.GetValueAsBool("mplayer", "priorityBoost", true);
         int tempCacheSize = xmlreader.GetValueAsInt("mplayer", "cacheSize", 4096);
-        if (tempCacheSize > 0)
-        {
-          cacheSize.Text = tempCacheSize.ToString();
-        }
-        else
-        {
-          cacheSize.Text = String.Empty;
-        }
+        cacheSize.Text = tempCacheSize > 0 ? tempCacheSize.ToString() : String.Empty;
         mplayerPath.Text = xmlreader.GetValueAsString("mplayer", "mplayerPath", "C:\\Program Files\\MPlayer\\MPlayer.exe");
         bool blankScreenStandardValue = true;
         OSVersionInfo os = new OperatingSystemVersion();
@@ -113,7 +101,7 @@ namespace MPlayer.ConfigurationPanel
     /// </summary>
     /// <param _name="sender">Sender object</param>
     /// <param _name="e">Event Arguments</param>
-    private void cacheSize_KeyPress(object sender, KeyPressEventArgs e)
+    private static void cacheSize_KeyPress(object sender, KeyPressEventArgs e)
     {
       if (!Char.IsNumber(e.KeyChar) && !Char.IsControl(e.KeyChar))
       {
@@ -131,14 +119,7 @@ namespace MPlayer.ConfigurationPanel
       openFileDialog1.Filter = "MPlayer commandline version (mplayer.exe)|mplayer.exe|MPlayer GUI version (gmplayer.exe)|gmplayer.exe";
       openFileDialog1.InitialDirectory = System.IO.Path.GetDirectoryName(mplayerPath.Text);
       openFileDialog1.FileName = System.IO.Path.GetFileName(mplayerPath.Text);
-      if (openFileDialog1.FileName.Equals("mplayer.exe"))
-      {
-        openFileDialog1.FilterIndex = 1;
-      }
-      else
-      {
-        openFileDialog1.FilterIndex = 2;
-      }
+      openFileDialog1.FilterIndex = openFileDialog1.FileName.Equals("mplayer.exe") ? 1 : 2;
       openFileDialog1.ShowDialog();
       mplayerPath.Text = openFileDialog1.FileName;
     }

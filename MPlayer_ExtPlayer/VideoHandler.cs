@@ -23,7 +23,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using MediaPortal.GUI.Library;
@@ -138,12 +137,12 @@ namespace MPlayer
     /// <summary>
     /// Reference to the main player component
     /// </summary>
-    private MPlayer_ExtPlayer _player;
+    private readonly MPlayer_ExtPlayer _player;
 
     /// <summary>
     /// Instance of the current OSD Handler
     /// </summary>
-    private IOSDHandler _osdHandler;
+    private readonly IOSDHandler _osdHandler;
     #endregion
 
     #region ctor
@@ -163,15 +162,15 @@ namespace MPlayer
       _mplayerBackgroundPanel = new Panel();
       _mplayerBackgroundPanel.ForeColor = Color.Black;
       _mplayerBackgroundPanel.BackColor = Color.Black;
-      _mplayerBackgroundPanel.Size = new System.Drawing.Size(0, 0);
+      _mplayerBackgroundPanel.Size = new Size(0, 0);
       _mplayerBackgroundPanel.Location = new Point(0, 0);
       _mplayerOuterPanel = new Panel();
       _mplayerOuterPanel.ForeColor = Color.Black;
       _mplayerOuterPanel.BackColor = Color.Black;
-      _mplayerOuterPanel.Size = new System.Drawing.Size(0, 0);
+      _mplayerOuterPanel.Size = new Size(0, 0);
       _mplayerOuterPanel.Location = new Point(0, 0);
       _mplayerInnerPanel = new Panel();
-      _mplayerInnerPanel.Size = new System.Drawing.Size(0, 0);
+      _mplayerInnerPanel.Size = new Size(0, 0);
       _mplayerInnerPanel.ForeColor = Color.FromArgb(16, 16, 16);
       _mplayerInnerPanel.BackColor = Color.FromArgb(16, 16, 16);
       _mplayerOuterPanel.Controls.Add(_mplayerInnerPanel);
@@ -295,7 +294,7 @@ namespace MPlayer
       }
       set
       {
-        this._videoWidth = value;
+        _videoWidth = value;
       }
     }
 
@@ -310,7 +309,7 @@ namespace MPlayer
       }
       set
       {
-        this._videoHeight = value;
+        _videoHeight = value;
       }
     }
 
@@ -402,7 +401,7 @@ namespace MPlayer
     /// <summary>
     /// Gets A/R Geometry of the video window
     /// </summary>
-    public MediaPortal.GUI.Library.Geometry.Type ARType
+    public Geometry.Type ARType
     {
       get
       {
@@ -457,7 +456,7 @@ namespace MPlayer
       _mplayerBackgroundPanel.Location = new Point(GUIGraphicsContext.OverScanTop, GUIGraphicsContext.OverScanLeft);
       _mplayerBackgroundPanel.ClientSize = new Size(GUIGraphicsContext.OverScanWidth, GUIGraphicsContext.OverScanHeight);
       _mplayerBackgroundPanel.Size = new Size(GUIGraphicsContext.OverScanWidth, GUIGraphicsContext.OverScanHeight);
-      Geometry m_geometry = new MediaPortal.GUI.Library.Geometry();
+      Geometry m_geometry = new Geometry();
       m_geometry.ImageWidth = _videoWidth;
       m_geometry.ImageHeight = _videoHeight;
       m_geometry.ScreenWidth = _renderWidth;

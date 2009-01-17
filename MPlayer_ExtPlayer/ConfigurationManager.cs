@@ -32,7 +32,6 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using MediaPortal.GUI.Library;
-using MediaPortal.Util;
 using MediaPortal.Configuration;
 using Microsoft.Win32;
 
@@ -481,9 +480,9 @@ namespace MPlayer
     {
       _fontsCollection = new List<string>();
       InstalledFontCollection fonts = new InstalledFontCollection();
-      string fileName;
       foreach (FontFamily family in fonts.Families)
       {
+        string fileName;
         if (CheckSubtitleFont(family.Name, out fileName))
         {
           _fontsCollection.Add(family.Name);
@@ -497,22 +496,15 @@ namespace MPlayer
     /// <param _name="subtitleFont">Name of the font family</param>
     /// <param _name="fileName">Filename of the font family</param>
     /// <returns>true, if Filename can be retrieved</returns>
-    private bool CheckSubtitleFont(string subtitleFont, out string fileName)
+    private static bool CheckSubtitleFont(string subtitleFont, out string fileName)
     {
       fileName = String.Empty;
       using (RegistryKey subkey = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion\Fonts"))
       {
         if (subkey != null)
         {
-          fileName = (string)subkey.GetValue(subtitleFont + " (TrueType)");
-          if (fileName == null)
-          {
-            fileName = (string)subkey.GetValue(subtitleFont);
-          }
-          if (fileName == null)
-          {
-            fileName = (string)subkey.GetValue(subtitleFont + " (All Res)");
-          }
+          fileName = ((string)subkey.GetValue(subtitleFont + " (TrueType)") ?? (string)subkey.GetValue(subtitleFont)) ??
+                     (string)subkey.GetValue(subtitleFont + " (All Res)");
         }
       }
       using (RegistryKey subkey = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Fonts"))
@@ -552,22 +544,15 @@ namespace MPlayer
     {
       try
       {
-        string strExtAudio = null;
-        string strExtVideo = null;
         ExtensionSettings mplayerSetting = new ExtensionSettings(".mplayer", PlayMode.Unrecognized, "", true);
         _extensionSettings = new Dictionary<string, ExtensionSettings>();
         _extensionSettings.Add(mplayerSetting.Name, mplayerSetting);
         _extensionSettingsExtPlayer = new Dictionary<string, ExtensionSettings>();
         _extensionSettingsExtPlayer.Add(mplayerSetting.Name, mplayerSetting);
-        String arguments;
         ExtensionSettings settings;
-        String videoArguments;
-        String audioArguments;
         using (MediaPortal.Profile.Settings xmlreader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml")))
         {
           _osdMode = (OSDMode)xmlreader.GetValueAsInt("mplayer", "osd", (int)OSDMode.InternalMPlayer);
-          strExtAudio = xmlreader.GetValueAsString("mplayer", "enabledextensionsAudio", "");
-          strExtVideo = xmlreader.GetValueAsString("mplayer", "enabledextensionsVideo", "");
           _rebuildIndex = xmlreader.GetValueAsBool("mplayer", "rebuildIndex", false);
           _priorityBoost = xmlreader.GetValueAsBool("mplayer", "priorityBoost", true);
           _framedrop = xmlreader.GetValueAsBool("mplayer", "framedrop", false);
@@ -591,7 +576,7 @@ namespace MPlayer
           _subtitleFontSet = CheckSubtitleFont(subtitleFontName, out _subtitleFontFileName);
           _mplayerPath = xmlreader.GetValueAsString("mplayer", "mplayerPath", "C:\\Program Files\\MPlayer\\");
           xmlreader.GetValueAsString("mplayer", "mplayerPath", "C:\\Program Files\\MPlayer\\Mplayer.exe");
-          arguments = xmlreader.GetValueAsString("mplayer", "generalArguments", "");
+          string arguments = xmlreader.GetValueAsString("mplayer", "generalArguments", "");
           settings = new ExtensionSettings("general", PlayMode.Unrecognized, arguments, false);
           _extensionSettings.Add(settings.Name, settings);
           arguments = xmlreader.GetValueAsString("mplayer", "dvdArguments", String.Empty);
@@ -636,8 +621,6 @@ namespace MPlayer
           arguments = xmlreader.GetValueAsString("mplayer", "unsvArguments", String.Empty);
           settings = new ExtensionSettings("unsv://", PlayMode.Unrecognized, arguments, false);
           _extensionSettings.Add(settings.Name, settings);
-          videoArguments = xmlreader.GetValueAsString("mplayer", "videoArguments", String.Empty);
-          audioArguments = xmlreader.GetValueAsString("mplayer", "audioArguments", String.Empty);
           _enableSubtitles = xmlreader.GetValueAsBool("mplayer", "enableSubtitles", false);
           _videoOutputDriver = (VideoOutputDriver)xmlreader.GetValueAsInt("mplayer", "videoOutputDriver", (int)VideoOutputDriver.DirectX);
           string timeout = (xmlreader.GetValueAsString("movieplayer", "skipsteptimeout", "1500"));
@@ -662,43 +645,47 @@ namespace MPlayer
     /// <summary>
     /// Loads the Plugin specific XML configuration file
     /// </summary>
-    private void LoadXMLData()
+    private static void LoadXMLData()
     {
-      ExtensionSettings settings = null;
+      ExtensionSettings settings ;
       PlayMode mode = PlayMode.Unrecognized;
       XmlDocument doc = new XmlDocument();
       string path = Config.GetFile(Config.Dir.Config, "MPlayer_ExtPlayer.xml");
       doc.Load(path);
-      XmlNodeList listExtensionFamilies = doc.DocumentElement.SelectNodes("/mplayer/extensions");
-      foreach (XmlNode nodeFamily in listExtensionFamilies)
+      if (doc.DocumentElement != null)
       {
-        if (nodeFamily.Attributes["family"].Value.Equals("Video"))
-        {
-          mode = PlayMode.Video;
-        }
-        else if (nodeFamily.Attributes["family"].Value.Equals("Audio"))
-        {
-          mode = PlayMode.Audio;
-        }
-        XmlNodeList listExtensions = nodeFamily.SelectNodes("Extension");
-        foreach (XmlNode nodeExtension in listExtensions)
-        {
-          settings = new ExtensionSettings();
-          settings.Name = nodeExtension.Attributes["name"].Value;
-          settings.Arguments = nodeExtension.Attributes["arguments"].Value;
-          settings.ExtPlayerUse = Boolean.Parse(nodeExtension.Attributes["extPlayerUse"].Value);
-          settings.PlayMode = mode;
-          if (!_extensionSettings.ContainsKey(settings.Name))
+        XmlNodeList listExtensionFamilies = doc.DocumentElement.SelectNodes("/mplayer/extensions");
+        if (listExtensionFamilies != null)
+          foreach (XmlNode nodeFamily in listExtensionFamilies)
           {
-            _extensionSettings.Add(settings.Name, settings);
-            if (settings.ExtPlayerUse)
+            if (nodeFamily.Attributes["family"].Value.Equals("Video"))
             {
-              _extensionSettingsExtPlayer.Add(settings.Name, settings);
+              mode = PlayMode.Video;
             }
+            else if (nodeFamily.Attributes["family"].Value.Equals("Audio"))
+            {
+              mode = PlayMode.Audio;
+            }
+            XmlNodeList listExtensions = nodeFamily.SelectNodes("Extension");
+            if (listExtensions != null)
+              foreach (XmlNode nodeExtension in listExtensions)
+              {
+                settings = new ExtensionSettings();
+                settings.Name = nodeExtension.Attributes["name"].Value;
+                settings.Arguments = nodeExtension.Attributes["arguments"].Value;
+                settings.ExtPlayerUse = Boolean.Parse(nodeExtension.Attributes["extPlayerUse"].Value);
+                settings.PlayMode = mode;
+                if (!_extensionSettings.ContainsKey(settings.Name))
+                {
+                  _extensionSettings.Add(settings.Name, settings);
+                  if (settings.ExtPlayerUse)
+                  {
+                    _extensionSettingsExtPlayer.Add(settings.Name, settings);
+                  }
+                }
+              }
           }
-        }
       }
-
     }
 
     /// <summary>
@@ -864,7 +851,7 @@ namespace MPlayer
     /// Check if the current screen is the primary screen or we have to add and extra argument
     /// </summary>
     /// <returns>Additional argument for a different screen</returns>
-    private String GetScreenArguments()
+    private static String GetScreenArguments()
     {
       Screen currentScreen = GUIGraphicsContext.currentScreen;
       if (currentScreen.Primary)
@@ -931,7 +918,6 @@ namespace MPlayer
       }
       else if (fileName.EndsWith(".cda"))
       {
-        isVideo = false;
       }
       else
       {
@@ -1051,12 +1037,11 @@ namespace MPlayer
     /// <returns>true, if the player can play this file</returns>
     public bool SupportsFile(String filename)
     {
-      string ext = null;
       int dot = filename.LastIndexOf(".");    // couldn't find the dot to get the extension
       if (dot == -1)
         return false;
 
-      ext = filename.Substring(dot).Trim();
+      string ext = filename.Substring(dot).Trim();
       if (ext.Length == 0)
         return false;   // no extension so return false;
 

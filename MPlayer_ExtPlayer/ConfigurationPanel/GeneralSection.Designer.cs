@@ -123,7 +123,7 @@ namespace MPlayer.ConfigurationPanel
       this.cacheSize.TabIndex = 73;
       this.toolTip.SetToolTip(this.cacheSize, "The size of cache that MPlayer will be used in KB (Kilobytes).\r\nFor streaming a v" +
               "alue of at least 4096 is recommend.\r\n");
-      this.cacheSize.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cacheSize_KeyPress);
+      this.cacheSize.KeyPress += new System.Windows.Forms.KeyPressEventHandler(cacheSize_KeyPress);
       // 
       // folderSearch
       // 

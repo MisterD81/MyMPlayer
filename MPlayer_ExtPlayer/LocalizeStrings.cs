@@ -24,15 +24,10 @@
 #endregion
 
 using System;
-using System.IO;
 using System.Globalization;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using System.Xml;
-using MediaPortal.GUI;
 using MediaPortal.GUI.Library;
-using MediaPortal.Util;
 using MediaPortal.Configuration;
 using MediaPortal.Localisation;
 
@@ -160,7 +155,7 @@ namespace MPlayer
     //[Obsolete("This method has changed", true)]
     static public bool Load(string language)
     {
-      bool isPrefixEnabled = true;
+      bool isPrefixEnabled;
 
       using (MediaPortal.Profile.Settings reader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml")))
         isPrefixEnabled = reader.GetValueAsBool("general", "myprefix", true);
@@ -226,7 +221,7 @@ namespace MPlayer
       try
       {
         return String.Format(translation, parameters);
-      } catch (System.FormatException e)
+      } catch (FormatException e)
       {
         Log.Error("Error formatting translation with id {0}", dwCode);
         Log.Error("Unformatted translation: {0}", translation);
@@ -282,7 +277,7 @@ namespace MPlayer
 
       try
       {
-        dwLabelID = System.Int32.Parse(strLabel);
+        dwLabelID = Int32.Parse(strLabel);
       } catch (FormatException e)
       {
         Log.Error(e);

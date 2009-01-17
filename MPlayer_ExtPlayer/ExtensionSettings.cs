@@ -23,8 +23,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MPlayer
 {
@@ -96,10 +94,10 @@ namespace MPlayer
     /// <param _name="_extPlayerUse">Use in external player</param>
     public ExtensionSettings(String name, PlayMode playMode, String arguments, bool extPlayerUse)
     {
-      this._name = name;
-      this._playMode = playMode;
-      this._arguments = arguments;
-      this._extPlayerUse = extPlayerUse;
+      _name = name;
+      _playMode = playMode;
+      _arguments = arguments;
+      _extPlayerUse = extPlayerUse;
     }
     #endregion
 
@@ -110,7 +108,7 @@ namespace MPlayer
     public PlayMode PlayMode
     {
       get { return _playMode; }
-      set { this._playMode = value; }
+      set { _playMode = value; }
     }
 
     /// <summary>
@@ -119,7 +117,7 @@ namespace MPlayer
     public String Arguments
     {
       get { return _arguments; }
-      set { this._arguments = value; }
+      set { _arguments = value; }
     }
 
     /// <summary>
@@ -128,7 +126,7 @@ namespace MPlayer
     public String Name
     {
       get { return _name; }
-      set { this._name = value; }
+      set { _name = value; }
     }
 
     /// <summary>
@@ -137,7 +135,7 @@ namespace MPlayer
     public bool ExtPlayerUse
     {
       get { return _extPlayerUse; }
-      set { this._extPlayerUse = value; }
+      set { _extPlayerUse = value; }
     }
     #endregion
 
