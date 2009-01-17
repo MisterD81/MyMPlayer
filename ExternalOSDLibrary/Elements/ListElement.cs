@@ -25,7 +25,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 using MediaPortal.GUI.Library;
 
 namespace ExternalOSDLibrary
@@ -50,12 +49,12 @@ namespace ExternalOSDLibrary
       /// <summary>
       /// Image focus
       /// </summary>
-      private Bitmap _imageFocus;
+      private readonly Bitmap _imageFocus;
 
       /// <summary>
       /// Image non focus
       /// </summary>
-      private Bitmap _imageNonFocus;
+      private readonly Bitmap _imageNonFocus;
 
       /// <summary>
       /// X Position
@@ -70,12 +69,12 @@ namespace ExternalOSDLibrary
       /// <summary>
       /// Width
       /// </summary>
-      private float _width;
+      private readonly float _width;
 
       /// <summary>
       /// Height
       /// </summary>
-      private float _height;
+      private readonly float _height;
 
       /// <summary>
       /// Indicates if an update is needed
@@ -165,7 +164,6 @@ namespace ExternalOSDLibrary
       /// </summary>
       public bool Focus
       {
-        get { return _focus; }
         set
         {
           if (_focus != value)
@@ -221,7 +219,7 @@ namespace ExternalOSDLibrary
       /// <summary>
       /// Height
       /// </summary>
-      private float _height;
+      private readonly float _height;
 
       /// <summary>
       /// Font
@@ -267,14 +265,7 @@ namespace ExternalOSDLibrary
         {
           rectangle = new RectangleF(_xPosition, _yPosition, _width, Math.Max(stringSize.Height, _height));
         }
-        else if (_alignment == GUIControl.Alignment.ALIGN_RIGHT)
-        {
-          rectangle = new RectangleF(_xPosition - stringSize.Width, _yPosition, _width, Math.Max(stringSize.Height, _height));
-        }
-        else
-        {
-          rectangle = new RectangleF(_xPosition - (stringSize.Width / 2), _yPosition - (stringSize.Height / 2), _width, Math.Max(stringSize.Height, _height));
-        }
+        else rectangle = _alignment == GUIControl.Alignment.ALIGN_RIGHT ? new RectangleF(_xPosition - stringSize.Width, _yPosition, _width, Math.Max(stringSize.Height, _height)) : new RectangleF(_xPosition - (stringSize.Width / 2), _yPosition - (stringSize.Height / 2), _width, Math.Max(stringSize.Height, _height));
         graph.DrawString(GUIPropertyManager.Parse(_label), _font, _brush, rectangle, StringFormat.GenericTypographic);
       }
 
@@ -303,7 +294,6 @@ namespace ExternalOSDLibrary
       /// </summary>
       public GUIControl.Alignment Alignment
       {
-        get { return _alignment; }
         set { _alignment = value; }
       }
 
@@ -321,7 +311,6 @@ namespace ExternalOSDLibrary
       /// </summary>
       public float YPosition
       {
-        get { return _yPosition; }
         set { _yPosition = value; }
       }
 
@@ -330,17 +319,7 @@ namespace ExternalOSDLibrary
       /// </summary>
       public float Width
       {
-        get { return _width; }
         set { _width = value; }
-      }
-
-      /// <summary>
-      /// Gets/Sets the height
-      /// </summary>
-      public float Height
-      {
-        get { return _height; }
-        set { _height = value; }
       }
 
       /// <summary>
@@ -348,7 +327,6 @@ namespace ExternalOSDLibrary
       /// </summary>
       public String Label
       {
-        get { return _label; }
         set { _label = value; }
       }
 
@@ -357,7 +335,6 @@ namespace ExternalOSDLibrary
       /// </summary>
       public Font Font
       {
-        get { return _font; }
         set { _font = value; }
       }
 
@@ -366,7 +343,6 @@ namespace ExternalOSDLibrary
       /// </summary>
       public SolidBrush Brush
       {
-        get { return _brush; }
         set { _brush = value; }
       }
       #endregion
@@ -389,7 +365,7 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// GUIListControl
     /// </summary>
-    private GUIListControl _list;
+    private readonly GUIListControl _list;
 
     /// <summary>
     /// Offset
@@ -404,7 +380,7 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// List of the buttons
     /// </summary>
-    private List<ListButtonElement> _listButtons;
+    private readonly List<ListButtonElement> _listButtons;
 
     /// <summary>
     /// List of the items
@@ -414,22 +390,22 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// List of the Label1's
     /// </summary>
-    private List<ListLabelElement> _labelControls1;
+    private readonly List<ListLabelElement> _labelControls1;
 
     /// <summary>
     /// List of the Label2's
     /// </summary>
-    private List<ListLabelElement> _labelControls2;
+    private readonly List<ListLabelElement> _labelControls2;
 
     /// <summary>
     /// List of the Label3's
     /// </summary>
-    private List<ListLabelElement> _labelControls3;
+    private readonly List<ListLabelElement> _labelControls3;
 
     /// <summary>
     /// Cached Images
     /// </summary>
-    private Dictionary<String, Bitmap> _cachedBitmaps;
+    private readonly Dictionary<String, Bitmap> _cachedBitmaps;
 
     /// <summary>
     /// Text line
@@ -439,7 +415,7 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// VerticalScrollbarElement
     /// </summary>
-    private VerticalScrollBarElement _verticalScrollBarElement;
+    private readonly VerticalScrollBarElement _verticalScrollBarElement;
 
     /// <summary>
     /// Indicates, if the list is focused
@@ -456,18 +432,21 @@ namespace ExternalOSDLibrary
       : base(control)
     {
       _list = control as GUIListControl;
-      _cursorX = _list.CursorX;
-      _offset = _list.Offset;
-      _listButtons = new List<ListButtonElement>();
-      _labelControls1 = new List<ListLabelElement>();
-      _labelControls2 = new List<ListLabelElement>();
-      _labelControls3 = new List<ListLabelElement>();
-      _cachedBitmaps = new Dictionary<String, Bitmap>();
-      AllocButtons(_list.SpinX, _list.SpinY);
-      initializeLabels();
-      _verticalScrollBarElement = new VerticalScrollBarElement(_list.Scrollbar);
-      _focus = _list.IsFocused;
-      Log.Debug("VideoPlayerOSD: Found list element: ");
+      if (_list != null)
+      {
+        _cursorX = _list.CursorX;
+        _offset = _list.Offset;
+        _listButtons = new List<ListButtonElement>();
+        _labelControls1 = new List<ListLabelElement>();
+        _labelControls2 = new List<ListLabelElement>();
+        _labelControls3 = new List<ListLabelElement>();
+        _cachedBitmaps = new Dictionary<String, Bitmap>();
+        AllocButtons(_list.SpinX, _list.SpinY);
+        initializeLabels();
+        _verticalScrollBarElement = new VerticalScrollBarElement(_list.Scrollbar);
+        _focus = _list.IsFocused;
+        Log.Debug("VideoPlayerOSD: Found list element: ");
+      }
     }
     #endregion
 
@@ -526,7 +505,6 @@ namespace ExternalOSDLibrary
             // render the icon
             RenderIcon(graph, i, iconX, dwPosY + _list.IconOffsetY);
 
-            dwPosX += (_list.ImageWidth + ten);
             // render the text
             RenderLabel(graph, i, labelX, dwPosY);
 
@@ -536,7 +514,7 @@ namespace ExternalOSDLibrary
           } //if (i + _offset < _listItems.Count)
         } //for (int i = 0; i < _itemsPerPage; i++)
 
-        RenderScrollbar(graph, dwPosY);
+        RenderScrollbar(graph);
       }
     }
 
@@ -645,7 +623,7 @@ namespace ExternalOSDLibrary
     private void RenderLabel(Graphics graph, int buttonNr, int dwPosX, int dwPosY)
     {
       GUIListItem pItem = _listItems[buttonNr + _offset];
-      long dwColor = _list.TextColor;
+      long dwColor;
       if (pItem.Shaded)
         dwColor = _list.ShadedColor;
 
@@ -804,11 +782,9 @@ namespace ExternalOSDLibrary
             label3.Font = getFont(_list.Font3);
             label3.Width = (_list.Width - _list.TextOffsetX - _list.ImageWidth - GUIGraphicsContext.ScaleHorizontal(34));
             label3.DrawElement(graph);
-            label3 = null;
           }
         }
       }
-      pItem = null;
     }
 
     /// <summary>
@@ -846,10 +822,7 @@ namespace ExternalOSDLibrary
       label.Brush = new SolidBrush(GetColor(dwTextColor));
       label.Label = strTextToRender;
       label.Width = fMaxWidth;
-      if (stringSize.Width < fMaxWidth)
-        label.Alignment = _list.TextAlignment;
-      else
-        label.Alignment = GUIControl.Alignment.ALIGN_LEFT;
+      label.Alignment = stringSize.Width < fMaxWidth ? _list.TextAlignment : GUIControl.Alignment.ALIGN_LEFT;
       label.Font = getFont(_list.FontName);
       label.DrawElement(graph);
     }
@@ -875,7 +848,6 @@ namespace ExternalOSDLibrary
             btn.SetPosition(x, y);
             btn.DrawElement(graph);
           }
-          btn = null;
         }
       }
     }
@@ -964,15 +936,13 @@ namespace ExternalOSDLibrary
           graph.DrawImage(bitmap, position.X, position.Y, _list.PinIconWidth, _list.PinIconHeight);
         }
       }
-      pItem = null;
     }
 
     /// <summary>
     /// Render the scroll bar
     /// </summary>
     /// <param name="graph">Graphics</param>
-    /// <param name="y">Y Position</param>
-    private void RenderScrollbar(Graphics graph, int y)
+    private void RenderScrollbar(Graphics graph)
     {
       if (_listItems.Count > _list.ItemsPerPage)
       {

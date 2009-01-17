@@ -23,11 +23,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.Text;
 using MediaPortal.GUI.Library;
 
 namespace ExternalOSDLibrary
@@ -41,42 +37,42 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// GUIToggleButton
     /// </summary>
-    private GUIToggleButtonControl _button;
+    private readonly GUIToggleButtonControl _button;
 
     /// <summary>
     /// Focus bitmap
     /// </summary>
-    private Bitmap _focusBitmap;
+    private readonly Bitmap _focusBitmap;
 
     /// <summary>
     /// Non focus bitmap
     /// </summary>
-    private Bitmap _noFocusBitmap;
+    private readonly Bitmap _noFocusBitmap;
 
     /// <summary>
     /// Alternative focus bitmap
     /// </summary>
-    private Bitmap _altFocusBitmap;
+    private readonly Bitmap _altFocusBitmap;
 
     /// <summary>
     /// Alternative non focus bitmap
     /// </summary>
-    private Bitmap _altNoFocusBitmap;
+    private readonly Bitmap _altNoFocusBitmap;
 
     /// <summary>
     /// Font
     /// </summary>
-    private Font _font;
+    private readonly Font _font;
 
     /// <summary>
     /// Textcolor
     /// </summary>
-    private Color _textColor;
+    private readonly Color _textColor;
 
     /// <summary>
     /// Disabled color
     /// </summary>
-    private Color _disabledColor;
+    private readonly Color _disabledColor;
 
     /// <summary>
     /// Indicates, if the toogle button is focused
@@ -103,17 +99,20 @@ namespace ExternalOSDLibrary
       : base(control)
     {
       _button = control as GUIToggleButtonControl;
-      _font = getFont(_button.FontName);
-      _focusBitmap = loadBitmap(_button.TexutureFocusName);
-      _noFocusBitmap = loadBitmap(_button.TexutureNoFocusName);
-      _altFocusBitmap = loadBitmap(_button.AltTexutureFocusName);
-      _altNoFocusBitmap = loadBitmap(_button.AltTexutureNoFocusName);
-      _textColor = GetColor(_button.TextColor);
-      _disabledColor = GetColor(_button.DisabledColor);
-      _focus = _button.Focus;
-      _selected = _button.Selected;
-      _label = _button.Label;
-      Log.Debug("VideoPlayerOSD: Found toggle button element: " + _button.GetID);
+      if (_button != null)
+      {
+        _font = getFont(_button.FontName);
+        _focusBitmap = loadBitmap(_button.TexutureFocusName);
+        _noFocusBitmap = loadBitmap(_button.TexutureNoFocusName);
+        _altFocusBitmap = loadBitmap(_button.AltTexutureFocusName);
+        _altNoFocusBitmap = loadBitmap(_button.AltTexutureNoFocusName);
+        _textColor = GetColor(_button.TextColor);
+        _disabledColor = GetColor(_button.DisabledColor);
+        _focus = _button.Focus;
+        _selected = _button.Selected;
+        _label = _button.Label;
+        Log.Debug("VideoPlayerOSD: Found toggle button element: " + _button.GetID);
+      }
     }
     #endregion
 

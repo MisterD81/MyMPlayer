@@ -22,15 +22,8 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Text;
-using System.Windows.Forms;
 using MediaPortal.GUI.Library;
 using MediaPortal.GUI.Video;
-using System.Windows;
 
 namespace ExternalOSDLibrary
 {
@@ -43,7 +36,7 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// Video OSD window
     /// </summary>
-    private GUIVideoOSD _osdWindow;
+    private readonly GUIVideoOSD _osdWindow;
     #endregion
 
     #region ctor
@@ -53,7 +46,7 @@ namespace ExternalOSDLibrary
     public VideoOSDWindow()
     {
       _osdWindow = GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_OSD) as GUIVideoOSD;
-      _controlList = _osdWindow.controlList;
+      if (_osdWindow != null) _controlList = _osdWindow.controlList;
       GenerateElements();
     }
     #endregion

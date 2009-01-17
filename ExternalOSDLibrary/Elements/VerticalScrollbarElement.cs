@@ -22,10 +22,7 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 using MediaPortal.GUI.Library;
 
 namespace ExternalOSDLibrary
@@ -39,22 +36,22 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// GUIVerticalScrollbar
     /// </summary>
-    private GUIVerticalScrollbar _verticalScrollBar;
+    private readonly GUIVerticalScrollbar _verticalScrollBar;
 
     /// <summary>
     /// Background image of the scrollbar
     /// </summary>
-    private Bitmap _scrollBarBackground;
+    private readonly Bitmap _scrollBarBackground;
 
     /// <summary>
     /// Top image of the scrollbar
     /// </summary>
-    private Bitmap _scrollBarTop;
+    private readonly Bitmap _scrollBarTop;
 
     /// <summary>
     /// Bottom image of the scrollbar
     /// </summary>
-    private Bitmap _scrollBarBottom;
+    private readonly Bitmap _scrollBarBottom;
 
     /// <summary>
     /// Percentage
@@ -71,13 +68,13 @@ namespace ExternalOSDLibrary
       : base(control)
     {
       _verticalScrollBar = control as GUIVerticalScrollbar;
-      _scrollBarBackground = loadBitmap(_verticalScrollBar.BackGroundTextureName);
-      ;
-      _scrollBarTop = loadBitmap(_verticalScrollBar.BackTextureTopName);
-      ;
-      _scrollBarBottom = loadBitmap(_verticalScrollBar.BackTextureBottomName);
-      ;
-      _percentage = _verticalScrollBar.Percentage;
+      if (_verticalScrollBar != null)
+      {
+        _scrollBarBackground = loadBitmap(_verticalScrollBar.BackGroundTextureName);
+        _scrollBarTop = loadBitmap(_verticalScrollBar.BackTextureTopName);
+        _scrollBarBottom = loadBitmap(_verticalScrollBar.BackTextureBottomName);
+        _percentage = _verticalScrollBar.Percentage;
+      }
       Log.Debug("VideoPlayerOSD: Found vertical scroll bar element ");
     }
     #endregion
@@ -103,8 +100,8 @@ namespace ExternalOSDLibrary
           int _startPositionY = _verticalScrollBar.YPosition;
           int _endPositionY = _startPositionY + iHeight;
 
-          int iKnobHeight = (int)(_scrollBarTop.Height);
-          fPosYOff *= (float)(_endPositionY - _startPositionY - iKnobHeight);
+          int iKnobHeight = _scrollBarTop.Height;
+          fPosYOff *= _endPositionY - _startPositionY - iKnobHeight;
 
           int _knobPositionY = _startPositionY + (int)fPosYOff;
           int iXPos = _verticalScrollBar.XPosition + ((_verticalScrollBar.Width / 2) - (_scrollBarTop.Width));

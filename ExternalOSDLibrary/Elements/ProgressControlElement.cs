@@ -23,10 +23,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
-using System.Text;
 using MediaPortal.GUI.Library;
 
 namespace ExternalOSDLibrary
@@ -40,27 +37,27 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// GUIProgressControl
     /// </summary>
-    private GUIProgressControl _progressControl;
+    private readonly GUIProgressControl _progressControl;
 
     /// <summary>
     /// Left image
     /// </summary>
-    private Bitmap _leftBitmap;
+    private readonly Bitmap _leftBitmap;
 
     /// <summary>
     /// Middle image
     /// </summary>
-    private Bitmap _midBitmap;
+    private readonly Bitmap _midBitmap;
 
     /// <summary>
     /// Right image
     /// </summary>
-    private Bitmap _rightBitmap;
+    private readonly Bitmap _rightBitmap;
 
     /// <summary>
     /// Background image
     /// </summary>
-    private Bitmap _backgroundBitmap;
+    private readonly Bitmap _backgroundBitmap;
 
     /// <summary>
     /// Percentage of the progress control
@@ -77,12 +74,15 @@ namespace ExternalOSDLibrary
       : base(control)
     {
       _progressControl = control as GUIProgressControl;
-      _leftBitmap = loadBitmap(_progressControl.BackTextureLeftName);
-      _midBitmap = loadBitmap(_progressControl.BackTextureMidName);
-      _rightBitmap = loadBitmap(_progressControl.BackTextureRightName);
-      _backgroundBitmap = loadBitmap(_progressControl.BackGroundTextureName);
-      _percentage = GetPercentage();
-      Log.Debug("VideoPlayerOSD: Found progess control");
+      if (_progressControl != null)
+      {
+        _leftBitmap = loadBitmap(_progressControl.BackTextureLeftName);
+        _midBitmap = loadBitmap(_progressControl.BackTextureMidName);
+        _rightBitmap = loadBitmap(_progressControl.BackTextureRightName);
+        _backgroundBitmap = loadBitmap(_progressControl.BackGroundTextureName);
+        _percentage = GetPercentage();
+        Log.Debug("VideoPlayerOSD: Found progess control");
+      }
     }
     #endregion
 
@@ -95,7 +95,7 @@ namespace ExternalOSDLibrary
     {
       if (_progressControl.Visible)
       {
-        float fWidth = (float)_percentage;
+        float fWidth = _percentage;
         DrawProgressBar(graph, fWidth, _percentage);
       }
     }
@@ -179,7 +179,7 @@ namespace ExternalOSDLibrary
         //iHeight=20;
         int off = 12;
         GUIGraphicsContext.ScaleHorizontal(ref off);
-        fWidth *= (float)(_progressControl.Width - 2 * off - iWidthLeft - iWidthRight);
+        fWidth *= _progressControl.Width - 2 * off - iWidthLeft - iWidthRight;
 
         int iXPos = off + _progressControl.XPosition;
 
@@ -202,7 +202,7 @@ namespace ExternalOSDLibrary
     /// <returns></returns>
     private int GetPercentage()
     {
-      int percent = 0;
+      int percent;
       Int32.TryParse(GUIPropertyManager.Parse(_progressControl.Property), out percent);
       if (percent > 100)
         percent = 100;

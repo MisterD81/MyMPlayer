@@ -25,7 +25,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using MediaPortal.GUI.Library;
 using System.Windows;
 
@@ -72,7 +71,6 @@ namespace ExternalOSDLibrary
       _imageElementList = new List<BaseElement>();
       _elementList = new List<BaseElement>();
       GUIControl controlElement;
-      GUIControl groupControlElement;
       GUIGroup groupElement;
       foreach (UIElement uiElement in _controlList)
       {
@@ -82,14 +80,15 @@ namespace ExternalOSDLibrary
           if (controlElement.GetType() == typeof(GUIGroup))
           {
             groupElement = controlElement as GUIGroup;
-            foreach (UIElement uiElement2 in groupElement.Children)
-            {
-              groupControlElement = uiElement as GUIControl;
-              if (groupControlElement != null)
+            if (groupElement != null)
+              foreach (UIElement uiElement2 in groupElement.Children)
               {
-                AnalyzeElement(groupControlElement);
+                GUIControl groupControlElement = uiElement2 as GUIControl;
+                if (groupControlElement != null)
+                {
+                  AnalyzeElement(groupControlElement);
+                }
               }
-            }
           }
           else
           {
@@ -142,47 +141,47 @@ namespace ExternalOSDLibrary
       {
         return new ImageElement(control);
       }
-      else if (control.GetType() == typeof(GUILabelControl))
+      if (control.GetType() == typeof(GUILabelControl))
       {
         return new LabelElement(control);
       }
-      else if (control.GetType() == typeof(GUIVolumeBar))
+      if (control.GetType() == typeof(GUIVolumeBar))
       {
         return new VolumeBarElement(control);
       }
-      else if (control.GetType() == typeof(GUIProgressControl))
+      if (control.GetType() == typeof(GUIProgressControl))
       {
         return new ProgressControlElement(control);
       }
-      else if (control.GetType() == typeof(GUIFadeLabel))
+      if (control.GetType() == typeof(GUIFadeLabel))
       {
         return new FadeLabelElement(control);
       }
-      else if (control.GetType() == typeof(GUIButtonControl))
+      if (control.GetType() == typeof(GUIButtonControl))
       {
         return new ButtonElement(control);
       }
-      else if (control.GetType() == typeof(GUIToggleButtonControl))
+      if (control.GetType() == typeof(GUIToggleButtonControl))
       {
         return new ToggleButtonElement(control);
       }
-      else if (control.GetType() == typeof(GUISliderControl))
+      if (control.GetType() == typeof(GUISliderControl))
       {
         return new SliderElement(control);
       }
-      else if (control.GetType() == typeof(GUICheckMarkControl))
+      if (control.GetType() == typeof(GUICheckMarkControl))
       {
         return new CheckMarkElement(control);
       }
-      else if (control.GetType() == typeof(GUITextScrollUpControl))
+      if (control.GetType() == typeof(GUITextScrollUpControl))
       {
         return new TextScrollUpElement(control);
       }
-      else if (control.GetType() == typeof(GUIListControl))
+      if (control.GetType() == typeof(GUIListControl))
       {
         return new ListElement(control);
       }
-      Log.Debug("VIDEOPLAYER_OSD FOUND UNEXPECTED TYPE: " + control.GetType().ToString());
+      Log.Debug("VIDEOPLAYER_OSD FOUND UNEXPECTED TYPE: " + control.GetType());
       return null;
     }
     #endregion
@@ -198,6 +197,7 @@ namespace ExternalOSDLibrary
       {
         if (_visible)
         {
+          Log.Info("DRAW SIZE: "+_imageElementList.Count+" - "+_elementList.Count);
           foreach (BaseElement element in _imageElementList)
           {
             element.DrawElement(graph);

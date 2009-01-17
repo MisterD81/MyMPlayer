@@ -23,11 +23,9 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using System.Threading;
 using System.Windows.Forms;
 using MediaPortal.GUI.Library;
 using MediaPortal.Player;
@@ -50,27 +48,27 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// Fullscreen window
     /// </summary>
-    private FullscreenWindow _fullscreenWindow;
+    private readonly FullscreenWindow _fullscreenWindow;
 
     /// <summary>
     /// Video OSD window
     /// </summary>
-    private VideoOSDWindow _videoOSDWindow;
+    private readonly VideoOSDWindow _videoOSDWindow;
 
     /// <summary>
     /// Dialog (Context) window
     /// </summary>
-    private DialogWindow _dialogWindow;
+    private readonly DialogWindow _dialogWindow;
 
     /// <summary>
     /// Form of the osd
     /// </summary>
-    private OSDForm _osdForm;
+    private readonly OSDForm _osdForm;
 
     /// <summary>
     /// Second form of the osd
     /// </summary>
-    private OSDForm _osdForm2;
+    private readonly OSDForm _osdForm2;
 
     /// <summary>
     /// Indicates, if additional osd information is displayed
@@ -115,12 +113,12 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// Event handler for the size changed event
     /// </summary>
-    private EventHandler _sizeChanged;
+    private readonly EventHandler _sizeChanged;
 
     /// <summary>
     /// MP parent form
     /// </summary>
-    private Form _parentForm;
+    private readonly Form _parentForm;
 
     /// <summary>
     /// Indicates if MP is minimized
@@ -130,7 +128,7 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// Indicates if the screen should be blanked in fullscreen
     /// </summary>
-    private bool _blankScreen;
+    private readonly bool _blankScreen;
 
     /// <summary>
     /// Indicates if player is in fullscreen;
@@ -168,7 +166,7 @@ namespace ExternalOSDLibrary
       _osdForm = new OSDForm();
       _osdForm2 = new OSDForm();
       _parentForm = GUIGraphicsContext.form;
-      _sizeChanged = new EventHandler(parent_SizeChanged);
+      _sizeChanged = parent_SizeChanged;
       _parentForm.SizeChanged += _sizeChanged;
       _minimized = false;
       using (MediaPortal.Profile.Settings xmlreader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml")))
@@ -184,14 +182,7 @@ namespace ExternalOSDLibrary
     /// </summary>
     public void Activate()
     {
-      if (g_Player.Player != null)
-      {
-        _fullscreen = g_Player.FullScreen;
-      }
-      else
-      {
-        _fullscreen = false;
-      }
+      _fullscreen = g_Player.Player != null && g_Player.FullScreen;
       if (GUIGraphicsContext.VideoWindow != null)
       {
         _videoRectangle = GUIGraphicsContext.VideoWindow;

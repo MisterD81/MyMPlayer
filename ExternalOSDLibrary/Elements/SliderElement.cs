@@ -23,11 +23,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.Text;
 using MediaPortal.GUI.Library;
 
 namespace ExternalOSDLibrary
@@ -41,22 +37,22 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// GUISliderControl
     /// </summary>
-    private GUISliderControl _slider;
+    private readonly GUISliderControl _slider;
 
     /// <summary>
     /// Background image
     /// </summary>
-    private Bitmap _backgroundBitmap;
+    private readonly Bitmap _backgroundBitmap;
 
     /// <summary>
     /// Slider image
     /// </summary>
-    private Bitmap _sliderBitmap;
+    private readonly Bitmap _sliderBitmap;
 
     /// <summary>
     /// Slider focus image
     /// </summary>
-    private Bitmap _sliderFocusBitmap;
+    private readonly Bitmap _sliderFocusBitmap;
 
     /// <summary>
     /// String value of the slider element
@@ -83,14 +79,16 @@ namespace ExternalOSDLibrary
       : base(control)
     {
       _slider = control as GUISliderControl;
-      Type buttonType = typeof(GUISliderControl);
-      _backgroundBitmap = loadBitmap(_slider.BackGroundTextureName);
-      _sliderBitmap = loadBitmap(_slider.BackTextureMidName);
-      _sliderFocusBitmap = loadBitmap(_slider.BackTextureMidNameFocus);
-      _focus = _slider.Focus;
-      _percentage = _slider.Percentage;
-      _strValue = getStringValue();
-      Log.Debug("VideoPlayerOSD: Found slider element: " + _slider.GetID);
+      if (_slider != null)
+      {
+        _backgroundBitmap = loadBitmap(_slider.BackGroundTextureName);
+        _sliderBitmap = loadBitmap(_slider.BackTextureMidName);
+        _sliderFocusBitmap = loadBitmap(_slider.BackTextureMidNameFocus);
+        _focus = _slider.Focus;
+        _percentage = _slider.Percentage;
+        _strValue = getStringValue();
+        Log.Debug("VideoPlayerOSD: Found slider element: " + _slider.GetID);
+      }
     }
     #endregion
 
@@ -103,15 +101,14 @@ namespace ExternalOSDLibrary
     {
       if (_slider.Visible)
       {
-        string strValue = "";
-        float fPos = 0.0f;
+        const string strValue = "";
         Font font = getFont("font13");
-        float backgroundPositionX = (float)_slider.XPosition;
-        float backgroundPositionY = (float)_slider.YPosition;
+        float backgroundPositionX = _slider.XPosition;
+        float backgroundPositionY = _slider.YPosition;
         if (null != font)
         {
           SolidBrush brush = new SolidBrush(Color.FromArgb(255, 255, 255, 255));
-          graph.DrawString(GUIPropertyManager.Parse(strValue), font, brush, (float)_slider.XPosition, (float)_slider.YPosition);
+          graph.DrawString(GUIPropertyManager.Parse(strValue), font, brush, _slider.XPosition, _slider.YPosition);
           brush.Dispose();
         }
         backgroundPositionX += 60;
@@ -119,11 +116,9 @@ namespace ExternalOSDLibrary
         //int iHeight=25;
         graph.DrawImage(_backgroundBitmap, backgroundPositionX, backgroundPositionY, _backgroundBitmap.Width, _backgroundBitmap.Height);
         //_imageBackGround.SetHeight(iHeight);
-        float _height = _backgroundBitmap.Height;
-        float _width = _backgroundBitmap.Width + 60;
 
-        float fWidth = (float)(_backgroundBitmap.Width - _sliderBitmap.Width); //-20.0f;
-        fPos = (float)_percentage;
+        float fWidth = _backgroundBitmap.Width - _sliderBitmap.Width; //-20.0f;
+        float fPos = _percentage;
         fPos /= 100.0f;
         fPos *= fWidth;
         fPos += backgroundPositionX;

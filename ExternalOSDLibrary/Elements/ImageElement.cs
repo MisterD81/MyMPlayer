@@ -22,12 +22,7 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
-using System.Text;
 using MediaPortal.GUI.Library;
 
 namespace ExternalOSDLibrary
@@ -41,12 +36,12 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// GUIImage 
     /// </summary>
-    private GUIImage _image;
+    private readonly GUIImage _image;
 
     /// <summary>
     /// Image of this element
     /// </summary>
-    private Bitmap _bitmap;
+    private readonly Bitmap _bitmap;
     #endregion
 
     #region ctor
@@ -58,8 +53,11 @@ namespace ExternalOSDLibrary
       : base(control)
     {
       _image = control as GUIImage;
-      _bitmap = loadBitmap(_image.FileName);
-      Log.Debug("VideoPlayerOSD: Found image element: " + _image.FileName);
+      if (_image != null)
+      {
+        _bitmap = loadBitmap(_image.FileName);
+        Log.Debug("VideoPlayerOSD: Found image element: " + _image.FileName);
+      }
     }
     #endregion
 

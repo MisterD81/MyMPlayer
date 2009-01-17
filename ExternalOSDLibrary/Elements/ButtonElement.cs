@@ -23,11 +23,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.Text;
 using MediaPortal.GUI.Library;
 
 namespace ExternalOSDLibrary
@@ -41,42 +37,42 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// GUIButtonControl
     /// </summary>
-    private GUIButtonControl _button;
+    private readonly GUIButtonControl _button;
 
     /// <summary>
     /// Focus image
     /// </summary>
-    private Bitmap _focusBitmap;
+    private readonly Bitmap _focusBitmap;
 
     /// <summary>
     /// Non focus image
     /// </summary>
-    private Bitmap _noFocusBitmap;
+    private readonly Bitmap _noFocusBitmap;
 
     /// <summary>
     /// Hover image
     /// </summary>
-    private Bitmap _hoverBitmap;
+    private readonly Bitmap _hoverBitmap;
 
     /// <summary>
     /// Font
     /// </summary>
-    private Font _font;
+    private readonly Font _font;
 
     /// <summary>
     /// Text color
     /// </summary>
-    private Color _textColor;
+    private readonly Color _textColor;
 
     /// <summary>
     /// Text color non focus
     /// </summary>
-    private Color _textColorNoFocus;
+    private readonly Color _textColorNoFocus;
 
     /// <summary>
     /// Disabled text color
     /// </summary>
-    private Color _disabledColor;
+    private readonly Color _disabledColor;
 
     /// <summary>
     /// Indicates, if the button is focused
@@ -98,16 +94,19 @@ namespace ExternalOSDLibrary
       : base(control)
     {
       _button = control as GUIButtonControl;
-      _font = getFont(_button.FontName);
-      _focusBitmap = loadBitmap(_button.TexutureFocusName);
-      _noFocusBitmap = loadBitmap(_button.TexutureNoFocusName);
-      _hoverBitmap = loadBitmap(_button.HoverFilename);
-      _textColor = GetColor(_button.TextColor);
-      _textColorNoFocus = GetColor(_button.TextColorNoFocus);
-      _disabledColor = GetColor(_button.DisabledColor);
-      _label = _button.Label;
-      _focus = _button.Focus;
-      Log.Debug("VideoPlayerOSD: Found button element: " + _button.GetID);
+      if (_button != null)
+      {
+        _font = getFont(_button.FontName);
+        _focusBitmap = loadBitmap(_button.TexutureFocusName);
+        _noFocusBitmap = loadBitmap(_button.TexutureNoFocusName);
+        _hoverBitmap = loadBitmap(_button.HoverFilename);
+        _textColor = GetColor(_button.TextColor);
+        _textColorNoFocus = GetColor(_button.TextColorNoFocus);
+        _disabledColor = GetColor(_button.DisabledColor);
+        _label = _button.Label;
+        _focus = _button.Focus;
+        Log.Debug("VideoPlayerOSD: Found button element: " + _button.GetID);
+      }
     }
     #endregion
 

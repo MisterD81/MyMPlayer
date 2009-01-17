@@ -23,11 +23,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.Text;
 using MediaPortal.GUI.Library;
 
 namespace ExternalOSDLibrary
@@ -41,32 +37,32 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// GUICheckMarkControl
     /// </summary>
-    private GUICheckMarkControl _checkMark;
+    private readonly GUICheckMarkControl _checkMark;
 
     /// <summary>
     /// Check focus image
     /// </summary>
-    private Bitmap _checkFocusBitmap;
+    private readonly Bitmap _checkFocusBitmap;
 
     /// <summary>
     /// Check non focus image
     /// </summary>
-    private Bitmap _checkNoFocusBitmap;
+    private readonly Bitmap _checkNoFocusBitmap;
 
     /// <summary>
     /// Font
     /// </summary>
-    private Font _font;
+    private readonly Font _font;
 
     /// <summary>
     /// Disabled text color
     /// </summary>
-    private Color _disabledColor;
+    private readonly Color _disabledColor;
 
     /// <summary>
     /// Text color
     /// </summary>
-    private Color _textColor;
+    private readonly Color _textColor;
 
     /// <summary>
     /// Indicates, if the checkmark is focused
@@ -98,16 +94,19 @@ namespace ExternalOSDLibrary
       : base(control)
     {
       _checkMark = control as GUICheckMarkControl;
-      _checkFocusBitmap = loadBitmap(_checkMark.CheckMarkTextureName);
-      _checkNoFocusBitmap = loadBitmap(_checkMark.CheckMarkTextureNameNF);
-      _font = getFont(_checkMark.FontName);
-      _disabledColor = GetColor(_checkMark.DisabledColor);
-      _textColor = GetColor(_checkMark.TextColor);
-      _focus = _checkMark.Focus;
-      _selected = _checkMark.Selected;
-      _disabled = _checkMark.Disabled;
-      _label = _checkMark.Label;
-      Log.Debug("VideoPlayerOSD: Found checkMark element: " + _checkMark.GetID);
+      if (_checkMark != null)
+      {
+        _checkFocusBitmap = loadBitmap(_checkMark.CheckMarkTextureName);
+        _checkNoFocusBitmap = loadBitmap(_checkMark.CheckMarkTextureNameNF);
+        _font = getFont(_checkMark.FontName);
+        _disabledColor = GetColor(_checkMark.DisabledColor);
+        _textColor = GetColor(_checkMark.TextColor);
+        _focus = _checkMark.Focus;
+        _selected = _checkMark.Selected;
+        _disabled = _checkMark.Disabled;
+        _label = _checkMark.Label;
+        Log.Debug("VideoPlayerOSD: Found checkMark element: " + _checkMark.GetID);
+      }
     }
     #endregion
 
@@ -137,7 +136,7 @@ namespace ExternalOSDLibrary
           else
           {
             dwTextPosX = (dwCheckMarkPosX + _checkFocusBitmap.Width + 5);
-            sizeF = graph.MeasureString(GUIPropertyManager.Parse(_label), _font);
+            graph.MeasureString(GUIPropertyManager.Parse(_label), _font);
           }
           if (_disabled)
           {

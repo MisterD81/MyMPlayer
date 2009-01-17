@@ -23,14 +23,10 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Text;
 using System.Windows.Forms;
 using MediaPortal.GUI.Library;
-using MediaPortal.GUI.Video;
-using System.Windows;
 
 namespace ExternalOSDLibrary
 {
@@ -62,24 +58,33 @@ namespace ExternalOSDLibrary
     /// </summary>
     public OSDForm()
     {
-      this.SuspendLayout();
-      _positionChanged = new EventHandler(parent_PositionChanged);
+      Init();
+    }
+
+    /// <summary>
+    /// Initialise the object
+    /// </summary>
+    private void Init()
+    {
+      SuspendLayout();
+      _positionChanged = parent_PositionChanged;
       _parent = GUIGraphicsContext.form;
-      this.BackColor = System.Drawing.Color.FromArgb(1, 1, 1);
-      this.ForeColor = System.Drawing.Color.FromArgb(1, 1, 1);
-      this.TransparencyKey = this.BackColor;
-      this.ControlBox = false;
-      this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-      this.MaximizeBox = false;
-      this.MinimizeBox = false;
-      this.ShowIcon = false;
-      this.ShowInTaskbar = false;
-      this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-      this.ResumeLayout();
-      this.Opacity = 1;
-      this.GotFocus += new EventHandler(OSDForm_GotFocus);
+      BackColor = Color.FromArgb(1, 1, 1);
+      ForeColor = Color.FromArgb(1, 1, 1);
+      TransparencyKey = BackColor;
+      ControlBox = false;
+      FormBorderStyle = FormBorderStyle.None;
+      MaximizeBox = false;
+      MinimizeBox = false;
+      ShowIcon = false;
+      ShowInTaskbar = false;
+      StartPosition = FormStartPosition.CenterParent;
+      ResumeLayout();
+      Opacity = 1;
+      GotFocus += OSDForm_GotFocus;
       _parent.LocationChanged += _positionChanged;
     }
+
     #endregion
 
     #region properties
@@ -111,9 +116,9 @@ namespace ExternalOSDLibrary
     /// <param name="args"></param>
     private void parent_PositionChanged(Object sender, EventArgs args)
     {
-      this.Location = _parent.PointToScreen(new Point(0, 0));
-      this.Size = _parent.ClientSize;
-      this.BringToFront();
+      Location = _parent.PointToScreen(new Point(0, 0));
+      Size = _parent.ClientSize;
+      BringToFront();
     }
     #endregion
 
@@ -162,12 +167,12 @@ namespace ExternalOSDLibrary
     /// </summary>
     public void ShowForm()
     {
-      this.Enabled = true;
-      this.Show(_parent);
+      Enabled = true;
+      Show(_parent);
       parent_PositionChanged(null, null);
-      this.BringToFront();
+      BringToFront();
       _parent.Focus();
-      this.Enabled = false;
+      Enabled = false;
     }
     #endregion
   }

@@ -23,11 +23,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.Text;
 using MediaPortal.GUI.Library;
 
 namespace ExternalOSDLibrary
@@ -41,17 +37,17 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// GUITextScrollUpControl
     /// </summary>
-    private GUITextScrollUpControl _textScrollUp;
+    private readonly GUITextScrollUpControl _textScrollUp;
 
     /// <summary>
     /// Font
     /// </summary>
-    private Font _font;
+    private readonly Font _font;
 
     /// <summary>
     /// Brush
     /// </summary>
-    private Brush _brush;
+    private readonly Brush _brush;
 
     /// <summary>
     /// Label of the text scrollup element
@@ -68,11 +64,13 @@ namespace ExternalOSDLibrary
       : base(control)
     {
       _textScrollUp = control as GUITextScrollUpControl;
-      Type textScrollUpType = typeof(GUITextScrollUpControl);
-      _font = getFont(_textScrollUp.FontName);
-      _brush = new SolidBrush(GetColor(_textScrollUp.TextColor));
-      _label = _textScrollUp.Property;
-      Log.Debug("VideoPlayerOSD: Found textScrollUp element: " + _textScrollUp.GetID);
+      if (_textScrollUp != null)
+      {
+        _font = getFont(_textScrollUp.FontName);
+        _brush = new SolidBrush(GetColor(_textScrollUp.TextColor));
+        _label = _textScrollUp.Property;
+        Log.Debug("VideoPlayerOSD: Found textScrollUp element: " + _textScrollUp.GetID);
+      }
     }
     #endregion
 
@@ -91,14 +89,7 @@ namespace ExternalOSDLibrary
         {
           rectangle = new RectangleF((float)_textScrollUp.Location.X, (float)_textScrollUp.Location.Y, _textScrollUp.Width, Math.Max(textSize.Height, _textScrollUp.Height));
         }
-        else if (_textScrollUp.TextAlignment == GUIControl.Alignment.ALIGN_RIGHT)
-        {
-          rectangle = new RectangleF((float)_textScrollUp.Location.X - textSize.Width, (float)_textScrollUp.Location.Y, _textScrollUp.Width, Math.Max(textSize.Height, _textScrollUp.Height));
-        }
-        else
-        {
-          rectangle = new RectangleF((float)_textScrollUp.Location.X - (textSize.Width / 2), (float)_textScrollUp.Location.Y - (textSize.Height / 2), _textScrollUp.Width, Math.Max(textSize.Height, _textScrollUp.Height));
-        }
+        else rectangle = _textScrollUp.TextAlignment == GUIControl.Alignment.ALIGN_RIGHT ? new RectangleF((float)_textScrollUp.Location.X - textSize.Width, (float)_textScrollUp.Location.Y, _textScrollUp.Width, Math.Max(textSize.Height, _textScrollUp.Height)) : new RectangleF((float)_textScrollUp.Location.X - (textSize.Width / 2), (float)_textScrollUp.Location.Y - (textSize.Height / 2), _textScrollUp.Width, Math.Max(textSize.Height, _textScrollUp.Height));
         graph.DrawString(GUIPropertyManager.Parse(_label), _font, _brush, rectangle, StringFormat.GenericTypographic);
       }
     }

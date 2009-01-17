@@ -22,15 +22,8 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Text;
-using System.Windows.Forms;
 using MediaPortal.Dialogs;
 using MediaPortal.GUI.Library;
-using System.Windows;
 
 namespace ExternalOSDLibrary
 {
@@ -43,7 +36,7 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// Dialog Menu window
     /// </summary>
-    private GUIDialogMenu _dialogWindow;
+    private readonly GUIDialogMenu _dialogWindow;
     #endregion
 
     #region ctor
@@ -53,7 +46,7 @@ namespace ExternalOSDLibrary
     public DialogWindow()
     {
       _dialogWindow = GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_DIALOG_MENU) as GUIDialogMenu;
-      _controlList = _dialogWindow.controlList;
+      if (_dialogWindow != null) _controlList = _dialogWindow.controlList;
       GenerateElements();
     }
     #endregion

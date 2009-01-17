@@ -23,9 +23,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 using MediaPortal.GUI.Library;
 
 namespace ExternalOSDLibrary
@@ -39,17 +37,17 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// GUILabelControl
     /// </summary>
-    private GUILabelControl _label;
+    private readonly GUILabelControl _label;
 
     /// <summary>
     /// Font
     /// </summary>
-    private Font _font;
+    private readonly Font _font;
 
     /// <summary>
     /// Brush
     /// </summary>
-    private Brush _brush;
+    private readonly Brush _brush;
 
     /// <summary>
     /// Label String
@@ -66,10 +64,13 @@ namespace ExternalOSDLibrary
       : base(control)
     {
       _label = control as GUILabelControl;
-      _font = getFont(_label.FontName);
-      _brush = new SolidBrush(GetColor(_label.TextColor));
-      _labelString = _label.Label;
-      Log.Debug("VideoPlayerOSD: Found label element: " + _label.Name + "/" + _font.Name + "/" + _labelString);
+      if (_label != null)
+      {
+        _font = getFont(_label.FontName);
+        _brush = new SolidBrush(GetColor(_label.TextColor));
+        _labelString = _label.Label;
+        Log.Debug("VideoPlayerOSD: Found label element: " + _label.Name + "/" + _font.Name + "/" + _labelString);
+      }
     }
     #endregion
 
@@ -145,14 +146,7 @@ namespace ExternalOSDLibrary
       {
         rectangle = new RectangleF((float)_label.Location.X, (float)_label.Location.Y, size.Width, _label.Height);
       }
-      else if (alignment == GUIControl.Alignment.ALIGN_RIGHT)
-      {
-        rectangle = new RectangleF((float)_label.Location.X - size.Width, (float)_label.Location.Y, size.Width, _label.Height);
-      }
-      else
-      {
-        rectangle = new RectangleF((float)_label.Location.X - (size.Width / 2), (float)_label.Location.Y - (size.Height / 2), size.Width, _label.Height);
-      }
+      else rectangle = alignment == GUIControl.Alignment.ALIGN_RIGHT ? new RectangleF((float)_label.Location.X - size.Width, (float)_label.Location.Y, size.Width, _label.Height) : new RectangleF((float)_label.Location.X - (size.Width / 2), (float)_label.Location.Y - (size.Height / 2), size.Width, _label.Height);
 
       return rectangle;
     }
@@ -187,14 +181,7 @@ namespace ExternalOSDLibrary
       {
         rectangle = new RectangleF((float)_label.Location.X, (float)_label.Location.Y, _label.Width, _label.Height);
       }
-      else if (alignment == GUIControl.Alignment.ALIGN_RIGHT)
-      {
-        rectangle = new RectangleF((float)_label.Location.X - _label.TextWidth, (float)_label.Location.Y, _label.Width, _label.Height);
-      }
-      else
-      {
-        rectangle = new RectangleF((float)_label.Location.X - (_label.TextWidth / 2), (float)_label.Location.Y - (_label.TextHeight / 2), _label.Width, _label.Height);
-      }
+      else rectangle = alignment == GUIControl.Alignment.ALIGN_RIGHT ? new RectangleF((float)_label.Location.X - _label.TextWidth, (float)_label.Location.Y, _label.Width, _label.Height) : new RectangleF((float)_label.Location.X - (_label.TextWidth / 2), (float)_label.Location.Y - (_label.TextHeight / 2), _label.Width, _label.Height);
       DrawElementAlternative(graph, label, false, rectangle);
     }
     #endregion

@@ -22,12 +22,7 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.Text;
 using MediaPortal.GUI.Library;
 
 namespace ExternalOSDLibrary
@@ -41,17 +36,17 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// GUIVolumeBar
     /// </summary>
-    private GUIVolumeBar _volumeBar;
+    private readonly GUIVolumeBar _volumeBar;
 
     /// <summary>
     /// Bitmap of the volumebar
     /// </summary>
-    private Bitmap _bitmap;
+    private readonly Bitmap _bitmap;
 
     /// <summary>
     /// Alignment of the volume bar
     /// </summary>
-    private GUIControl.Alignment _alignment;
+    private readonly GUIControl.Alignment _alignment;
 
     /// <summary>
     /// Index of the first image
@@ -83,13 +78,16 @@ namespace ExternalOSDLibrary
       : base(control)
     {
       _volumeBar = control as GUIVolumeBar;
-      _alignment = _volumeBar.TextAlignment;
-      _bitmap = loadBitmap(_volumeBar.TextureName);
-      _image1 = _volumeBar.Image1;
-      _image2 = _volumeBar.Image2;
-      _maximum = _volumeBar.Maximum;
-      _current = _volumeBar.Current;
-      Log.Debug("VideoPlayerOSD: Found volume bar element: " + _volumeBar.TextureName);
+      if (_volumeBar != null)
+      {
+        _alignment = _volumeBar.TextAlignment;
+        _bitmap = loadBitmap(_volumeBar.TextureName);
+        _image1 = _volumeBar.Image1;
+        _image2 = _volumeBar.Image2;
+        _maximum = _volumeBar.Maximum;
+        _current = _volumeBar.Current;
+        Log.Debug("VideoPlayerOSD: Found volume bar element: " + _volumeBar.TextureName);
+      }
     }
     #endregion
 

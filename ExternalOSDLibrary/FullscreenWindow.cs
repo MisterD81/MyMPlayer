@@ -25,9 +25,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Text;
-using System.Windows.Forms;
 using MediaPortal.GUI.Library;
 using MediaPortal.GUI.Video;
 using System.Windows;
@@ -43,7 +40,7 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// Fullscreen window
     /// </summary>
-    private GUIVideoFullscreen _fullscreenWindow;
+    private readonly GUIVideoFullscreen _fullscreenWindow;
 
     /// <summary>
     /// Background image
@@ -68,42 +65,42 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// List of all elements for cache informations
     /// </summary>
-    private List<BaseElement> _cacheElements;
+    private readonly List<BaseElement> _cacheElements;
 
     /// <summary>
     /// List of all elements for cache informations
     /// </summary>
-    private List<BaseElement> _imageCacheElements;
+    private readonly List<BaseElement> _imageCacheElements;
 
     /// <summary>
     /// ID of the label
     /// </summary>
-    private static int LABEL_ID = 10;
+    private const int LABEL_ID = 10;
 
     /// <summary>
     /// ID of the background image
     /// </summary>
-    private static int BACKGROUND_ID = 0;
+    private const int BACKGROUND_ID = 0;
 
     /// <summary>
     /// ID of the background image
     /// </summary>
-    private static int BACKGROUND_ID2 = 104;
+    private const int BACKGROUND_ID2 = 104;
 
     /// <summary>
     /// ID of the Progress bar
     /// </summary>
-    private static int PROGRESS_ID = 1;
+    private const int PROGRESS_ID = 1;
 
     /// <summary>
     /// Start ID of the additional elements
     /// </summary>
-    private static int PANEL_START = 100;
+    private const int PANEL_START = 100;
 
     /// <summary>
     /// End IF of the additional elements
     /// </summary>
-    private static int PANEL_END = 150;
+    private const int PANEL_END = 150;
     #endregion
 
     #region ctor
@@ -113,10 +110,9 @@ namespace ExternalOSDLibrary
     public FullscreenWindow()
     {
       _fullscreenWindow = GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_FULLSCREEN_VIDEO) as GUIVideoFullscreen;
-      _controlList = _fullscreenWindow.controlList;
+      if (_fullscreenWindow != null) _controlList = _fullscreenWindow.controlList;
       GenerateElements();
       GUIControl temp;
-      GUIControl temp2;
       GUIGroup help;
       _cacheElements = new List<BaseElement>();
       _imageCacheElements = new List<BaseElement>();
@@ -128,14 +124,15 @@ namespace ExternalOSDLibrary
           if (temp.GetType() == typeof(GUIGroup))
           {
             help = temp as GUIGroup;
-            foreach (UIElement uiElement in help.Children)
-            {
-              temp2 = uiElement as GUIControl;
-              if (temp2 != null)
+            if (help != null)
+              foreach (UIElement uiElement in help.Children)
               {
-                checkElement(temp2);
+                GUIControl temp2 = uiElement as GUIControl;
+                if (temp2 != null)
+                {
+                  checkElement(temp2);
+                }
               }
-            }
           }
           checkElement(temp);
         }
@@ -153,7 +150,7 @@ namespace ExternalOSDLibrary
 
     private void checkElement(GUIControl temp)
     {
-      Log.Info(temp.GetType().ToString() + " : " + temp.GetID);
+      Log.Info(temp.GetType() + " : " + temp.GetID);
       if (temp.GetID == LABEL_ID)
       {
         if (temp.GetType() == typeof(GUILabelControl))
@@ -190,10 +187,11 @@ namespace ExternalOSDLibrary
       if (temp.GetType() == typeof(GUIImage))
       {
         GUIImage imageElement = temp as GUIImage;
-        if (imageElement.FileName.Equals("osd_bg_top.png"))
-        {
-          _background3 = new ImageElement(temp);
-        }
+        if (imageElement != null)
+          if (imageElement.FileName.Equals("osd_bg_top.png"))
+          {
+            _background3 = new ImageElement(temp);
+          }
       }
       if ((temp.GetID == PROGRESS_ID) && (temp.GetType() == typeof(GUIProgressControl) || temp.GetType() == typeof(GUILabelControl))
         || (temp.GetID > PANEL_START && temp.GetID < PANEL_END))

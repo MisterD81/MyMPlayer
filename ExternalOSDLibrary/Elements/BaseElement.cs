@@ -23,10 +23,8 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Text;
 using MediaPortal.GUI.Library;
 
 namespace ExternalOSDLibrary
@@ -53,7 +51,7 @@ namespace ExternalOSDLibrary
     /// Initialize the base element
     /// </summary>
     /// <param name="control">GUIControl</param>
-    public BaseElement(GUIControl control)
+    protected BaseElement(GUIControl control)
     {
       _control = control;
     }
@@ -79,7 +77,7 @@ namespace ExternalOSDLibrary
     /// if the alpha value is more than 150
     /// </summary>
     /// <param name="bitmap">Bitmap to update</param>
-    protected void updateBitmap(Bitmap bitmap)
+    protected static void updateBitmap(Bitmap bitmap)
     {
       Color temp;
       for (int i = 0; i < bitmap.Width; i++)
@@ -104,7 +102,7 @@ namespace ExternalOSDLibrary
     /// </summary>
     /// <param name="colorValue">Value of the color</param>
     /// <returns>Color struct</returns>
-    protected Color GetColor(long colorValue)
+    protected static Color GetColor(long colorValue)
     {
       Color color = Color.FromArgb((int)colorValue);
       if (color.R == 0 && color.G == 0 && color.B == 0)
@@ -127,7 +125,7 @@ namespace ExternalOSDLibrary
     /// </summary>
     /// <param name="name">Name of the font</param>
     /// <returns>Font </returns>
-    protected Font getFont(String name)
+    protected static Font getFont(String name)
     {
       GUIFont guiFont = GUIFontManager.GetFont(name);
       return new Font(guiFont.FileName, guiFont.FontSize, guiFont.FontStyle);
@@ -138,7 +136,7 @@ namespace ExternalOSDLibrary
     /// </summary>
     /// <param name="fileName">Filename of the bitmap</param>
     /// <returns>Bitmap</returns>
-    protected Bitmap loadBitmap(String fileName)
+    protected static Bitmap loadBitmap(String fileName)
     {
       Bitmap result = null;
       String realFileName = GUIPropertyManager.Parse(fileName);
