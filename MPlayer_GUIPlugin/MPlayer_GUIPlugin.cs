@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2008 MisterD
+#region Copyright (C) 2006-2009 MisterD
 
 /* 
- *	Copyright (C) 2006-2008 MisterD
+ *	Copyright (C) 2006-2009 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -763,15 +763,15 @@ namespace MPlayer
       String _currentFolder = newFolderName;
 
       GUIControl.ClearControl(GetID, facadeView.GetID);
-      ArrayList itemlist = m_directory.GetDirectory(_currentFolder);
-      ArrayList itemfiltered = new ArrayList();
+      List<GUIListItem> itemlist = m_directory.GetDirectoryExt(_currentFolder);
+      List<GUIListItem> itemfiltered = new List<GUIListItem>();
       for (int x = 0; x < itemlist.Count; ++x)
       {
         bool addItem = true;
-        GUIListItem item1 = (GUIListItem)itemlist[x];
+        GUIListItem item1 = itemlist[x];
         for (int y = 0; y < itemlist.Count; ++y)
         {
-          GUIListItem item2 = (GUIListItem)itemlist[y];
+          GUIListItem item2 = itemlist[y];
           if (x != y)
           {
             if (!item1.IsFolder || !item2.IsFolder)
@@ -943,7 +943,7 @@ namespace MPlayer
           return;
         if (item.Label != "..")
         {
-          ArrayList items = m_directory.GetDirectoryUnProtected(item.Path, false);
+          List<GUIListItem> items = m_directory.GetDirectoryUnProtectedExt(item.Path, false);
           foreach (GUIListItem subItem in items)
           {
             DoDeleteItem(subItem);

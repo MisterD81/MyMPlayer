@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("-")]
 [assembly: AssemblyProduct("MPlayer_GUIPlugin")]
-[assembly: AssemblyCopyright("Copyright © - 2006 - 2007")]
+[assembly: AssemblyCopyright("Copyright © - 2006 - 2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
