@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // Allgemeine Informationen über eine Assembly werden über die folgenden 
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die mit einer Assembly verknüpft sind.
-[assembly: AssemblyTitle("VideoPlayer_OSD_ProcessPlugin")]
+[assembly: AssemblyTitle("ExternalOSDLibrary")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("-")]
-[assembly: AssemblyProduct("VideoPlayer_OSD_ProcessPlugin")]
-[assembly: AssemblyCopyright("Copyright © - 2006 - 2007")]
+[assembly: AssemblyProduct("ExternalOSDLibrary")]
+[assembly: AssemblyCopyright("Copyright © - 2006 - 2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
