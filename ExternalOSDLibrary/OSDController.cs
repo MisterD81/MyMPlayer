@@ -34,351 +34,359 @@ using MediaPortal.Configuration;
 namespace ExternalOSDLibrary
 {
 
-  /// <summary>
-  /// Controller for the ExternalOSDLibrary. This is the main entry point for usage in an external player
-  /// </summary>
-  public class OSDController : IDisposable
-  {
-    #region variables
     /// <summary>
-    /// Singleton instance
+    /// Controller for the ExternalOSDLibrary. This is the main entry point for usage in an external player
     /// </summary>
-    private static OSDController singleton;
-
-    /// <summary>
-    /// Fullscreen window
-    /// </summary>
-    private readonly FullscreenWindow _fullscreenWindow;
-
-    /// <summary>
-    /// Video OSD window
-    /// </summary>
-    private readonly VideoOSDWindow _videoOSDWindow;
-
-    /// <summary>
-    /// Dialog (Context) window
-    /// </summary>
-    private readonly DialogWindow _dialogWindow;
-
-    /// <summary>
-    /// Form of the osd
-    /// </summary>
-    private readonly OSDForm _osdForm;
-
-    /// <summary>
-    /// Second form of the osd
-    /// </summary>
-    private readonly OSDForm _osdForm2;
-
-    /// <summary>
-    /// Indicates, if additional osd information is displayed
-    /// </summary>
-    private bool _showAdditionalOSD;
-
-    /// <summary>
-    /// Label of the additional osd
-    /// </summary>
-    private String _label;
-
-    /// <summary>
-    /// Strikeout the label of the addional osd
-    /// </summary>
-    private bool _strikeOut;
-
-    /// <summary>
-    /// Time of the last update
-    /// </summary>
-    private DateTime _lastUpdate;
-
-    /// <summary>
-    /// Satus of the cache
-    /// </summary>
-    private float _cacheFill;
-
-    /// <summary>
-    /// Indicates, if the cache status should be displayed
-    /// </summary>
-    private bool _showCacheStatus;
-
-    /// <summary>
-    /// Indicates, if the init label should be displayed
-    /// </summary>
-    private bool _showInit;
-
-    /// <summary>
-    /// Indicates, if an update is needed
-    /// </summary>
-    private bool _needUpdate;
-
-    /// <summary>
-    /// Event handler for the size changed event
-    /// </summary>
-    private readonly EventHandler _sizeChanged;
-
-    /// <summary>
-    /// MP parent form
-    /// </summary>
-    private readonly Form _parentForm;
-
-    /// <summary>
-    /// Indicates if MP is minimized
-    /// </summary>
-    private bool _minimized;
-
-    /// <summary>
-    /// Indicates if the screen should be blanked in fullscreen
-    /// </summary>
-    private readonly bool _blankScreen;
-
-    /// <summary>
-    /// Indicates if player is in fullscreen;
-    /// </summary>
-    private bool _fullscreen;
-
-    /// <summary>
-    /// Rectangle of the video window
-    /// </summary>
-    private Rectangle _videoRectangle;
-    #endregion
-
-    #region ctor
-    /// <summary>
-    /// Returns the singleton instance
-    /// </summary>
-    /// <returns>Singleton instance</returns>
-    public static OSDController getInstance()
+    public class OSDController : IDisposable
     {
-      if (singleton == null)
-      {
-        singleton = new OSDController();
-      }
-      return singleton;
-    }
+        #region variables
+        /// <summary>
+        /// Singleton instance
+        /// </summary>
+        private static OSDController singleton;
 
-    /// <summary>
-    /// Constructor which initializes the osd controller
-    /// </summary>
-    private OSDController()
-    {
-      _fullscreenWindow = new FullscreenWindow();
-      _videoOSDWindow = new VideoOSDWindow();
-      _dialogWindow = new DialogWindow();
-      _osdForm = new OSDForm();
-      _osdForm2 = new OSDForm();
-      _parentForm = GUIGraphicsContext.form;
-      _sizeChanged = parent_SizeChanged;
-      _parentForm.SizeChanged += _sizeChanged;
-      _minimized = false;
-      using (MediaPortal.Profile.Settings xmlreader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml")))
-      {
-        _blankScreen = xmlreader.GetValueAsBool("externalOSDLibrary", "blankScreen", true);
-      }
-    }
-    #endregion
+        /// <summary>
+        /// Fullscreen window
+        /// </summary>
+        private readonly FullscreenWindow _fullscreenWindow;
 
-    #region public methods
-    /// <summary>
-    /// Activates the osd. This methods must be called first, otherwise nothing will displayed
-    /// </summary>
-    public void Activate()
-    {
-      _fullscreen = g_Player.Player != null && g_Player.FullScreen;
-      if (GUIGraphicsContext.VideoWindow != null)
-      {
-        _videoRectangle = GUIGraphicsContext.VideoWindow;
-      }
-      _osdForm.ShowForm();
-      _osdForm2.ShowForm();
-      _needUpdate = true;
-      UpdateGUI();
-    }
+        /// <summary>
+        /// Video OSD window
+        /// </summary>
+        private readonly VideoOSDWindow _videoOSDWindow;
 
-    /// <summary>
-    /// Performs an update on the osd, should be called from the process method of the player
-    /// </summary>
-    public void UpdateGUI()
-    {
-      bool update = _needUpdate | _videoOSDWindow.CheckForUpdate() | _dialogWindow.CheckForUpdate() | _fullscreenWindow.CheckForUpdate();
-      if (_needUpdate)
-      {
-        _needUpdate = false;
-      }
-      else
-      {
-        if (_showAdditionalOSD)
+        /// <summary>
+        /// Dialog (Context) window
+        /// </summary>
+        private readonly DialogWindow _dialogWindow;
+
+        /// <summary>
+        /// Form of the osd
+        /// </summary>
+        private readonly OSDForm _osdForm;
+
+        /// <summary>
+        /// Second form of the osd
+        /// </summary>
+        private readonly OSDForm _osdForm2;
+
+        /// <summary>
+        /// Indicates, if additional osd information is displayed
+        /// </summary>
+        private bool _showAdditionalOSD;
+
+        /// <summary>
+        /// Label of the additional osd
+        /// </summary>
+        private String _label;
+
+        /// <summary>
+        /// Strikeout the label of the addional osd
+        /// </summary>
+        private bool _strikeOut;
+
+        /// <summary>
+        /// Time of the last update
+        /// </summary>
+        private DateTime _lastUpdate;
+
+        /// <summary>
+        /// Satus of the cache
+        /// </summary>
+        private float _cacheFill;
+
+        /// <summary>
+        /// Indicates, if the cache status should be displayed
+        /// </summary>
+        private bool _showCacheStatus;
+
+        /// <summary>
+        /// Indicates, if the init label should be displayed
+        /// </summary>
+        private bool _showInit;
+
+        /// <summary>
+        /// Indicates, if an update is needed
+        /// </summary>
+        private bool _needUpdate;
+
+        /// <summary>
+        /// Event handler for the size changed event
+        /// </summary>
+        private readonly EventHandler _sizeChanged;
+
+        /// <summary>
+        /// MP parent form
+        /// </summary>
+        private readonly Form _parentForm;
+
+        /// <summary>
+        /// Indicates if MP is minimized
+        /// </summary>
+        private bool _minimized;
+
+        /// <summary>
+        /// Indicates if the screen should be blanked in fullscreen
+        /// </summary>
+        private readonly bool _blankScreen;
+
+        /// <summary>
+        /// Indicates if player is in fullscreen;
+        /// </summary>
+        private bool _fullscreen;
+
+        /// <summary>
+        /// Rectangle of the video window
+        /// </summary>
+        private Rectangle _videoRectangle;
+        #endregion
+
+        #region ctor
+        /// <summary>
+        /// Returns the singleton instance
+        /// </summary>
+        /// <returns>Singleton instance</returns>
+        public static OSDController getInstance()
         {
-          TimeSpan ts = DateTime.Now - _lastUpdate;
-          if (ts.Seconds >= 3)
-          {
+            if (singleton == null)
+            {
+                singleton = new OSDController();
+            }
+            return singleton;
+        }
+
+        /// <summary>
+        /// Constructor which initializes the osd controller
+        /// </summary>
+        private OSDController()
+        {
+            _fullscreenWindow = new FullscreenWindow();
+            _videoOSDWindow = new VideoOSDWindow();
+            _dialogWindow = new DialogWindow();
+            _osdForm = new OSDForm();
+            _osdForm2 = new OSDForm();
+            _parentForm = GUIGraphicsContext.form;
+            _sizeChanged = parent_SizeChanged;
+            _parentForm.SizeChanged += _sizeChanged;
+            _minimized = false;
+            using (MediaPortal.Profile.Settings xmlreader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml")))
+            {
+                _blankScreen = xmlreader.GetValueAsBool("externalOSDLibrary", "blankScreen", true);
+            }
+        }
+        #endregion
+
+        #region public methods
+        /// <summary>
+        /// Activates the osd. This methods must be called first, otherwise nothing will displayed
+        /// </summary>
+        public void Activate()
+        {
+            _fullscreen = g_Player.Player != null && g_Player.FullScreen;
+            if (GUIGraphicsContext.VideoWindow != null)
+            {
+                _videoRectangle = GUIGraphicsContext.VideoWindow;
+            }
+            _osdForm.ShowForm();
+            _osdForm2.ShowForm();
+            _needUpdate = true;
+            UpdateGUI();
+        }
+
+        /// <summary>
+        /// Performs an update on the osd, should be called from the process method of the player
+        /// </summary>
+        public void UpdateGUI()
+        {
+            //bool update = _needUpdate | _videoOSDWindow.CheckForUpdate() | _dialogWindow.CheckForUpdate() | _fullscreenWindow.CheckForUpdate();
+
+            bool a1 = _needUpdate;
+            bool a2 = _videoOSDWindow.CheckForUpdate();
+            bool a3 = _dialogWindow.CheckForUpdate();
+            bool a4 =  _fullscreenWindow.CheckForUpdate();
+
+            bool update = a1 | a2 | a3 | a4;
+
+            if (_needUpdate)
+            {
+                _needUpdate = false;
+            }
+            else
+            {
+                if (_showAdditionalOSD)
+                {
+                    TimeSpan ts = DateTime.Now - _lastUpdate;
+                    if (ts.Seconds >= 3)
+                    {
+                        _showAdditionalOSD = false;
+                        update = true;
+                    }
+                }
+            }
+            if (g_Player.Player != null && _fullscreen != g_Player.FullScreen)
+            {
+                _fullscreen = g_Player.FullScreen;
+                update = true;
+            }
+            if (GUIGraphicsContext.VideoWindow != null && !GUIGraphicsContext.VideoWindow.Equals(_videoRectangle))
+            {
+                _videoRectangle = GUIGraphicsContext.VideoWindow;
+                update = true;
+            }
+            if (update)
+            {
+                Bitmap image = new Bitmap(_osdForm.Width, _osdForm.Height);
+                Graphics graph = Graphics.FromImage(image);
+                if (_blankScreen && GUIGraphicsContext.Fullscreen)
+                {
+                    if (_fullscreen)
+                    {
+                        graph.FillRectangle(new SolidBrush(Color.FromArgb(0, 0, 0)), new Rectangle(0, 0, _osdForm.Size.Width, _osdForm.Size.Height));
+                    }
+                    else
+                    {
+                        graph.FillRectangle(new SolidBrush(Color.FromArgb(0, 0, 0)), _videoRectangle);
+                    }
+                }
+                graph.TextRenderingHint = TextRenderingHint.AntiAlias;
+                graph.SmoothingMode = SmoothingMode.AntiAlias;
+                if (_showAdditionalOSD)
+                {
+                    _fullscreenWindow.DrawAlternativeOSD(graph, _label, _strikeOut);
+                }
+                if (_showInit)
+                {
+                    _fullscreenWindow.DrawAlternativeOSD(graph, _label, false);
+                }
+                if (_showCacheStatus)
+                {
+                    _fullscreenWindow.DrawCacheStatus(graph, _cacheFill);
+                }
+                _fullscreenWindow.DrawWindow(graph);
+                _videoOSDWindow.DrawWindow(graph);
+                _dialogWindow.DrawWindow(graph);
+                _osdForm.Image = image;
+                _osdForm.Refresh();
+                _osdForm2.Image = image;
+                _osdForm2.Refresh();
+            }
+        }
+
+        /// <summary>
+        /// Deactivates the osd. Nothing will be displayed until it will be reactivated.
+        /// </summary>
+        public void Deactivate()
+        {
+            _osdForm.Hide();
+            _osdForm2.Hide();
+        }
+
+        /// <summary>
+        /// Indicates if the video osd is visible
+        /// </summary>
+        /// <returns></returns>
+        public bool IsOSDVisible()
+        {
+            return _videoOSDWindow.CheckVisibility();
+        }
+
+        /// <summary>
+        /// Shows additional osd information
+        /// </summary>
+        /// <param name="label">Label content</param>
+        /// <param name="strikeOut">srikeout the label, if true</param>
+        public void ShowAlternativeOSD(String label, bool strikeOut)
+        {
+            _label = label;
+            _strikeOut = strikeOut;
+            _lastUpdate = DateTime.Now;
+            _showAdditionalOSD = true;
+            _showCacheStatus = false;
+            _needUpdate = true;
+        }
+
+        /// <summary>
+        /// Shows the cache status
+        /// </summary>
+        /// <param name="cacheFill"></param>
+        public void ShowCacheStatus(float cacheFill)
+        {
+            _cacheFill = cacheFill;
             _showAdditionalOSD = false;
-            update = true;
-          }
+            _showCacheStatus = true;
+            _needUpdate = true;
         }
-      }
-      if (g_Player.Player != null && _fullscreen != g_Player.FullScreen)
-      {
-        _fullscreen = g_Player.FullScreen;
-        update = true;
-      }
-      if (GUIGraphicsContext.VideoWindow != null && !GUIGraphicsContext.VideoWindow.Equals(_videoRectangle))
-      {
-        _videoRectangle = GUIGraphicsContext.VideoWindow;
-        update = true;
-      }
-      if (update)
-      {
-        Bitmap image = new Bitmap(_osdForm.Width, _osdForm.Height);
-        Graphics graph = Graphics.FromImage(image);
-        if (_blankScreen && GUIGraphicsContext.Fullscreen)
+
+        /// <summary>
+        /// Hides the cache status
+        /// </summary>
+        public void HideCacheStatus()
         {
-          if (_fullscreen)
-          {
-            graph.FillRectangle(new SolidBrush(Color.FromArgb(0, 0, 0)), new Rectangle(0, 0, _osdForm.Size.Width, _osdForm.Size.Height));
-          }
-          else
-          {
-            graph.FillRectangle(new SolidBrush(Color.FromArgb(0, 0, 0)), _videoRectangle);
-          }
+            _showCacheStatus = false;
+            _needUpdate = true;
         }
-        graph.TextRenderingHint = TextRenderingHint.AntiAlias;
-        graph.SmoothingMode = SmoothingMode.AntiAlias;
-        if (_showAdditionalOSD)
+
+        /// <summary>
+        /// Shows the init message
+        /// </summary>
+        /// <param name="label">Label of the init</param>
+        public void ShowInit(String label)
         {
-          _fullscreenWindow.DrawAlternativeOSD(graph, _label, _strikeOut);
+            _label = label;
+            _showInit = true;
+            _showCacheStatus = false;
+            _showAdditionalOSD = false;
+            _needUpdate = true;
         }
-        if (_showInit)
+
+        /// <summary>
+        /// Hides the init message
+        /// </summary>
+        public void HideInit()
         {
-          _fullscreenWindow.DrawAlternativeOSD(graph, _label, false);
+            _showInit = false;
+            _needUpdate = true;
         }
-        if (_showCacheStatus)
+        #endregion
+
+        #region private methods
+        /// <summary>
+        /// Event handler to adjust this form to the new location/size of the parent
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void parent_SizeChanged(Object sender, EventArgs args)
         {
-          _fullscreenWindow.DrawCacheStatus(graph, _cacheFill);
+            if (_parentForm.WindowState == FormWindowState.Minimized)
+            {
+                Log.Debug("MINIMIZING");
+                _minimized = true;
+                return;
+            }
+            if (!_minimized)
+            {
+                Log.Debug("NOT MINIMIZED. DIPOSING");
+                singleton.Dispose();
+            }
+            Log.Debug("RESET MINIMIZED");
+            _minimized = false;
         }
-        _fullscreenWindow.DrawWindow(graph);
-        _videoOSDWindow.DrawWindow(graph);
-        _dialogWindow.DrawWindow(graph);
-        _osdForm.Image = image;
-        _osdForm.Refresh();
-        _osdForm2.Image = image;
-        _osdForm2.Refresh();
-      }
-    }
+        #endregion
 
-    /// <summary>
-    /// Deactivates the osd. Nothing will be displayed until it will be reactivated.
-    /// </summary>
-    public void Deactivate()
-    {
-      _osdForm.Hide();
-      _osdForm2.Hide();
+        #region IDisposable Member
+        /// <summary>
+        /// Disposes the osd controller
+        /// </summary>
+        public void Dispose()
+        {
+            _fullscreenWindow.Dispose();
+            _dialogWindow.Dispose();
+            _videoOSDWindow.Dispose();
+            _osdForm.Dispose();
+            _osdForm2.Dispose();
+            _parentForm.SizeChanged -= _sizeChanged;
+            singleton = null;
+        }
+        #endregion
     }
-
-    /// <summary>
-    /// Indicates if the video osd is visible
-    /// </summary>
-    /// <returns></returns>
-    public bool IsOSDVisible()
-    {
-      return _videoOSDWindow.CheckVisibility();
-    }
-
-    /// <summary>
-    /// Shows additional osd information
-    /// </summary>
-    /// <param name="label">Label content</param>
-    /// <param name="strikeOut">srikeout the label, if true</param>
-    public void ShowAlternativeOSD(String label, bool strikeOut)
-    {
-      _label = label;
-      _strikeOut = strikeOut;
-      _lastUpdate = DateTime.Now;
-      _showAdditionalOSD = true;
-      _showCacheStatus = false;
-      _needUpdate = true;
-    }
-
-    /// <summary>
-    /// Shows the cache status
-    /// </summary>
-    /// <param name="cacheFill"></param>
-    public void ShowCacheStatus(float cacheFill)
-    {
-      _cacheFill = cacheFill;
-      _showAdditionalOSD = false;
-      _showCacheStatus = true;
-      _needUpdate = true;
-    }
-
-    /// <summary>
-    /// Hides the cache status
-    /// </summary>
-    public void HideCacheStatus()
-    {
-      _showCacheStatus = false;
-      _needUpdate = true;
-    }
-
-    /// <summary>
-    /// Shows the init message
-    /// </summary>
-    /// <param name="label">Label of the init</param>
-    public void ShowInit(String label)
-    {
-      _label = label;
-      _showInit = true;
-      _showCacheStatus = false;
-      _showAdditionalOSD = false;
-      _needUpdate = true;
-    }
-
-    /// <summary>
-    /// Hides the init message
-    /// </summary>
-    public void HideInit()
-    {
-      _showInit = false;
-      _needUpdate = true;
-    }
-    #endregion
-
-    #region private methods
-    /// <summary>
-    /// Event handler to adjust this form to the new location/size of the parent
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void parent_SizeChanged(Object sender, EventArgs args)
-    {
-      if (_parentForm.WindowState == FormWindowState.Minimized)
-      {
-        Log.Debug("MINIMIZING");
-        _minimized = true;
-        return;
-      }
-      if (!_minimized)
-      {
-        Log.Debug("NOT MINIMIZED. DIPOSING");
-        singleton.Dispose();
-      }
-      Log.Debug("RESET MINIMIZED");
-      _minimized = false;
-    }
-    #endregion
-
-    #region IDisposable Member
-    /// <summary>
-    /// Disposes the osd controller
-    /// </summary>
-    public void Dispose()
-    {
-      _fullscreenWindow.Dispose();
-      _dialogWindow.Dispose();
-      _videoOSDWindow.Dispose();
-      _osdForm.Dispose();
-      _osdForm2.Dispose();
-      _parentForm.SizeChanged -= _sizeChanged;
-      singleton = null;
-    }
-    #endregion
-  }
 }
