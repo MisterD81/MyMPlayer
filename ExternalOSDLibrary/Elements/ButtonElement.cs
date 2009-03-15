@@ -105,7 +105,6 @@ namespace ExternalOSDLibrary
         _disabledColor = GetColor(_button.DisabledColor);
         _label = _button.Label;
         _focus = _button.Focus;
-        Log.Debug("VideoPlayerOSD: Found button element: " + _button.GetID);
       }
     }
     #endregion
@@ -168,18 +167,6 @@ namespace ExternalOSDLibrary
     /// </summary>
     public override void Dispose()
     {
-      if (_focusBitmap != null)
-      {
-        _focusBitmap.Dispose();
-      }
-      if (_noFocusBitmap != null)
-      {
-        _noFocusBitmap.Dispose();
-      }
-      if (_hoverBitmap != null)
-      {
-        _hoverBitmap.Dispose();
-      }
       _font.Dispose();
     }
 

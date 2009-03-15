@@ -24,7 +24,6 @@
 
 using System;
 using System.Drawing;
-using System.IO;
 using MediaPortal.GUI.Library;
 
 namespace ExternalOSDLibrary
@@ -73,31 +72,6 @@ namespace ExternalOSDLibrary
 
     #region protected methods
     /// <summary>
-    /// Updates a bitmap. It converts the Color (0,0,0) and (1,1,1), so that they won't be drawn transparent
-    /// if the alpha value is more than 150
-    /// </summary>
-    /// <param name="bitmap">Bitmap to update</param>
-    protected static void updateBitmap(Bitmap bitmap)
-    {
-      Color temp;
-      for (int i = 0; i < bitmap.Width; i++)
-      {
-        for (int j = 0; j < bitmap.Height; j++)
-        {
-          temp = bitmap.GetPixel(i, j);
-          if (temp.R == 0 && temp.G == 0 && temp.B == 0 && temp.A > 150)
-          {
-            bitmap.SetPixel(i, j, Color.FromArgb(temp.A, 5, 5, 5));
-          }
-          if (temp.R == 1 && temp.G == 1 && temp.B == 1 && temp.A > 150)
-          {
-            bitmap.SetPixel(i, j, Color.FromArgb(temp.A, 5, 5, 5));
-          }
-        }
-      }
-    }
-
-    /// <summary>
     /// Creates a color for the given value. And guarantees that it doesn't get transparent
     /// </summary>
     /// <param name="colorValue">Value of the color</param>
@@ -138,15 +112,7 @@ namespace ExternalOSDLibrary
     /// <returns>Bitmap</returns>
     protected static Bitmap loadBitmap(String fileName)
     {
-      Bitmap result = null;
-      String realFileName = GUIPropertyManager.Parse(fileName);
-      String location = GUIGraphicsContext.Skin + @"\media\" + realFileName;
-      if (File.Exists(location))
-      {
-        result = new Bitmap(location);
-        updateBitmap(result);
-      }
-      return result;
+      return ImageCache.GetImage(fileName);
     }
     #endregion
 

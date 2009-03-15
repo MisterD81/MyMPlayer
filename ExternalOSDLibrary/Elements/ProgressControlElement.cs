@@ -81,7 +81,6 @@ namespace ExternalOSDLibrary
         _rightBitmap = loadBitmap(_progressControl.BackTextureRightName);
         _backgroundBitmap = loadBitmap(_progressControl.BackGroundTextureName);
         _percentage = GetPercentage();
-        Log.Debug("VideoPlayerOSD: Found progess control");
       }
     }
     #endregion
@@ -105,22 +104,6 @@ namespace ExternalOSDLibrary
     /// </summary>
     public override void Dispose()
     {
-      if (_leftBitmap != null)
-      {
-        _leftBitmap.Dispose();
-      }
-      if (_midBitmap != null)
-      {
-        _midBitmap.Dispose();
-      }
-      if (_rightBitmap != null)
-      {
-        _rightBitmap.Dispose();
-      }
-      if (_backgroundBitmap != null)
-      {
-        _backgroundBitmap.Dispose();
-      }
     }
 
     /// <summary>

@@ -75,7 +75,6 @@ namespace ExternalOSDLibrary
         _scrollBarBottom = loadBitmap(_verticalScrollBar.BackTextureBottomName);
         _percentage = _verticalScrollBar.Percentage;
       }
-      Log.Debug("VideoPlayerOSD: Found vertical scroll bar element ");
     }
     #endregion
 
@@ -119,18 +118,6 @@ namespace ExternalOSDLibrary
     /// </summary>
     public override void Dispose()
     {
-      if (_scrollBarBackground != null)
-      {
-        _scrollBarBackground.Dispose();
-      }
-      if (_scrollBarTop != null)
-      {
-        _scrollBarTop.Dispose();
-      }
-      if (_scrollBarBottom != null)
-      {
-        _scrollBarBottom.Dispose();
-      }
     }
 
     /// <summary>

@@ -87,7 +87,6 @@ namespace ExternalOSDLibrary
         _focus = _slider.Focus;
         _percentage = _slider.Percentage;
         _strValue = getStringValue();
-        Log.Debug("VideoPlayerOSD: Found slider element: " + _slider.GetID);
       }
     }
     #endregion
@@ -142,18 +141,6 @@ namespace ExternalOSDLibrary
     /// </summary>
     public override void Dispose()
     {
-      if (_backgroundBitmap != null)
-      {
-        _backgroundBitmap.Dispose();
-      }
-      if (_sliderBitmap != null)
-      {
-        _sliderBitmap.Dispose();
-      }
-      if (_sliderFocusBitmap != null)
-      {
-        _sliderFocusBitmap.Dispose();
-      }
     }
 
     /// <summary>

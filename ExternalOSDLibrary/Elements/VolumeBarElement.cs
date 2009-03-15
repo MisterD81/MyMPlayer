@@ -86,7 +86,6 @@ namespace ExternalOSDLibrary
         _image2 = _volumeBar.Image2;
         _maximum = _volumeBar.Maximum;
         _current = _volumeBar.Current;
-        Log.Debug("VideoPlayerOSD: Found volume bar element: " + _volumeBar.TextureName);
       }
     }
     #endregion
@@ -149,10 +148,6 @@ namespace ExternalOSDLibrary
     /// </summary>
     public override void Dispose()
     {
-      if (_bitmap != null)
-      {
-        _bitmap.Dispose();
-      }
     }
 
     /// <summary>

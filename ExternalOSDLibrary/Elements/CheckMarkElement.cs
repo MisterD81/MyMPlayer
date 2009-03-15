@@ -105,7 +105,6 @@ namespace ExternalOSDLibrary
         _selected = _checkMark.Selected;
         _disabled = _checkMark.Disabled;
         _label = _checkMark.Label;
-        Log.Debug("VideoPlayerOSD: Found checkMark element: " + _checkMark.GetID);
       }
     }
     #endregion
@@ -176,14 +175,6 @@ namespace ExternalOSDLibrary
     /// </summary>
     public override void Dispose()
     {
-      if (_checkFocusBitmap != null)
-      {
-        _checkFocusBitmap.Dispose();
-      }
-      if (_checkNoFocusBitmap != null)
-      {
-        _checkNoFocusBitmap.Dispose();
-      }
     }
 
     /// <summary>

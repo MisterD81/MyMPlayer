@@ -36,7 +36,7 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// Video OSD window
     /// </summary>
-    private readonly GUIVideoOSD _osdWindow;
+    private GUIVideoOSD _osdWindow;
     #endregion
 
     #region ctor
@@ -58,7 +58,19 @@ namespace ExternalOSDLibrary
     /// <returns>true, if window is visible; false otherwise</returns>
     protected override bool CheckSpecificVisibility()
     {
-      return GUIWindowManager.VisibleOsd == GUIWindow.Window.WINDOW_OSD;
+      return GUIWindowManager.VisibleOsd == GUIWindow.Window.WINDOW_OSD;;
+    }
+
+    /// <summary>
+    /// Performs a base uinut if the window. This includes the following tasks
+    /// - Setting the reference to the window in MP
+    /// - Setting the reference to the control list of the MP window
+    /// </summary>
+    protected override void BaseInit()
+    {
+      _osdWindow = GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_OSD) as GUIVideoOSD;
+      if (_osdWindow != null)
+        _controlList = _osdWindow.controlList;
     }
     #endregion
   }

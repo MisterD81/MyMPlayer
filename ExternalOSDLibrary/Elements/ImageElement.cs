@@ -56,7 +56,6 @@ namespace ExternalOSDLibrary
       if (_image != null)
       {
         _bitmap = loadBitmap(_image.FileName);
-        Log.Debug("VideoPlayerOSD: Found image element: " + _image.FileName);
       }
     }
     #endregion
@@ -79,10 +78,6 @@ namespace ExternalOSDLibrary
     /// </summary>
     public override void Dispose()
     {
-      if (_bitmap != null)
-      {
-        _bitmap.Dispose();
-      }
     }
 
     /// <summary>

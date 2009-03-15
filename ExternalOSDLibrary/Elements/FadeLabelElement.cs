@@ -69,7 +69,6 @@ namespace ExternalOSDLibrary
         _font = getFont(_label.FontName);
         _brush = new SolidBrush(GetColor(_label.TextColor));
         _labelString = _label.Label;
-        Log.Debug("VideoPlayerOSD: Found label element: " + _label.Name + "/" + _font.Name);
       }
     }
     #endregion

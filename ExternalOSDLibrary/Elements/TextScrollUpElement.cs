@@ -69,7 +69,6 @@ namespace ExternalOSDLibrary
         _font = getFont(_textScrollUp.FontName);
         _brush = new SolidBrush(GetColor(_textScrollUp.TextColor));
         _label = _textScrollUp.Property;
-        Log.Debug("VideoPlayerOSD: Found textScrollUp element: " + _textScrollUp.GetID);
       }
     }
     #endregion

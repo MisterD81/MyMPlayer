@@ -90,7 +90,6 @@ namespace MPlayer
     public void Dispose()
     {
       _osd.Deactivate();
-      _osd.Dispose();
     }
     #endregion
 

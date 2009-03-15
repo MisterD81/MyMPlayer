@@ -111,7 +111,6 @@ namespace ExternalOSDLibrary
         _focus = _button.Focus;
         _selected = _button.Selected;
         _label = _button.Label;
-        Log.Debug("VideoPlayerOSD: Found toggle button element: " + _button.GetID);
       }
     }
     #endregion
@@ -190,22 +189,6 @@ namespace ExternalOSDLibrary
     /// </summary>
     public override void Dispose()
     {
-      if (_focusBitmap != null)
-      {
-        _focusBitmap.Dispose();
-      }
-      if (_noFocusBitmap != null)
-      {
-        _noFocusBitmap.Dispose();
-      }
-      if (_altFocusBitmap != null)
-      {
-        _altFocusBitmap.Dispose();
-      }
-      if (_altNoFocusBitmap != null)
-      {
-        _altNoFocusBitmap.Dispose();
-      }
       _font.Dispose();
     }
 

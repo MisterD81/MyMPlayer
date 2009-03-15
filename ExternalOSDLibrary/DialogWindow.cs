@@ -36,7 +36,7 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// Dialog Menu window
     /// </summary>
-    private readonly GUIDialogMenu _dialogWindow;
+    private GUIDialogMenu _dialogWindow;
     #endregion
 
     #region ctor
@@ -59,6 +59,18 @@ namespace ExternalOSDLibrary
     protected override bool CheckSpecificVisibility()
     {
       return GUIWindowManager.RoutedWindow == _dialogWindow.GetID;
+    }
+
+    /// <summary>
+    /// Performs a base uinut if the window. This includes the following tasks
+    /// - Setting the reference to the window in MP
+    /// - Setting the reference to the control list of the MP window
+    /// </summary>
+    protected override void BaseInit()
+    {
+      _dialogWindow = GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_DIALOG_MENU) as GUIDialogMenu;
+      if (_dialogWindow != null)
+        _controlList = _dialogWindow.controlList;
     }
     #endregion
   }

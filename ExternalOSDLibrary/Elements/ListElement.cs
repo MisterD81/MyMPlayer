@@ -133,14 +133,6 @@ namespace ExternalOSDLibrary
       /// </summary>
       public override void Dispose()
       {
-        if (_imageFocus != null)
-        {
-          _imageFocus.Dispose();
-        }
-        if (_imageNonFocus != null)
-        {
-          _imageNonFocus.Dispose();
-        }
       }
 
       /// <summary>
@@ -445,7 +437,6 @@ namespace ExternalOSDLibrary
         initializeLabels();
         _verticalScrollBarElement = new VerticalScrollBarElement(_list.Scrollbar);
         _focus = _list.IsFocused;
-        Log.Debug("VideoPlayerOSD: Found list element: ");
       }
     }
     #endregion
@@ -536,10 +527,6 @@ namespace ExternalOSDLibrary
         element.Dispose();
       }
       foreach (ListLabelElement element in _labelControls3)
-      {
-        element.Dispose();
-      }
-      foreach (Bitmap element in _cachedBitmaps.Values)
       {
         element.Dispose();
       }

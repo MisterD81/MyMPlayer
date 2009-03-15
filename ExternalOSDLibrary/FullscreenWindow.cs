@@ -40,7 +40,7 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// Fullscreen window
     /// </summary>
-    private readonly GUIVideoFullscreen _fullscreenWindow;
+    private GUIVideoFullscreen _fullscreenWindow;
 
     /// <summary>
     /// Background image
@@ -112,10 +112,10 @@ namespace ExternalOSDLibrary
       _fullscreenWindow = GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_FULLSCREEN_VIDEO) as GUIVideoFullscreen;
       if (_fullscreenWindow != null) _controlList = _fullscreenWindow.controlList;
       GenerateElements();
-      GUIControl temp;
-      GUIGroup help;
       _cacheElements = new List<BaseElement>();
       _imageCacheElements = new List<BaseElement>();
+      GUIControl temp;
+      GUIGroup help;
       foreach (UIElement element in _controlList)
       {
         temp = element as GUIControl;
@@ -130,11 +130,11 @@ namespace ExternalOSDLibrary
                 GUIControl temp2 = uiElement as GUIControl;
                 if (temp2 != null)
                 {
-                  checkElement(temp2);
+                  CheckElement(temp2);
                 }
               }
           }
-          checkElement(temp);
+          CheckElement(temp);
         }
       }
       if (_background == null)
@@ -148,7 +148,7 @@ namespace ExternalOSDLibrary
     }
     #endregion
 
-    private void checkElement(GUIControl temp)
+    private void CheckElement(GUIControl temp)
     {
       Log.Info(temp.GetType() + " : " + temp.GetID);
       if (temp.GetID == LABEL_ID)
@@ -216,6 +216,18 @@ namespace ExternalOSDLibrary
     {
       return GUIWindowManager.ActiveWindow == _fullscreenWindow.GetID;
     }
+
+    /// <summary>
+    /// Performs a base uinut if the window. This includes the following tasks
+    /// - Setting the reference to the window in MP
+    /// - Setting the reference to the control list of the MP window
+    /// </summary>
+    protected override void BaseInit()
+    {
+      _fullscreenWindow = GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_FULLSCREEN_VIDEO) as GUIVideoFullscreen;
+      if (_fullscreenWindow != null)
+        _controlList = _fullscreenWindow.controlList;
+    }
     #endregion
 
     #region public methods
@@ -279,9 +291,9 @@ namespace ExternalOSDLibrary
     }
 
     /// <summary>
-    /// Dispose the object
+    /// Dispose the object complete
     /// </summary>
-    public override void Dispose()
+    public void CompleteDispose()
     {
       _label.Dispose();
       _background.Dispose();
