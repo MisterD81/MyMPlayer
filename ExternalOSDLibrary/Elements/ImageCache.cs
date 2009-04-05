@@ -106,21 +106,27 @@ namespace ExternalOSDLibrary
     /// <param name="bitmap">Bitmap to update</param>
     private static void UpdateBitmap(Bitmap bitmap)
     {
-      Color temp;
-      for (int i = 0; i < bitmap.Width; i++)
+      try
       {
-        for (int j = 0; j < bitmap.Height; j++)
+        Color temp;
+        for (int i = 0; i < bitmap.Width; i++)
         {
-          temp = bitmap.GetPixel(i, j);
-          if (temp.R == 0 && temp.G == 0 && temp.B == 0 && temp.A > 150)
+          for (int j = 0; j < bitmap.Height; j++)
           {
-            bitmap.SetPixel(i, j, Color.FromArgb(temp.A, 5, 5, 5));
-          }
-          if (temp.R == 1 && temp.G == 1 && temp.B == 1 && temp.A > 150)
-          {
-            bitmap.SetPixel(i, j, Color.FromArgb(temp.A, 5, 5, 5));
+            temp = bitmap.GetPixel(i, j);
+            if (temp.R == 0 && temp.G == 0 && temp.B == 0 && temp.A > 150)
+            {
+              bitmap.SetPixel(i, j, Color.FromArgb(temp.A, 5, 5, 5));
+            }
+            if (temp.R == 1 && temp.G == 1 && temp.B == 1 && temp.A > 150)
+            {
+              bitmap.SetPixel(i, j, Color.FromArgb(temp.A, 5, 5, 5));
+            }
           }
         }
+      }catch
+      {
+        Log.Info("Could not update bitmap");
       }
     }
     #endregion
