@@ -216,7 +216,11 @@ namespace MPlayer
     /// <summary>
     /// OpenGL second generation
     /// </summary>
-    OpenGL2
+    OpenGL2,
+    /// <summary>
+    /// Direct3D
+    /// </summary>
+    Direct3D
   }
 
   /// <summary>
@@ -691,9 +695,10 @@ namespace MPlayer
     /// <summary>
     /// Generates the general _arguments
     /// </summary>
-    /// <param _name="handle">Handle to inner panel</param>
+    /// <param name="handle">Handle to inner panel</param>
+    /// <param name="isDVDNav">Use libdvdnav</param>
     /// <returns>General _arguments</returns>
-    private StringBuilder GetGeneralArguments(IntPtr handle)
+    private StringBuilder GetGeneralArguments(IntPtr handle, bool isDVDNav)
     {
       StringBuilder arguments = new StringBuilder();
       if (_mplayerPath.EndsWith("\\gmplayer.exe"))
@@ -750,11 +755,14 @@ namespace MPlayer
       {
         arguments.Append("-afm hwac3 ");
       }
-      if (_cacheSize > 0)
+      if (_cacheSize > 0 && !isDVDNav)
       {
         arguments.Append("-cache ");
         arguments.Append(_cacheSize);
         arguments.Append(" ");
+      }else
+      {
+        arguments.Append("-nocache ");
       }
       switch (_soundOutputDriver)
       {
@@ -840,6 +848,9 @@ namespace MPlayer
           break;
         case VideoOutputDriver.OpenGL2:
           arguments.Append(" -vo gl2 ");
+          break;
+        case VideoOutputDriver.Direct3D:
+          arguments.Append(" -vo direct3d ");
           break;
       }
       arguments.Append(_extensionSettings["general"].Arguments);
@@ -941,7 +952,7 @@ namespace MPlayer
       mplayerProcess.StartInfo.RedirectStandardOutput = true;
       mplayerProcess.StartInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(_mplayerPath);
       mplayerProcess.StartInfo.FileName = _mplayerPath;
-      StringBuilder arguments = GetGeneralArguments(handle);
+      StringBuilder arguments = GetGeneralArguments(handle,fileName.StartsWith("dvdnav://"));
       if (fileName.StartsWith("dvd://"))
       {
         String file = fileName.Substring(6);

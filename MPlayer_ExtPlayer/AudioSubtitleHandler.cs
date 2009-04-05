@@ -566,6 +566,7 @@ namespace MPlayer
         _subtitleNames[temp] = getLanguageName(message.Substring(index + 1));
       }
       else if (message.StartsWith("VO: [directx] ") ||
+        message.StartsWith("VO: [direct3d] ") ||
         message.StartsWith("VO: [gl2] ") ||
         message.StartsWith("VO: [gl] "))
       {

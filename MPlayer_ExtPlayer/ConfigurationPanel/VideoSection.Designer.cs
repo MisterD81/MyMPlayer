@@ -91,14 +91,15 @@ namespace MPlayer.ConfigurationPanel
             "DirectX",
             "DirectX - No Acceleration",
             "OpenGL",
-            "OpenGL2"});
+            "OpenGL2",
+            "Direct3D - Beta"});
       this.videoOutputDriver.Location = new System.Drawing.Point(129, 15);
       this.videoOutputDriver.Name = "videoOutputDriver";
       this.videoOutputDriver.Size = new System.Drawing.Size(260, 21);
       this.videoOutputDriver.TabIndex = 67;
-      this.toolTip.SetToolTip(this.videoOutputDriver, "Defines the used video output driver. The following are supported:\r\n- DirectX, wh" +
-              "ich is the recommend one\r\n- DirectX without HW-Acceleration\r\n- OpenGL\r\n- OpenGL " +
-              "2");
+      this.toolTip.SetToolTip(this.videoOutputDriver, "Defines the used video output driver. The following are supported:\r\n- DirectX\r\n- " +
+              "DirectX without HW-Acceleration\r\n- OpenGL\r\n- OpenGL 2\r\n- Direct3D - currently be" +
+              "ta");
       // 
       // framedrop
       // 

@@ -547,6 +547,7 @@ namespace MPlayer
         Log.Debug("MPlayer: Detected video aspect: " + _aspect_ratio);
       }
       else if (message.StartsWith("VO: [directx] ") ||
+                 message.StartsWith("VO: [direct3d] ") ||
                  message.StartsWith("VO: [gl2] ") ||
                  message.StartsWith("VO: [gl] "))
       {
@@ -567,6 +568,8 @@ namespace MPlayer
             Log.Debug("MPlayer: Using OpenGL or OpenGL2");
           }
           _player.SendPausingKeepCommand("get_time_pos");
+          _player.SendPausingKeepCommand("get_property stream_pos");
+          _player.SendPausingKeepCommand("get_property stream_pos");
           _osdHandler.DeactivateOSD(true);
           _videoWidth = newVideoWidth;
           _videoHeight = newVideoHeight;

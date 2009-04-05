@@ -401,6 +401,20 @@ namespace MPlayer
     }
 
     /// <summary>
+    /// Indicates, if playing a DVD menu
+    /// </summary>
+    public override bool IsDVDMenu
+    {
+      get
+      {
+        if(!IsDVD)
+        {
+          return false;
+        }
+        return _seekingHandler.IsDVDMenu;
+      }
+    }
+    /// <summary>
     /// Indicates, if playing a DVD
     /// </summary>
     public override bool IsDVD
@@ -432,6 +446,55 @@ namespace MPlayer
       _osdHandler.OnAction(action);
       _seekingHandler.OnAction(action);
       _audioSubtitleHandler.OnAction(action);
+
+      switch (action.wID)
+      {
+        case Action.ActionType.ACTION_MOVE_LEFT:
+        case Action.ActionType.ACTION_STEP_BACK:
+          if (IsDVDMenu)
+          {
+            SendCommand("dvdnav left");
+          }
+          break;
+
+        case Action.ActionType.ACTION_MOVE_RIGHT:
+        case Action.ActionType.ACTION_STEP_FORWARD:
+          if (IsDVDMenu)
+          {
+            SendCommand("dvdnav right");
+          }
+          break;
+        case Action.ActionType.ACTION_MOVE_UP:
+        case Action.ActionType.ACTION_BIG_STEP_FORWARD:
+          if (IsDVDMenu)
+          {
+            SendCommand("dvdnav up");
+          }
+          break;
+
+        case Action.ActionType.ACTION_MOVE_DOWN:
+        case Action.ActionType.ACTION_BIG_STEP_BACK:
+          if (IsDVDMenu)
+          {
+            SendCommand("dvdnav down");
+          }
+          break;
+
+        case Action.ActionType.ACTION_SELECT_ITEM:
+          if (IsDVDMenu)
+          {
+            SendCommand("dvdnav select");
+            SendCommand("get_property stream_pos");
+            SendCommand("get_property stream_pos");
+          }
+          break;
+
+        case Action.ActionType.ACTION_DVD_MENU:
+          SendCommand("dvdnav menu");
+          SendCommand("get_property stream_pos");
+          SendCommand("get_property stream_pos");
+          break;
+      }
     }
 
     /// <summary>
@@ -555,7 +618,7 @@ namespace MPlayer
         }
       } catch (Exception ex)
       {
-        Log.Error("MPlayer: exception occured while handling message", ex);
+        Log.Error("MPlayer: exception occured while handling message\n{0}", ex);
       }
     }
     #endregion
