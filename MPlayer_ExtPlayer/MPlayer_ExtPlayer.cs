@@ -407,11 +407,7 @@ namespace MPlayer
     {
       get
       {
-        if(!IsDVD)
-        {
-          return false;
-        }
-        return _seekingHandler.IsDVDMenu;
+        return IsDVD && _seekingHandler.IsDVDMenu;
       }
     }
     /// <summary>
@@ -421,7 +417,7 @@ namespace MPlayer
     {
       get
       {
-        return _currentFile != null && _currentFile.StartsWith("dvd://");
+        return _currentFile != null && (_currentFile.StartsWith("dvd://") || _currentFile.StartsWith("dvdnav://"));
       }
     }
 

@@ -44,6 +44,7 @@
       this.label2 = new System.Windows.Forms.Label();
       this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
       this.playlistFolder = new System.Windows.Forms.CheckBox();
+      this.dvdNavCheckbox = new System.Windows.Forms.CheckBox();
       this.groupBox1.SuspendLayout();
       this.SuspendLayout();
       // 
@@ -218,12 +219,23 @@
       this.playlistFolder.Text = "Treat Playlists as folders";
       this.playlistFolder.UseVisualStyleBackColor = true;
       // 
+      // dvdNavCheckbox
+      // 
+      this.dvdNavCheckbox.AutoSize = true;
+      this.dvdNavCheckbox.Location = new System.Drawing.Point(152, 292);
+      this.dvdNavCheckbox.Name = "dvdNavCheckbox";
+      this.dvdNavCheckbox.Size = new System.Drawing.Size(254, 17);
+      this.dvdNavCheckbox.TabIndex = 47;
+      this.dvdNavCheckbox.Text = "Use dvdnav for DVD plackback (exmperimental)";
+      this.dvdNavCheckbox.UseVisualStyleBackColor = true;
+      // 
       // GUIConfiguration
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
       this.BackColor = System.Drawing.Color.Transparent;
+      this.Controls.Add(this.dvdNavCheckbox);
       this.Controls.Add(this.playlistFolder);
       this.Controls.Add(this.myMusicShare);
       this.Controls.Add(this.myVideoShare);
@@ -257,5 +269,6 @@
     private System.Windows.Forms.Label label2;
     private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
     private System.Windows.Forms.CheckBox playlistFolder;
+    private System.Windows.Forms.CheckBox dvdNavCheckbox;
   }
 }

@@ -209,6 +209,7 @@ namespace MPlayer
       _seekAbsoluteDestinationTime = dTime;
       _performSeekRelative = true;
       _player.SendPausingKeepCommand("get_time_pos");
+      _player.SendPausingKeepCommand("get_time_length");
       _player.SendPausingKeepCommand("get_property stream_pos");
     }
 
@@ -221,6 +222,7 @@ namespace MPlayer
       _player.SendPausingKeepCommand("seek " + ((int)dTime) + " 0");
       Thread.Sleep(200);
       _player.SendPausingKeepCommand("get_time_pos");
+      _player.SendPausingKeepCommand("get_time_length");
       _player.SendPausingKeepCommand("get_property stream_pos");
     }
 
@@ -233,6 +235,7 @@ namespace MPlayer
       _player.SendPausingKeepCommand("seek " + iPercentage + " 2");
       Thread.Sleep(200);
       _player.SendPausingKeepCommand("get_time_pos");
+      _player.SendPausingKeepCommand("get_time_length");
       _player.SendPausingKeepCommand("get_property stream_pos");
     }
 
@@ -274,6 +277,7 @@ namespace MPlayer
         if (ts.TotalSeconds > 5)
         {
           _player.SendCommand("get_time_pos");
+          _player.SendCommand("get_time_length");
           _player.SendPausingKeepCommand("get_property stream_pos");
           _checkTime = false;
         }
@@ -291,6 +295,7 @@ namespace MPlayer
         _player.SendPausingKeepCommand("seek " + ((int)destination) + " 0");
         Thread.Sleep(200);
         _player.SendPausingKeepCommand("get_time_pos");
+        _player.SendPausingKeepCommand("get_time_length");
         _player.SendPausingKeepCommand("get_property stream_pos");
       }
     }
@@ -350,6 +355,7 @@ namespace MPlayer
           {
             Log.Info("MPlayer: DVD Menu detected");
             _player.SendPausingKeepCommand("get_time_length");
+            _player.SendPausingKeepCommand("get_property stream_pos");
             _isDVDMenu = true;
           }
         }

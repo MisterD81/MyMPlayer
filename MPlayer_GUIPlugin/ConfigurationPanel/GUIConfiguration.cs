@@ -199,6 +199,7 @@ namespace MPlayer.ConfigurationPanel
           myVideoShare.Checked = xmlreader.GetValueAsBool("mplayer", "useMyVideoShares", true);
           myMusicShare.Checked = xmlreader.GetValueAsBool("mplayer", "useMyMusicShares", true);
           playlistFolder.Checked = xmlreader.GetValueAsBool("mplayer", "treatPlaylistAsFolders", false);
+          dvdNavCheckbox.Checked = xmlreader.GetValueAsBool("mplayer", "useDVDNAV", false);
         }
       } catch (Exception e)
       {
@@ -248,6 +249,7 @@ namespace MPlayer.ConfigurationPanel
         xmlWriter.SetValueAsBool("mplayer", "useMyMusicShares", myMusicShare.Checked);
         xmlWriter.SetValueAsBool("mplayer", "useMyVideoShares", myVideoShare.Checked);
         xmlWriter.SetValueAsBool("mplayer", "treatPlaylistAsFolders", playlistFolder.Checked);
+        xmlWriter.SetValueAsBool("mplayer", "useDVDNAV", dvdNavCheckbox.Checked);
       }
     }
     #endregion

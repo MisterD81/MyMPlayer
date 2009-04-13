@@ -160,6 +160,11 @@ namespace MPlayer
     private readonly bool treatPlaylistsAsFolders;
 
     /// <summary>
+    /// Indicates if playlists should be treat as folders
+    /// </summary>
+    private readonly bool useDVDNAV;
+
+    /// <summary>
     /// Disable sorting of elements. Onlöy needed for playlists.
     /// </summary>
     private bool disableSorting;
@@ -191,6 +196,7 @@ namespace MPlayer
         useMyVideoShares = xmlreader.GetValueAsBool("mplayer", "useMyVideoShares", true);
         useMyMusicShares = xmlreader.GetValueAsBool("mplayer", "useMyMusicShares", true);
         treatPlaylistsAsFolders = xmlreader.GetValueAsBool("mplayer", "treatPlaylistAsFolders", false);
+        useDVDNAV = xmlreader.GetValueAsBool("mplayer", "useDVDNAV", false);
         String m_strLanguage = xmlreader.GetValueAsString("skin", "language", "English");
         LocalizeStrings.Load(m_strLanguage);
       }
@@ -282,7 +288,13 @@ namespace MPlayer
           string driveLetter = driveElement.Substring(0, 1);
           if (File.Exists(String.Format(@"{0}:\VIDEO_TS\VIDEO_TS.IFO", driveLetter)))
           {
-            url = "dvd://" + driveLetter + ":.mplayer";
+            if (useDVDNAV)
+            {
+              url = "dvdnav://" + driveLetter + ":.mplayer";
+            }else
+            {
+              url = "dvd://" + driveLetter + ":.mplayer";
+            }
             discFound = true;
             break;
           }
@@ -480,7 +492,13 @@ namespace MPlayer
         if ((File.Exists(path + @"\VIDEO_TS\VIDEO_TS.IFO")) && (item.Label != ".."))
         {
           isFolderAMovie = true;
-          path = "dvd://" + path;
+          if(useDVDNAV)
+          {
+            path = "dvdnav://" + path;
+          }else
+          {
+            path = "dvd://" + path;
+          }
           //_path = item.Path + @"\VIDEO_TS\VIDEO_TS.IFO";
         }
         else if ((File.Exists(path + @"\MPEGAV\AVSEQ01.DAT")) && (item.Label != ".."))

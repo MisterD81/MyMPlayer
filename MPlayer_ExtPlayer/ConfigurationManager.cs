@@ -896,6 +896,9 @@ namespace MPlayer
       if (fileName.StartsWith("dvd://"))
       {
         isVideo = true;
+      } else if (fileName.StartsWith("dvdnav://"))
+      {
+        isVideo = true;
       }
       else if (fileName.StartsWith("vcd://"))
       {
@@ -965,8 +968,19 @@ namespace MPlayer
         arguments.Append(" -slang ");
         arguments.Append(CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
         arguments.Append(" dvd://");
-      }
-      else if (fileName.StartsWith("vcd://"))
+      } else if (fileName.StartsWith("dvdnav://"))
+      {
+        String file = fileName.Substring(9);
+        arguments.Append(_extensionSettings["dvd://"].Arguments);
+        arguments.Append(" -dvd-device \"");
+        arguments.Append(file);
+        arguments.Append("\"");
+        arguments.Append(" -alang ");
+        arguments.Append(CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
+        arguments.Append(" -slang ");
+        arguments.Append(CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
+        arguments.Append(" dvdnav://");
+      } else if (fileName.StartsWith("vcd://"))
       {
         String file = fileName.Substring(6);
         arguments.Append(_extensionSettings["vcd://"].Arguments);
@@ -1059,11 +1073,12 @@ namespace MPlayer
       ext = ext.ToLower();
       if (ext.Equals(".mplayer"))
       {
-        if (filename.StartsWith("dvd://") || filename.StartsWith("vcd://") || filename.StartsWith("svcd://") ||
-            filename.StartsWith("ftp://") || filename.StartsWith("http://") || filename.StartsWith("http_proxy://") ||
-            filename.StartsWith("mms://") || filename.StartsWith("mmst://") || filename.StartsWith("mpst://") ||
-            filename.StartsWith("rtp://") || filename.StartsWith("rtsp://") || filename.StartsWith("sdp://") ||
-            filename.StartsWith("udp://") || filename.StartsWith("unsv://") || filename.StartsWith("ZZZZ://"))
+        if (filename.StartsWith("dvd://") || filename.StartsWith("dvdnav://") ||  filename.StartsWith("vcd://") || 
+            filename.StartsWith("svcd://") || filename.StartsWith("ftp://") || filename.StartsWith("http://") || 
+            filename.StartsWith("http_proxy://") || filename.StartsWith("mms://") || filename.StartsWith("mmst://") || 
+            filename.StartsWith("mpst://") || filename.StartsWith("rtp://") || filename.StartsWith("rtsp://") || 
+            filename.StartsWith("sdp://") || filename.StartsWith("udp://") || filename.StartsWith("unsv://") || 
+            filename.StartsWith("ZZZZ://"))
         {
           return true;
         }

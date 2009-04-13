@@ -525,7 +525,15 @@ namespace MPlayer
     /// <param _name="message">Message to handle</param>
     public void HandleMessage(string message)
     {
-      if (message.StartsWith("ID_AUDIO_ID"))
+      if (message.StartsWith("DVDNAV, switched to title"))
+      {
+        _numberOfAudioStreams = 0;
+        _audioID.Clear();
+        _audioNames.Clear();
+        _numberOfSubtitles = 0;
+        _subtitleID.Clear();
+        _subtitleNames.Clear();
+      }else if (message.StartsWith("ID_AUDIO_ID"))
       {
         int temp;
         Int32.TryParse(message.Substring(12), out temp);
