@@ -5,19 +5,19 @@
 			<FileName>ExternalOSDLibrary.dll</FileName>
 			<Type>Other</Type>
 			<SubType />
-			<Source>ExternalOSDLibrary\bin\Release\ExternalOSDLibrary.dll</Source>
+			<Source>ExternalOSDLibrary\bin\x86\Release\ExternalOSDLibrary.dll</Source>
 			<Id>04010</Id>
 			<Option />
-			<Guid>9cac9b7c-0b4d-4503-9667-c1d95e053aaf</Guid>
+			<Guid>f4df57a6-d3b3-40c8-998a-4df872ac95f2</Guid>
 		</File>
 		<File>
 			<FileName>MPlayer_ExtPlayer.dll</FileName>
 			<Type>Plugin</Type>
 			<SubType>External Player</SubType>
-			<Source>MPlayer_ExtPlayer\bin\Release\MPlayer_ExtPlayer.dll</Source>
+			<Source>MPlayer_ExtPlayer\bin\x86\Release\MPlayer_ExtPlayer.dll</Source>
 			<Id>01050</Id>
 			<Option />
-			<Guid>5aa67425-7096-42ba-bca0-7197dff522bc</Guid>
+			<Guid>67229ec1-efbe-40fb-9a67-4a482c764105</Guid>
 		</File>
 		<File>
 			<FileName>MPlayer_ExtPlayer.xml</FileName>
@@ -26,16 +26,16 @@
 			<Source>MPlayer_ExtPlayer\SampleConfiguration\MPlayer_ExtPlayer.xml</Source>
 			<Id>04010</Id>
 			<Option />
-			<Guid>a7e0ba55-c55a-41d6-a285-8aadf2a6a906</Guid>
+			<Guid>aa65ebf5-5ad2-40c5-b329-a673ee185fe8</Guid>
 		</File>
 		<File>
 			<FileName>MPlayer_GUIPlugin.dll</FileName>
 			<Type>Plugin</Type>
 			<SubType>Window</SubType>
-			<Source>MPlayer_GUIPlugin\bin\Release\MPlayer_GUIPlugin.dll</Source>
+			<Source>MPlayer_GUIPlugin\bin\x86\Release\MPlayer_GUIPlugin.dll</Source>
 			<Id>01010</Id>
 			<Option />
-			<Guid>3f2a0620-421c-41f5-8548-b872321b601b</Guid>
+			<Guid>df406788-547e-46c7-8365-97c220217c89</Guid>
 		</File>
 		<File>
 			<FileName>MPlayer_GUIPlugin.xml</FileName>
@@ -44,13 +44,13 @@
 			<Source>MPlayer_GUIPlugin\SampleConfiguration\MPlayer_GUIPlugin.xml</Source>
 			<Id>04010</Id>
 			<Option />
-			<Guid>412da249-65df-4136-a244-af7dff6263ba</Guid>
+			<Guid>b404b44b-aa20-40a5-899f-e1ac7ba7c460</Guid>
 		</File>
 		<File>
 			<FileName>MPlayer_Installer.dll</FileName>
 			<Type>Internal</Type>
 			<SubType>Plugin</SubType>
-			<Source>MPlayer_Installer\bin\Release\MPlayer_Installer.dll</Source>
+			<Source>MPlayer_Installer\bin\x86\Release\MPlayer_Installer.dll</Source>
 			<Id>07010</Id>
 			<Option />
 			<Guid />
@@ -62,7 +62,7 @@
 			<Source>My MPlayer-License.txt</Source>
 			<Id>03010</Id>
 			<Option />
-			<Guid>9de0d6c6-8264-4246-bc95-1d3d1f23ddc0</Guid>
+			<Guid>bdfd4302-6d60-421b-af11-2a2973d157e3</Guid>
 		</File>
 		<File>
 			<FileName>myMPlayer.xml</FileName>
@@ -71,7 +71,7 @@
 			<Source>MPlayer_GUIPlugin\SkinFiles\Blue3Wide\myMPlayer.xml</Source>
 			<Id>02010</Id>
 			<Option>OutputFileName=|DefaultFile=True|</Option>
-			<Guid>a4cdc319-3bd4-4975-9b57-f9a6994b7fb2</Guid>
+			<Guid>9fac4e99-18c6-4947-b433-330bb2f27782</Guid>
 		</File>
 		<File>
 			<FileName>myMPlayer.xml</FileName>
@@ -80,25 +80,7 @@
 			<Source>MPlayer_GUIPlugin\SkinFiles\Blue3\myMPlayer.xml</Source>
 			<Id>02010</Id>
 			<Option />
-			<Guid>29ed952d-542b-46b0-a96a-c142b81fa348</Guid>
-		</File>
-		<File>
-			<FileName>myMPlayer.xml</FileName>
-			<Type>Skin</Type>
-			<SubType>BlueTwo wide</SubType>
-			<Source>MPlayer_GUIPlugin\SkinFiles\BlueTwo 16x9\myMPlayer.xml</Source>
-			<Id>02010</Id>
-			<Option />
-			<Guid>d6c43fcb-9496-459c-95ac-aa3734ce8923</Guid>
-		</File>
-		<File>
-			<FileName>myMPlayer.xml</FileName>
-			<Type>Skin</Type>
-			<SubType>BlueTwo</SubType>
-			<Source>MPlayer_GUIPlugin\SkinFiles\BlueTwo 4x3\myMPlayer.xml</Source>
-			<Id>02010</Id>
-			<Option />
-			<Guid>5be7fa78-27e2-4afe-be9a-080b6489d2f2</Guid>
+			<Guid>59ff45fc-bde5-4278-893b-56f7f5183efc</Guid>
 		</File>
 		<File>
 			<FileName>myMPlayer.xml</FileName>
@@ -107,7 +89,7 @@
 			<Source>MPlayer_GUIPlugin\SkinFiles\XFace\myMPlayer.xml</Source>
 			<Id>02010</Id>
 			<Option />
-			<Guid>e83d44a5-bfe3-4ff3-b4ab-fbb5dc158f76</Guid>
+			<Guid>492d0e50-53ea-4ce8-acaf-82346945fdb4</Guid>
 		</File>
 		<File>
 			<FileName>myMPlayer.xml</FileName>
@@ -116,7 +98,7 @@
 			<Source>MPlayer_GUIPlugin\SkinFiles\PM III\myMPlayer.xml</Source>
 			<Id>02010</Id>
 			<Option />
-			<Guid>5a5443aa-c087-46c0-a78f-9d45dd335125</Guid>
+			<Guid>12aa4ceb-5dc1-4b06-92b9-26dd138eefcd</Guid>
 		</File>
 		<File>
 			<FileName>strings_de.xml</FileName>
@@ -125,7 +107,7 @@
 			<Source>MPlayer_ExtPlayer\Language\strings_de.xml</Source>
 			<Id>04010</Id>
 			<Option />
-			<Guid>14c6ac5e-70ad-4bdf-908d-228c7cd5ea05</Guid>
+			<Guid>905c3bd4-03b6-4126-92e7-eccff16411ae</Guid>
 		</File>
 		<File>
 			<FileName>strings_en.xml</FileName>
@@ -134,7 +116,7 @@
 			<Source>MPlayer_ExtPlayer\Language\strings_en.xml</Source>
 			<Id>04010</Id>
 			<Option />
-			<Guid>ecd64dbe-63f9-4dff-91d2-56a36f717617</Guid>
+			<Guid>c749f35f-0371-4ab3-a3cd-a1e6abeb22e1</Guid>
 		</File>
 		<File>
 			<FileName>strings_es.xml</FileName>
@@ -143,7 +125,7 @@
 			<Source>MPlayer_ExtPlayer\Language\strings_es.xml</Source>
 			<Id>04010</Id>
 			<Option />
-			<Guid>617bf83f-4747-4d23-9bec-479c544e04cf</Guid>
+			<Guid>3684dd7d-85d6-46ef-815a-8f21882dc90b</Guid>
 		</File>
 		<File>
 			<FileName>strings_fr.xml</FileName>
@@ -152,7 +134,7 @@
 			<Source>MPlayer_ExtPlayer\Language\strings_fr.xml</Source>
 			<Id>04010</Id>
 			<Option />
-			<Guid>a39cee98-f5d0-47c1-8302-b3dd9d949bb4</Guid>
+			<Guid>61c102ce-29a3-4078-878a-3e56611dd4d4</Guid>
 		</File>
 		<File>
 			<FileName>strings_it.xml</FileName>
@@ -161,7 +143,7 @@
 			<Source>MPlayer_ExtPlayer\Language\strings_it.xml</Source>
 			<Id>04010</Id>
 			<Option />
-			<Guid>a870763a-f2ac-4e23-a217-494a3b654ad3</Guid>
+			<Guid>219a71cd-e229-4f76-9528-218aa956e94b</Guid>
 		</File>
 	</FileList>
 	<StringList />
@@ -169,12 +151,12 @@
 	<SetupGroups />
 	<SetupGroupMappings />
 	<Option>
-		<BuildFileName>Z:\Source-MediaPortal\MP-Plugins\MyMPlayer\My Mplayer.mpi</BuildFileName>
-		<ProiectFileName>Z:\Source-MediaPortal\MP-Plugins\MyMPlayer\My MPlayer.xmp</ProiectFileName>
+		<BuildFileName>Z:\Source-MediaPortal\MediaPortal-Plugins\trunk\plugins\MyMPlayer\My Mplayer.mpi</BuildFileName>
+		<ProiectFileName>Z:\Source-MediaPortal\MediaPortal-Plugins\trunk\plugins\MyMPlayer\My MPlayer.xmp</ProiectFileName>
 		<ProiectName>My MPlayer</ProiectName>
 		<Author>MisterD</Author>
 		<UpdateURL>http://mpi.team-mediaportal.com</UpdateURL>
-		<Version>0.90</Version>
+		<Version>1.0.1</Version>
 		<Description>My MPlayer is an external player and window plugin that gives the user the ability to use MPlayer in MediaPortal.
 
 With the window plugin the user can play more medias like rtsp streams etc. than with the standard plugins of MP. It always uses MPlayer even if normally the internal players or an other external player is used by the other Plugins.
@@ -182,15 +164,19 @@ With the window plugin the user can play more medias like rtsp streams etc. than
 This version also includes a new OSD, which simulates the OSD of MP.</Description>
 		<Group>Video/Movies</Group>
 		<Release>Stable </Release>
+		<Script />
 	</Option>
 	<Properties>
-		<MPMaxVersion />
-		<MPMinVersion>1.0 RC3</MPMinVersion>
+		<MPMaxVersion>1.0.2.0</MPMaxVersion>
+		<MPMinVersion>1.0.1.0</MPMinVersion>
 		<MinExtensionVersion />
 		<MaxExtensionVersion />
 		<ForumURL />
 		<WebURL />
-		<CreationDate>11-10-08</CreationDate>
+		<WikiURL />
+		<CreationDate>11-06-09</CreationDate>
 		<SingleGroupSelect>True</SingleGroupSelect>
+		<ClearSkinCache>True</ClearSkinCache>
+		<UseRealPathInPackage>False</UseRealPathInPackage>
 	</Properties>
 </MPinstaler>

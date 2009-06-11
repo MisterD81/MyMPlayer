@@ -221,6 +221,7 @@
       // 
       // dvdNavCheckbox
       // 
+      this.dvdNavCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
       this.dvdNavCheckbox.AutoSize = true;
       this.dvdNavCheckbox.Location = new System.Drawing.Point(152, 292);
       this.dvdNavCheckbox.Name = "dvdNavCheckbox";

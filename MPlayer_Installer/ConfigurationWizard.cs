@@ -112,7 +112,8 @@ namespace MPlayer
           infoBox.Text = "MPlayer offers different video output drivers. Unfortunately in combination with MP only the available video ";
           infoBox.Text += "output drivers are available, because the other drivers don't support to embed the video in MediaPortal. ";
           infoBox.Text += "If you are using XP than you should the DirectX driver. Vista users should use the OpenGL, OpenGL2 driver with Aero.";
-          infoBox.Text += "If you encouter any error, than you sould try disabling the options 'Double buffering' and 'Direct Rendering'. \r\n\r\n";
+          infoBox.Text += "If you encouter any error, than you sould try disabling the options 'Double buffering' and 'Direct Rendering'. "; 
+          infoBox.Text += "Direct3D is an experimental option and can cause crashes. Use it on your own risk. \r\n\r\n";
           infoBox.Text += "You can turn on the option 'Framedrop' for a better A/V sync, which means that MPlayer will skip some frames.";
 
           break;
@@ -204,8 +205,7 @@ namespace MPlayer
           guiConfiguration1.Visible = true;
           Text = "My MPlayer Configuration Wizard (7/7)";
           mainLabel.Text = "In the last step of this wizard, you can configure the gui plugin of My MPlayer.";
-
-          infoBox.Text = "";
+          infoBox.Text = "DVDNAV support is experimental as their is no stable version of MPlayer with this available";
 
           break;
       }

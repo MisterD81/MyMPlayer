@@ -330,7 +330,6 @@ namespace MPlayer
     /// </summary>
     public override void Pause()
     {
-      SendCommand("pause");
       if (_playState == PlayState.Playing)
       {
         _osdHandler.SetOSDVisibleForPause(true);
@@ -343,6 +342,7 @@ namespace MPlayer
         _osdHandler.DeactivateOSD(false);
         _playState = PlayState.Playing;
       }
+      SendCommand("pause");
     }
 
     /// <summary>
