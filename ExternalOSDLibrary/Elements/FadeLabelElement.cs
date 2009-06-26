@@ -80,7 +80,7 @@ namespace ExternalOSDLibrary
     /// <param name="graph">Graphics</param>
     public override void DrawElement(Graphics graph)
     {
-      if (_label.Visible)
+      if (_label.Visible || GUIInfoManager.GetBool(_label.GetVisibleCondition(), _label.ParentID))
       {
         GUIControl.Alignment alignment = _label.TextAlignment;
         RectangleF rectangle;

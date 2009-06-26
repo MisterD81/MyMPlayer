@@ -132,7 +132,8 @@ namespace ExternalOSDLibrary
     /// <returns>true, if an update is needed</returns>
     public bool CheckForUpdate()
     {
-      bool newVisible = _control.Visible;
+      _control.UpdateVisibility();
+      bool newVisible = _control.Visible || GUIInfoManager.GetBool(_control.GetVisibleCondition(),_control.ParentID);
       if (newVisible == _wasVisible)
       {
         if (newVisible)
@@ -142,7 +143,7 @@ namespace ExternalOSDLibrary
         return false;
       }
       _wasVisible = newVisible;
-      if (newVisible)
+      if (true)
       {
         CheckElementSpecificForUpdate();
       }

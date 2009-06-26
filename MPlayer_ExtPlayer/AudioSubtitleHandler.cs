@@ -27,7 +27,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using MediaPortal.Player;
 using MediaPortal.GUI.Library;
-using OsDetection;
 
 namespace MPlayer
 {
@@ -165,8 +164,7 @@ namespace MPlayer
       _subtitlesEnabled = _configManager.EnableSubtitles;
       _currentSubtitlePosition = _configManager.SubtitlePosition;
       _currentSubtitleSize = _configManager.SubtitleSize;
-      OSVersionInfo os = new OperatingSystemVersion();
-      if (os.OSVersion == OSVersion.Vista || os.OSVersion == OSVersion.Win2008)
+      if (OSInfo.OSInfo.OSList.WindowsVista == OSInfo.OSInfo.GetOSName() || OSInfo.OSInfo.OSList.Windows2008 == OSInfo.OSInfo.GetOSName() || OSInfo.OSInfo.OSList.Windows7 == OSInfo.OSInfo.GetOSName())
       {
         _mpMessageHandler = OnMessage;
         GUIWindowManager.Receivers += _mpMessageHandler;

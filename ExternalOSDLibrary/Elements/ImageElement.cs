@@ -67,7 +67,7 @@ namespace ExternalOSDLibrary
     /// <param name="graph">Graphics</param>
     public override void DrawElement(Graphics graph)
     {
-      if (_image.Visible && !_image.FileName.Equals("black.bmp"))
+      if ((_image.Visible || GUIInfoManager.GetBool(_image.GetVisibleCondition(), _image.ParentID)) && !_image.FileName.Equals("black.bmp"))
       {
         DrawElementAlternative(graph, GetImageRectangle());
       }

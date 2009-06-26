@@ -25,7 +25,6 @@
 using System;
 using System.Windows.Forms;
 using MediaPortal.Configuration;
-using OsDetection;
 
 namespace MPlayer.ConfigurationPanel
 {
@@ -61,8 +60,7 @@ namespace MPlayer.ConfigurationPanel
         cacheSize.Text = tempCacheSize > 0 ? tempCacheSize.ToString() : String.Empty;
         mplayerPath.Text = xmlreader.GetValueAsString("mplayer", "mplayerPath", "C:\\Program Files\\MPlayer\\MPlayer.exe");
         bool blankScreenStandardValue = true;
-        OSVersionInfo os = new OperatingSystemVersion();
-        if (os.OSVersion == OSVersion.Vista || os.OSVersion == OSVersion.Win2008)
+        if (OSInfo.OSInfo.OSList.WindowsVista == OSInfo.OSInfo.GetOSName() || OSInfo.OSInfo.OSList.Windows2008 == OSInfo.OSInfo.GetOSName() || OSInfo.OSInfo.OSList.Windows7 == OSInfo.OSInfo.GetOSName())
         {
           blankScreenStandardValue = false;
         }

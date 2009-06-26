@@ -116,7 +116,7 @@ namespace ExternalOSDLibrary
     /// <param name="graph">Graphics</param>
     public override void DrawElement(Graphics graph)
     {
-      if (_checkMark.Visible)
+      if (_checkMark.Visible || GUIInfoManager.GetBool(_checkMark.GetVisibleCondition(), _checkMark.ParentID))
       {
         int dwTextPosX = _checkMark.XPosition;
         int dwCheckMarkPosX = _checkMark.XPosition;

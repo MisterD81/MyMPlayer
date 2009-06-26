@@ -264,7 +264,7 @@ namespace ExternalOSDLibrary
           result = result | element.CheckForUpdate();
         }
       }
-      return result;
+      return true;
     }
     #endregion
 

@@ -24,7 +24,6 @@
 
 using System.Windows.Forms;
 using MediaPortal.Configuration;
-using OsDetection;
 
 namespace MPlayer.ConfigurationPanel
 {
@@ -53,8 +52,7 @@ namespace MPlayer.ConfigurationPanel
       using (MediaPortal.Profile.Settings xmlreader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml")))
       {
         VideoOutputDriver videoOutputDriverStandardValue = VideoOutputDriver.DirectX;
-        OSVersionInfo os = new OperatingSystemVersion();
-        if (os.OSVersion == OSVersion.Vista || os.OSVersion == OSVersion.Win2008)
+        if (OSInfo.OSInfo.OSList.WindowsVista == OSInfo.OSInfo.GetOSName() || OSInfo.OSInfo.OSList.Windows2008 == OSInfo.OSInfo.GetOSName() || OSInfo.OSInfo.OSList.Windows7 == OSInfo.OSInfo.GetOSName())
         {
           videoOutputDriverStandardValue = VideoOutputDriver.OpenGL2;
         }

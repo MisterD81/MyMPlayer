@@ -97,7 +97,7 @@ namespace ExternalOSDLibrary
     /// <param name="graph">Graphics</param>
     public override void DrawElement(Graphics graph)
     {
-      if (_volumeBar.Visible)
+      if (_volumeBar.Visible || GUIInfoManager.GetBool(_volumeBar.GetVisibleCondition(), _volumeBar.ParentID))
       {
         int imageHeight = _volumeBar.ImageHeight;
         int realImageHeight = _volumeBar.TextureHeight / imageHeight;
