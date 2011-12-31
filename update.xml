@@ -7,7 +7,7 @@
         <Items>
           <GroupItem Name="Plugin">
             <DisplayName>Plugin</DisplayName>
-            <DefaulChecked>false</DefaulChecked>
+            <DefaulChecked>true</DefaulChecked>
             <Description>Plugin</Description>
             <Files>
               <Items />
@@ -15,7 +15,7 @@
           </GroupItem>
           <GroupItem Name="Skins">
             <DisplayName>Skins</DisplayName>
-            <DefaulChecked>false</DefaulChecked>
+            <DefaulChecked>true</DefaulChecked>
             <Description>Skins</Description>
             <Files>
               <Items />
@@ -23,7 +23,7 @@
           </GroupItem>
           <GroupItem Name="Default">
             <DisplayName>Default</DisplayName>
-            <DefaulChecked>false</DefaulChecked>
+            <DefaulChecked>true</DefaulChecked>
             <Description>Default</Description>
             <Files>
               <Items />
@@ -31,7 +31,7 @@
           </GroupItem>
           <GroupItem Name="DefaultWide">
             <DisplayName>DefaultWide</DisplayName>
-            <DefaulChecked>false</DefaulChecked>
+            <DefaulChecked>true</DefaulChecked>
             <Description>DefaultWide</Description>
             <Files>
               <Items />
@@ -39,7 +39,7 @@
           </GroupItem>
           <GroupItem Name="Language">
             <DisplayName>Language</DisplayName>
-            <DefaulChecked>false</DefaulChecked>
+            <DefaulChecked>true</DefaulChecked>
             <Description>Language</Description>
             <Files>
               <Items />
@@ -129,12 +129,15 @@
 With the window plugin the user can play more medias like rtsp streams etc. than with the standard plugins of MP. It always uses MPlayer even if normally the internal players or an other external player is used by the other Plugins.
 
 This version also includes a new OSD, which simulates the OSD of MP.</ExtensionDescription>
-        <VersionDescription />
-        <DevelopmentStatus />
+        <VersionDescription>- Updated plugin to work with 1.2.x
+- Created MPEI installer
+- Backported modifications on ExternalOSDLibrary from OnlineVideos plugin
+</VersionDescription>
+        <DevelopmentStatus>Stable</DevelopmentStatus>
         <OnlineLocation>https://raw.github.com/MisterD81/MyMPlayer/master/My%20MPlayer.mpe1</OnlineLocation>
         <ReleaseDate>2012-01-01T10:51:30</ReleaseDate>
-        <Tags />
-        <Location>Z:\@Development\Mediaportal\MyMPlayer\My MPlayer.mpe1</Location>
+        <Tags>mplayer</Tags>
+        <Location>.\My MPlayer.mpe1</Location>
         <Params>
           <Items>
             <SectionParam Name="Online Icon">
@@ -143,7 +146,7 @@ This version also includes a new OSD, which simulates the OSD of MP.</ExtensionD
               <Description>The icon file of the package stored online (jpg,png,bmp)</Description>
             </SectionParam>
             <SectionParam Name="Configuration file">
-              <Value />
+              <Value>%Plugins%\ExternalPlayers\MPlayer_ExtPlayer.dll</Value>
               <ValueType>Template</ValueType>
               <Description>The file used to configure the extension.
  If have .exe extension the will be executed

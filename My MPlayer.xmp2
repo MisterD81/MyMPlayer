@@ -31,6 +31,20 @@
               <ZipFileName>Installer{CopyFile}\{adc671e8-86ec-4335-992c-232b5da785b5}-MPlayer_GUIPlugin.dll</ZipFileName>
               <DestinationFilename>%Plugins%\Windows\MPlayer_GUIPlugin.dll</DestinationFilename>
             </FileItem>
+            <FileItem InstallType="CopyFile" SystemFile="false" Modified="true">
+              <Param1 />
+              <UpdateOption>OverwriteIfOlder</UpdateOption>
+              <LocalFileName>MPlayer_ExtPlayer\SampleConfiguration\MPlayer_ExtPlayer.xml</LocalFileName>
+              <ZipFileName>Installer{CopyFile}\{5831c415-e53e-434a-a2ad-ff5a45385136}-MPlayer_ExtPlayer.xml</ZipFileName>
+              <DestinationFilename>%Config%\MPlayer_ExtPlayer.xml</DestinationFilename>
+            </FileItem>
+            <FileItem InstallType="CopyFile" SystemFile="false" Modified="true">
+              <Param1 />
+              <UpdateOption>OverwriteIfOlder</UpdateOption>
+              <LocalFileName>MPlayer_GUIPlugin\SampleConfiguration\MPlayer_GUIPlugin.xml</LocalFileName>
+              <ZipFileName>Installer{CopyFile}\{c3e33609-8c0a-422e-a63b-8a2fe09e512c}-MPlayer_GUIPlugin.xml</ZipFileName>
+              <DestinationFilename>%Config%\MPlayer_GUIPlugin.xml</DestinationFilename>
+            </FileItem>
           </Items>
         </Files>
       </GroupItem>
@@ -403,6 +417,140 @@ Each version is given a distinguishing version number.  If the Program specifies
               </Params>
               <ExecuteLocation>AfterPanelShow</ExecuteLocation>
             </ActionItem>
+            <ActionItem Name="Script" ActionType="Script" ConditionGroup="">
+              <Params>
+                <Items>
+                  <SectionParam Name="Script">
+                    <Value>//css_reference "MpeCore.dll";
+//css_reference "Utils.dll";
+//css_reference "Core.dll";
+
+using MpeCore.Classes;
+using MpeCore;
+using System;
+using System.IO;
+using System.Windows.Forms;
+public class Script
+{
+ public static void Main(PackageClass packageClass, ActionItem actionItem)
+  {
+     MessageBox.Show("Please specify in the following configuration screen the location of your local MPlayer installation", "My MPlayer", MessageBoxButtons.OK, MessageBoxIcon.Information);
+      using (MediaPortal.Profile.Settings xmlWriter = new MediaPortal.Profile.Settings(Path.Combine(MpeInstaller.TransformInRealPath("%Config%"), "MediaPortal.xml")))
+      {
+        xmlWriter.SetValueAsBool("plugins", "My MPlayer GUI", true);
+        xmlWriter.SetValueAsBool("plugins", "MPlayer", true);
+        xmlWriter.SetValueAsBool("pluginsdlls", "MPlayer_GUIPlugin.dll", true);
+        xmlWriter.SetValueAsBool("pluginsdlls", "MPlayer_ExtPlayer.dll", true);
+        xmlWriter.SetValueAsBool("home", "My MPlayer GUI", true);
+        xmlWriter.SetValueAsBool("myplugins", "My MPlayer GUI", false);
+        xmlWriter.SetValueAsBool("pluginswindows", "MPlayer.MPlayer_GUIPlugin", true);
+      }
+      MediaPortal.Profile.Settings.SaveCache();
+
+  }
+ 
+
+}</Value>
+                    <ValueType>Script</ValueType>
+                    <Description />
+                  </SectionParam>
+                  <SectionParam Name="Uninstall Script">
+                    <Value>//css_reference "MpeCore.dll";
+//css_reference "Utils.dll";
+
+using MpeCore.Classes;
+using MpeCore;
+using System.IO;
+using System.Windows.Forms;
+
+public class Script
+{
+  public static void Main(PackageClass packageClass, UnInstallItem item)
+  {
+
+    DialogResult result = MessageBox.Show("Do you want to remove the settings from the Mediaportal configuration file?", "My MPlayer", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+    if (result == DialogResult.Yes)
+    {
+      string mainPath = MpeInstaller.TransformInRealPath("%Config%");
+      string path = Path.Combine(mainPath, "MPlayer_ExtPlayer.xml");
+      if (File.Exists(path))
+      {
+        File.Delete(path);
+      }
+      path = Path.Combine(mainPath, "MPlayer_GUIPlugin.xml");
+      if (File.Exists(path))
+      {
+        File.Delete(path);
+      }
+      using (MediaPortal.Profile.Settings xmlWriter = new MediaPortal.Profile.Settings(Path.Combine(mainPath, "MediaPortal.xml"), false))
+      {
+        xmlWriter.RemoveEntry("mplayer", "generalArguments");
+        xmlWriter.RemoveEntry("mplayer", "osd");
+        xmlWriter.RemoveEntry("mplayer", "rebuildIndex");
+        xmlWriter.RemoveEntry("mplayer", "priorityBoost");
+        xmlWriter.RemoveEntry("mplayer", "framedrop");
+        xmlWriter.RemoveEntry("mplayer", "doubleBuffering");
+        xmlWriter.RemoveEntry("mplayer", "directRendering");
+        xmlWriter.RemoveEntry("mplayer", "audioNormalize");
+        xmlWriter.RemoveEntry("mplayer", "passthroughAC3DTS");
+        xmlWriter.RemoveEntry("mplayer", "subtitleFontName");
+        xmlWriter.RemoveEntry("mplayer", "soundOutputDriver");
+        xmlWriter.RemoveEntry("mplayer", "soundOutputDevice");
+        xmlWriter.RemoveEntry("mplayer", "deinterlace");
+        xmlWriter.RemoveEntry("mplayer", "aspectRatio");
+        xmlWriter.RemoveEntry("mplayer", "postProcessing");
+        xmlWriter.RemoveEntry("mplayer", "audioChannels");
+        xmlWriter.RemoveEntry("mplayer", "enableSubtitles");
+        xmlWriter.RemoveEntry("mplayer", "videoOutputDriver");
+        xmlWriter.RemoveEntry("mplayer", "audioDelayStep");
+        xmlWriter.RemoveEntry("mplayer", "subtitleDelayStep");
+        xmlWriter.RemoveEntry("mplayer", "subtitleSize");
+        xmlWriter.RemoveEntry("mplayer", "subtitlePosition");
+        xmlWriter.RemoveEntry("mplayer", "cacheSize");
+        xmlWriter.RemoveEntry("mplayer", "noise");
+        xmlWriter.RemoveEntry("mplayer", "mplayerPath");
+        xmlWriter.RemoveEntry("mplayer", "dvdArguments");
+        xmlWriter.RemoveEntry("mplayer", "vcdArguments");
+        xmlWriter.RemoveEntry("mplayer", "svcdArguments");
+        xmlWriter.RemoveEntry("mplayer", "cueArguments");
+        xmlWriter.RemoveEntry("mplayer", "ftpArguments");
+        xmlWriter.RemoveEntry("mplayer", "httpArguments");
+        xmlWriter.RemoveEntry("mplayer", "mmsArguments");
+        xmlWriter.RemoveEntry("mplayer", "mpstArguments");
+        xmlWriter.RemoveEntry("mplayer", "rtspArguments");
+        xmlWriter.RemoveEntry("mplayer", "sdpArguments");
+        xmlWriter.RemoveEntry("mplayer", "udpArguments");
+        xmlWriter.RemoveEntry("mplayer", "unsvArguments");
+        xmlWriter.RemoveEntry("mplayer", "displayNameOfGUI");
+        xmlWriter.RemoveEntry("mplayer", "useMyMusicShares");
+        xmlWriter.RemoveEntry("mplayer", "useMyVideoShares");
+      }
+    }
+
+  }
+}
+
+</Value>
+                    <ValueType>Script</ValueType>
+                    <Description />
+                  </SectionParam>
+                </Items>
+              </Params>
+              <ExecuteLocation>BeforPanelShow</ExecuteLocation>
+            </ActionItem>
+            <ActionItem Name="ConfigurePlugin" ActionType="ConfigurePlugin" ConditionGroup="">
+              <Params>
+                <Items>
+                  <SectionParam Name="Path to plugin">
+                    <Value>%Plugins%\ExternalPlayers\MPlayer_ExtPlayer.dll</Value>
+                    <ValueType>Template</ValueType>
+                    <Description>Path to the plugin like 
+ %Plugins%\Windows\plugin.dll</Description>
+                  </SectionParam>
+                </Items>
+              </Params>
+              <ExecuteLocation>BeforPanelShow</ExecuteLocation>
+            </ActionItem>
           </Items>
         </Actions>
         <IncludedGroups />
@@ -490,12 +638,15 @@ Each version is given a distinguishing version number.  If the Program specifies
 With the window plugin the user can play more medias like rtsp streams etc. than with the standard plugins of MP. It always uses MPlayer even if normally the internal players or an other external player is used by the other Plugins.
 
 This version also includes a new OSD, which simulates the OSD of MP.</ExtensionDescription>
-    <VersionDescription />
-    <DevelopmentStatus />
+    <VersionDescription>- Updated plugin to work with 1.2.x
+- Created MPEI installer
+- Backported modifications on ExternalOSDLibrary from OnlineVideos plugin
+</VersionDescription>
+    <DevelopmentStatus>Stable</DevelopmentStatus>
     <OnlineLocation>https://raw.github.com/MisterD81/MyMPlayer/master/My%20MPlayer.mpe1</OnlineLocation>
     <ReleaseDate>2012-01-01T10:51:30</ReleaseDate>
-    <Tags />
-    <Location>Z:\@Development\Mediaportal\MyMPlayer\My MPlayer.mpe1</Location>
+    <Tags>mplayer</Tags>
+    <Location>.\My MPlayer.mpe1</Location>
     <Params>
       <Items>
         <SectionParam Name="Icon">
@@ -509,7 +660,7 @@ This version also includes a new OSD, which simulates the OSD of MP.</ExtensionD
           <Description>The icon file of the package stored online (jpg,png,bmp)</Description>
         </SectionParam>
         <SectionParam Name="Configuration file">
-          <Value />
+          <Value>%Plugins%\ExternalPlayers\MPlayer_ExtPlayer.dll</Value>
           <ValueType>Template</ValueType>
           <Description>The file used to configure the extension.
  If have .exe extension the will be executed
@@ -550,6 +701,20 @@ This version also includes a new OSD, which simulates the OSD of MP.</ExtensionD
         <LocalFileName>MPlayer_GUIPlugin\bin\x86\Release\MPlayer_GUIPlugin.dll</LocalFileName>
         <ZipFileName>Installer{CopyFile}\{adc671e8-86ec-4335-992c-232b5da785b5}-MPlayer_GUIPlugin.dll</ZipFileName>
         <DestinationFilename>%Plugins%\Windows\MPlayer_GUIPlugin.dll</DestinationFilename>
+      </FileItem>
+      <FileItem InstallType="CopyFile" SystemFile="false" Modified="true">
+        <Param1 />
+        <UpdateOption>OverwriteIfOlder</UpdateOption>
+        <LocalFileName>MPlayer_ExtPlayer\SampleConfiguration\MPlayer_ExtPlayer.xml</LocalFileName>
+        <ZipFileName>Installer{CopyFile}\{5831c415-e53e-434a-a2ad-ff5a45385136}-MPlayer_ExtPlayer.xml</ZipFileName>
+        <DestinationFilename>%Config%\MPlayer_ExtPlayer.xml</DestinationFilename>
+      </FileItem>
+      <FileItem InstallType="CopyFile" SystemFile="false" Modified="true">
+        <Param1 />
+        <UpdateOption>OverwriteIfOlder</UpdateOption>
+        <LocalFileName>MPlayer_GUIPlugin\SampleConfiguration\MPlayer_GUIPlugin.xml</LocalFileName>
+        <ZipFileName>Installer{CopyFile}\{c3e33609-8c0a-422e-a63b-8a2fe09e512c}-MPlayer_GUIPlugin.xml</ZipFileName>
+        <DestinationFilename>%Config%\MPlayer_GUIPlugin.xml</DestinationFilename>
       </FileItem>
       <FileItem InstallType="CopyFile" SystemFile="false" Modified="false">
         <Param1 />
@@ -636,7 +801,7 @@ This version also includes a new OSD, which simulates the OSD of MP.</ExtensionD
       </FolderGroup>
     </FolderGroups>
     <ProjectFilename>My MPlayer.xmp2</ProjectFilename>
-    <UpdatePath1>Z:\@Development\Mediaportal\MyMPlayer\update.xml</UpdatePath1>
+    <UpdatePath1>.\update.xml</UpdatePath1>
     <UpdatePath2 />
     <UpdatePath3 />
   </ProjectSettings>
