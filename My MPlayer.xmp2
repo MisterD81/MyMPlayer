@@ -476,9 +476,9 @@ Each version is given a distinguishing version number.  If the Program specifies
     <Name>My MPlayer</Name>
     <Id>27172d91-4a3c-4444-ae87-8712637ac89a</Id>
     <Author>MisterD</Author>
-    <HomePage />
-    <ForumPage />
-    <UpdateUrl />
+    <HomePage>http://forum.team-mediaportal.com/mediaportal-plugins-47/my-mplayer-19503/</HomePage>
+    <ForumPage>http://forum.team-mediaportal.com/mediaportal-plugins-47/my-mplayer-19503/</ForumPage>
+    <UpdateUrl>https://raw.github.com/MisterD81/MyMPlayer/master/update.xml</UpdateUrl>
     <Version>
       <Major>1</Major>
       <Minor>1</Minor>
@@ -492,7 +492,7 @@ With the window plugin the user can play more medias like rtsp streams etc. than
 This version also includes a new OSD, which simulates the OSD of MP.</ExtensionDescription>
     <VersionDescription />
     <DevelopmentStatus />
-    <OnlineLocation />
+    <OnlineLocation>https://raw.github.com/MisterD81/MyMPlayer/master/My%20MPlayer.mpe1</OnlineLocation>
     <ReleaseDate>2012-01-01T10:51:30</ReleaseDate>
     <Tags />
     <Location>Z:\@Development\Mediaportal\MyMPlayer\My MPlayer.mpe1</Location>
@@ -521,7 +521,7 @@ This version also includes a new OSD, which simulates the OSD of MP.</ExtensionD
           <Description>Online stored screenshot urls separated by ; </Description>
         </SectionParam>
         <SectionParam Name="Force to uninstall on update">
-          <Value>yes</Value>
+          <Value>YES</Value>
           <ValueType>Bool</ValueType>
           <Description>Show dialog and force to uninstall previous version when updating an extension. Should only be disabled if you are using an NSIS/MSI installer.</Description>
         </SectionParam>
