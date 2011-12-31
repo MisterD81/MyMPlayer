@@ -818,6 +818,7 @@ namespace MPlayer
               if (mainPath.StartsWith("cue://") ||
               mainPath.StartsWith("cue://") ||
               mainPath.StartsWith("http://") ||
+              mainPath.StartsWith("ftp://") ||
               mainPath.StartsWith("http_proxy://") ||
               mainPath.StartsWith("mms://") ||
               mainPath.StartsWith("mmst://") ||

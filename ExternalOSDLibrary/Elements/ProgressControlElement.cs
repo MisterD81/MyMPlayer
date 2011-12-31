@@ -131,6 +131,7 @@ namespace ExternalOSDLibrary
     /// <param name="cacheFill">Status of the cache</param>
     public override void DrawCacheStatus(Graphics graph, float cacheFill)
     {
+      _progressControl.Percentage = cacheFill;
       DrawProgressBar(graph, cacheFill, (int)cacheFill);
     }
     #endregion
@@ -149,32 +150,40 @@ namespace ExternalOSDLibrary
       {
         graph.DrawImage(_backgroundBitmap, _progressControl.XPosition, _progressControl.YPosition, _progressControl.Width, _progressControl.Height);
       }
-      if (_leftBitmap != null && _midBitmap != null && _rightBitmap != null)
+      int iWidthLeft = _leftBitmap != null ? _leftBitmap.Width:0;
+      int iHeightLeft = _leftBitmap != null ? _leftBitmap.Height:0;
+      int iHeightMid = _midBitmap != null ? _midBitmap.Height : 0;
+      int iWidthRight = _rightBitmap != null ? _rightBitmap.Width:0;
+      int iHeightRight = _rightBitmap != null ? _rightBitmap.Height : 0;
+      GUIGraphicsContext.ScaleHorizontal(ref iWidthLeft);
+      GUIGraphicsContext.ScaleHorizontal(ref iWidthRight);
+      GUIGraphicsContext.ScaleVertical(ref iHeightLeft);
+      GUIGraphicsContext.ScaleVertical(ref iHeightRight);
+      //iHeight=20;
+      int off = 12;
+      GUIGraphicsContext.ScaleHorizontal(ref off);
+      fWidth *= _progressControl.Width - 2 * off - iWidthLeft - iWidthRight;
+      int iXPos = off + _progressControl.XPosition;
+
+      int iYPos = _progressControl.YPosition + (_progressControl.Height - iHeightLeft) / 2;
+      if (_leftBitmap != null)
       {
-        int iWidthLeft = _leftBitmap.Width;
-        int iHeightLeft = _leftBitmap.Height;
-        int iWidthRight = _rightBitmap.Width;
-        int iHeightRight = _rightBitmap.Height;
-        GUIGraphicsContext.ScaleHorizontal(ref iWidthLeft);
-        GUIGraphicsContext.ScaleHorizontal(ref iWidthRight);
-        GUIGraphicsContext.ScaleVertical(ref iHeightLeft);
-        GUIGraphicsContext.ScaleVertical(ref iHeightRight);
-        //iHeight=20;
-        int off = 12;
-        GUIGraphicsContext.ScaleHorizontal(ref off);
-        fWidth *= _progressControl.Width - 2 * off - iWidthLeft - iWidthRight;
-
-        int iXPos = off + _progressControl.XPosition;
-
-        int iYPos = _progressControl.YPosition + (_progressControl.Height - iHeightLeft) / 2;
         graph.DrawImage(_leftBitmap, iXPos, iYPos, iWidthLeft, iHeightLeft);
-
-        iXPos += iWidthLeft;
-        if (percent > 0 && (int)fWidth > 1)
+      }
+      iXPos += iWidthLeft;
+      if (percent > 0 && (int)fWidth > 1)
+      {
+        if (_midBitmap != null)
         {
-          graph.DrawImage(_midBitmap, iXPos, iYPos, (int)Math.Abs(fWidth), iHeightLeft);
-          iXPos += (int)fWidth;
+          iYPos = _progressControl.YPosition + (_progressControl.Height - iHeightMid) / 2;
+          Log.Info("WIDTH: " + fWidth);
+          graph.DrawImage(_midBitmap, iXPos, iYPos, (int)Math.Abs(fWidth), iHeightMid);
         }
+        iXPos += (int)fWidth;
+      }
+      if (_rightBitmap != null)
+      {
+        iYPos = _progressControl.YPosition + (_progressControl.Height - iHeightRight) / 2;
         graph.DrawImage(_rightBitmap, iXPos, iYPos, iWidthRight, iHeightRight);
       }
     }

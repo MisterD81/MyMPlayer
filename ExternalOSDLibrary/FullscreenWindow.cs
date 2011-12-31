@@ -84,7 +84,7 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// ID of the background image
     /// </summary>
-    private const int BackgroundId2 = 104;
+    private const int BackgroundId2 = 111;
 
     /// <summary>
     /// ID of the Progress bar
