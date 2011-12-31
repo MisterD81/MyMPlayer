@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("-")]
 [assembly: AssemblyProduct("ExternalOSDLibrary")]
-[assembly: AssemblyCopyright("Copyright © - 2006 - 2009")]
+[assembly: AssemblyCopyright("Copyright © - 2006 - 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

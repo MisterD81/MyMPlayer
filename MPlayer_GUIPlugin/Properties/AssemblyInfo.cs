@@ -10,7 +10,7 @@ using MediaPortal.Common.Utils;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("-")]
 [assembly: AssemblyProduct("MPlayer_GUIPlugin")]
-[assembly: AssemblyCopyright("Copyright © - 2006 - 2009")]
+[assembly: AssemblyCopyright("Copyright © - 2006 - 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

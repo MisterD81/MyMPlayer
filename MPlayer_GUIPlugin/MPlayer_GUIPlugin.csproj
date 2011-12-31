@@ -134,10 +134,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="SampleConfiguration\MPlayer_GUIPlugin.xml" />
-    <Content Include="SkinFiles\Blue3\myMPlayer.xml" />
-    <Content Include="SkinFiles\Blue3Wide\myMPlayer.xml" />
-    <Content Include="SkinFiles\Xface\myMPlayer.xml" />
-    <Content Include="SkinFiles\PM III\myMPlayer.xml" />
+    <Content Include="SkinFiles\Black Glass HD\myMPlayer.xml" />
+    <Content Include="SkinFiles\Black Glass Nova HD\myMPlayer.xml" />
+    <Content Include="SkinFiles\Black Glass Nova\myMPlayer.xml" />
+    <Content Include="SkinFiles\Black Glass\myMPlayer.xml" />
+    <Content Include="SkinFiles\DefaultWide\myMPlayer.xml" />
+    <Content Include="SkinFiles\Default\myMPlayer.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ExternalOSDLibrary\ExternalOSDLibrary.csproj">
