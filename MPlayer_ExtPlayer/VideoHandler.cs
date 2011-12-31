@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -80,11 +80,6 @@ namespace MPlayer
     private bool _isFullScreen;
 
     /// <summary>
-    /// Is playing video
-    /// </summary>
-    private bool _isVideo;
-
-    /// <summary>
     /// Contrast
     /// </summary>
     private int _contrast;
@@ -117,12 +112,12 @@ namespace MPlayer
     /// <summary>
     /// Indicates, if the OpenGL second generation video output driver is used
     /// </summary>
-    private bool _openGL;
+    private bool _openGl;
 
     /// <summary>
     /// String representation, of the aspect ratio field. Needed for OpenGL and OpenGL2
     /// </summary>
-    private String _aspect_ratio;
+    private String _aspectRatio;
 
     /// <summary>
     /// Source Rectangle
@@ -137,7 +132,7 @@ namespace MPlayer
     /// <summary>
     /// Reference to the main player component
     /// </summary>
-    private readonly MPlayer_ExtPlayer _player;
+    private readonly MPlayerExtPlayer _player;
 
     /// <summary>
     /// Instance of the current OSD Handler
@@ -149,30 +144,36 @@ namespace MPlayer
     /// <summary>
     /// Constructor which initialises the video handler
     /// </summary>
-    /// <param _name="player">Instance of external player</param>
-    /// <param _name="osdHandler">Instance of the osdHandler</param>
-    public VideoHandler(MPlayer_ExtPlayer player, IOSDHandler osdHandler)
+    /// <param name="player">Instance of external player</param>
+    /// <param name="osdHandler">Instance of the osdHandler</param>
+    public VideoHandler(MPlayerExtPlayer player, IOSDHandler osdHandler)
     {
       _player = player;
       _osdHandler = osdHandler;
-      _aspect_ratio = "1.0";
+      _aspectRatio = "1.0";
       _videoHeight = -1;
       _videoWidth = 0;
       _ar = GUIGraphicsContext.ARType;
-      _mplayerBackgroundPanel = new Panel();
-      _mplayerBackgroundPanel.ForeColor = Color.Black;
-      _mplayerBackgroundPanel.BackColor = Color.Black;
-      _mplayerBackgroundPanel.Size = new Size(0, 0);
-      _mplayerBackgroundPanel.Location = new Point(0, 0);
-      _mplayerOuterPanel = new Panel();
-      _mplayerOuterPanel.ForeColor = Color.Black;
-      _mplayerOuterPanel.BackColor = Color.Black;
-      _mplayerOuterPanel.Size = new Size(0, 0);
-      _mplayerOuterPanel.Location = new Point(0, 0);
-      _mplayerInnerPanel = new Panel();
-      _mplayerInnerPanel.Size = new Size(0, 0);
-      _mplayerInnerPanel.ForeColor = Color.FromArgb(16, 16, 16);
-      _mplayerInnerPanel.BackColor = Color.FromArgb(16, 16, 16);
+      _mplayerBackgroundPanel = new Panel
+                                  {
+                                    ForeColor = Color.Black,
+                                    BackColor = Color.Black,
+                                    Size = new Size(0, 0),
+                                    Location = new Point(0, 0)
+                                  };
+      _mplayerOuterPanel = new Panel
+                             {
+                               ForeColor = Color.Black,
+                               BackColor = Color.Black,
+                               Size = new Size(0, 0),
+                               Location = new Point(0, 0)
+                             };
+      _mplayerInnerPanel = new Panel
+                             {
+                               Size = new Size(0, 0),
+                               ForeColor = Color.FromArgb(16, 16, 16),
+                               BackColor = Color.FromArgb(16, 16, 16)
+                             };
       _mplayerOuterPanel.Controls.Add(_mplayerInnerPanel);
       _mplayerInnerPanel.Location = new Point(0, 0);
     }
@@ -192,20 +193,11 @@ namespace MPlayer
     #endregion
 
     #region Properties
+
     /// <summary>
     /// Has the file a video stream
     /// </summary>
-    public bool HasVideo
-    {
-      get
-      {
-        return _isVideo;
-      }
-      set
-      {
-        _isVideo = value;
-      }
-    }
+    public bool HasVideo { get; set; }
 
     /// <summary>
     /// Gets/Sets the x position of the video window
@@ -339,11 +331,11 @@ namespace MPlayer
     {
       get
       {
-        return _aspect_ratio;
+        return _aspectRatio;
       }
       set
       {
-        _aspect_ratio = value;
+        _aspectRatio = value;
       }
     }
 
@@ -401,7 +393,7 @@ namespace MPlayer
     /// <summary>
     /// Gets A/R Geometry of the video window
     /// </summary>
-    public Geometry.Type ARType
+    public Geometry.Type ArType
     {
       get
       {
@@ -456,15 +448,17 @@ namespace MPlayer
       _mplayerBackgroundPanel.Location = new Point(GUIGraphicsContext.OverScanTop, GUIGraphicsContext.OverScanLeft);
       _mplayerBackgroundPanel.ClientSize = new Size(GUIGraphicsContext.OverScanWidth, GUIGraphicsContext.OverScanHeight);
       _mplayerBackgroundPanel.Size = new Size(GUIGraphicsContext.OverScanWidth, GUIGraphicsContext.OverScanHeight);
-      Geometry m_geometry = new Geometry();
-      m_geometry.ImageWidth = _videoWidth;
-      m_geometry.ImageHeight = _videoHeight;
-      m_geometry.ScreenWidth = _renderWidth;
-      m_geometry.ScreenHeight = _renderHeight;
-      m_geometry.ARType = GUIGraphicsContext.ARType;
-      m_geometry.PixelRatio = GUIGraphicsContext.PixelRatio;
+      Geometry mGeometry = new Geometry
+                             {
+                               ImageWidth = _videoWidth,
+                               ImageHeight = _videoHeight,
+                               ScreenWidth = _renderWidth,
+                               ScreenHeight = _renderHeight,
+                               ARType = GUIGraphicsContext.ARType,
+                               PixelRatio = GUIGraphicsContext.PixelRatio
+                             };
 
-      m_geometry.GetWindow(_videoWidth, _videoHeight, out _sourceRectangle, out _videoRectangle);
+      mGeometry.GetWindow(_videoWidth, _videoHeight, out _sourceRectangle, out _videoRectangle);
 
       _positionX += _videoRectangle.X;
       _positionY += _videoRectangle.Y;
@@ -496,9 +490,9 @@ namespace MPlayer
         _osdHandler.DeactivateOSD(true);
       }
       _mplayerOuterPanel.BringToFront();
-      if (_openGL)
+      if (_openGl)
       {
-        _player.SendPausingKeepCommand("switch_ratio " + _aspect_ratio);
+        _player.SendPausingKeepCommand("switch_ratio " + _aspectRatio);
       }
     }
 
@@ -538,13 +532,13 @@ namespace MPlayer
     /// <summary>
     /// Handles a message that is retrieved from the MPlayer process
     /// </summary>
-    /// <param _name="message">Message to handle</param>
+    /// <param name="message">Message to handle</param>
     public void HandleMessage(string message)
     {
       if (message.StartsWith("ID_VIDEO_ASPECT"))
       {
-        _aspect_ratio = message.Substring(16);
-        Log.Debug("MPlayer: Detected video aspect: " + _aspect_ratio);
+        _aspectRatio = message.Substring(16);
+        Log.Debug("MPlayer: Detected video aspect: " + _aspectRatio);
       }
       else if (message.StartsWith("VO: [directx] ") ||
                  message.StartsWith("VO: [direct3d] ") ||
@@ -562,8 +556,8 @@ namespace MPlayer
         Int32.TryParse(temp.Substring(0, pos), out newVideoHeight);
         if (newVideoWidth != _videoWidth || newVideoHeight != _videoHeight)
         {
-          _openGL = message.StartsWith("VO: [gl2] ") || message.StartsWith("VO: [gl] ");
-          if (_openGL)
+          _openGl = message.StartsWith("VO: [gl2] ") || message.StartsWith("VO: [gl] ");
+          if (_openGl)
           {
             Log.Debug("MPlayer: Using OpenGL or OpenGL2");
           }

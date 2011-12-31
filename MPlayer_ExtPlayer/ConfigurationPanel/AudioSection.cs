@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -95,9 +95,9 @@ namespace MPlayer.ConfigurationPanel
     /// <summary>
     /// Handles the Selected index changed event of the sound output driver combo box
     /// </summary>
-    /// <param _name="sender">Sender object</param>
-    /// <param _name="e"></param>
-    private void soundOutputDriver_SelectedIndexChanged(object sender, EventArgs e)
+    /// <param name="sender">Sender object</param>
+    /// <param name="e"></param>
+    private void SoundOutputDriverSelectedIndexChanged(object sender, EventArgs e)
     {
       soundOutputDevice.Enabled = soundOutputDriver.SelectedIndex == (int)SoundOutputDriver.DirectSound;
     }

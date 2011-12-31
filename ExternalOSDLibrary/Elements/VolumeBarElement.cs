@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -81,7 +81,7 @@ namespace ExternalOSDLibrary
       if (_volumeBar != null)
       {
         _alignment = _volumeBar.TextAlignment;
-        _bitmap = loadBitmap(_volumeBar.TextureName);
+        _bitmap = LoadBitmap(_volumeBar.TextureName);
         _image1 = _volumeBar.Image1;
         _image2 = _volumeBar.Image2;
         _maximum = _volumeBar.Maximum;
@@ -97,7 +97,7 @@ namespace ExternalOSDLibrary
     /// <param name="graph">Graphics</param>
     public override void DrawElement(Graphics graph)
     {
-      if (_volumeBar.Visible || GUIInfoManager.GetBool(_volumeBar.GetVisibleCondition(), _volumeBar.ParentID))
+      if (_wasVisible)
       {
         int imageHeight = _volumeBar.ImageHeight;
         int realImageHeight = _volumeBar.TextureHeight / imageHeight;

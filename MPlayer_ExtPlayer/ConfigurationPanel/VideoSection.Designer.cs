@@ -1,7 +1,7 @@
-﻿#region Copyright (C) 2006-2009 MisterD
+﻿#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ namespace MPlayer.ConfigurationPanel
     /// <summary> 
     /// Verwendete Ressourcen bereinigen.
     /// </summary>
-    /// <param _name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
+    /// <param name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
     protected override void Dispose(bool disposing)
     {
       if (disposing && (components != null))

@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,45 +22,29 @@
 
 #endregion
 
-using System;
-
 namespace MPlayer
 {
   /// <summary>
   /// Specific version of a share for the configuration dialog
   /// </summary>
-  public class MPlayer_Share
+  public class MPlayerShare
   {
     #region variables
-    /// <summary>
-    /// Name of the share
-    /// </summary>
-    private String _name;
 
-    /// <summary>
-    /// Path of the share
-    /// </summary>
-    private String _path;
     #endregion
 
     #region Properties
+
     /// <summary>
     /// Gets/Sets the _name of the share
     /// </summary>
-    public String Name
-    {
-      get { return _name; }
-      set { _name = value; }
-    }
+    public string Name { get; set; }
 
     /// <summary>
     /// Gets/Sets the _path of the share
     /// </summary>
-    public String Path
-    {
-      get { return _path; }
-      set { _path = value; }
-    }
+    public string Path { get; set; }
+
     #endregion
 
     #region To-String method
@@ -70,7 +54,7 @@ namespace MPlayer
     /// <returns>Name of the share</returns>
     public override string ToString()
     {
-      return _name;
+      return Name;
     }
     #endregion
   }

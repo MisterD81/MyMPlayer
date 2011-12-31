@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -76,10 +76,10 @@ namespace ExternalOSDLibrary
       _progressControl = control as GUIProgressControl;
       if (_progressControl != null)
       {
-        _leftBitmap = loadBitmap(_progressControl.BackTextureLeftName);
-        _midBitmap = loadBitmap(_progressControl.BackTextureMidName);
-        _rightBitmap = loadBitmap(_progressControl.BackTextureRightName);
-        _backgroundBitmap = loadBitmap(_progressControl.BackGroundTextureName);
+        _leftBitmap = LoadBitmap(_progressControl.BackTextureLeftName);
+        _midBitmap = LoadBitmap(_progressControl.BackTextureMidName);
+        _rightBitmap = LoadBitmap(_progressControl.BackTextureRightName);
+        _backgroundBitmap = LoadBitmap(_progressControl.BackGroundTextureName);
         _percentage = GetPercentage();
       }
     }
@@ -92,7 +92,7 @@ namespace ExternalOSDLibrary
     /// <param name="graph">Graphics</param>
     public override void DrawElement(Graphics graph)
     {
-      if (_progressControl.Visible || GUIInfoManager.GetBool(_progressControl.GetVisibleCondition(), _progressControl.ParentID))
+      if (_wasVisible)
       {
         float fWidth = _percentage;
         DrawProgressBar(graph, fWidth, _percentage);
@@ -185,11 +185,11 @@ namespace ExternalOSDLibrary
     /// <returns></returns>
     private int GetPercentage()
     {
-      int percent;
-      Int32.TryParse(GUIPropertyManager.Parse(_progressControl.Property), out percent);
+      float percent;
+      float.TryParse(GUIPropertyManager.Parse(_progressControl.Property), out percent);
       if (percent > 100)
         percent = 100;
-      return percent;
+      return (int)percent;
     }
     #endregion
   }

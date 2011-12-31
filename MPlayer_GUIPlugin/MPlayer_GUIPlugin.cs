@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -34,13 +34,14 @@ using MediaPortal.Playlists;
 using MediaPortal.Player;
 using MediaPortal.GUI.Video;
 using MediaPortal.Configuration;
+using Action = MediaPortal.GUI.Library.Action;
 
 namespace MPlayer
 {
   /// <summary>
   /// Window plugin for the MPlayer External player plugin
   /// </summary>
-  public class MPlayer_GUIPlugin : GUIWindow, IShowPlugin, ISetupForm
+  public sealed class MPlayerGUIPlugin : GUIWindow, IShowPlugin, ISetupForm
   {
     #region enum
     /// <summary>
@@ -71,7 +72,7 @@ namespace MPlayer
     /// <summary>
     /// Virutal Directory
     /// </summary>
-    private readonly VirtualDirectory m_directory = new VirtualDirectory();
+    private readonly VirtualDirectory _mDirectory = new VirtualDirectory();
 
     /// <summary>
     /// ViewAs Button
@@ -110,126 +111,100 @@ namespace MPlayer
     private GUIFacadeControl facadeView = null;
 
     /// <summary>
-    /// Current view mode
-    /// </summary>
-    private View currentView;
-
-    /// <summary>
-    /// Current sort method
-    /// </summary>
-    private VideoSort.SortMethod currentSortMethod;
-
-    /// <summary>
-    /// Indicator, if ascending sort is selected
-    /// </summary>
-    private bool m_bSortAscending;
-
-    /// <summary>
     /// Playlistplayer instance
     /// </summary>
-    private static readonly PlayListPlayer playlistPlayer;
+    private static readonly PlayListPlayer PlaylistPlayer;
 
     /// <summary>
     /// Current virtual Path
     /// </summary>
-    private string virtualPath;
+    private string _virtualPath;
 
     /// <summary>
     /// Display _name of the plugin
     /// </summary>
-    private readonly string displayName;
+    private readonly string _displayName;
 
     /// <summary>
     /// Indicates if the my video Shares are used
     /// </summary>
-    private readonly bool useMyVideoShares;
+    private readonly bool _useMyVideoShares;
 
     /// <summary>
     /// Indicates if the my music Shares are used
     /// </summary>
-    private readonly bool useMyMusicShares;
+    private readonly bool _useMyMusicShares;
 
     /// <summary>
     /// List of _path of all shares
     /// </summary>
-    private List<String> sharePaths;
+    private List<String> _sharePaths;
 
     /// <summary>
     /// Indicates if playlists should be treat as folders
     /// </summary>
-    private readonly bool treatPlaylistsAsFolders;
+    private readonly bool _treatPlaylistsAsFolders;
 
     /// <summary>
     /// Indicates if playlists should be treat as folders
     /// </summary>
-    private readonly bool useDVDNAV;
+    private readonly bool _useDvdnav;
 
     /// <summary>
     /// Disable sorting of elements. Onlöy needed for playlists.
     /// </summary>
-    private bool disableSorting;
+    private bool _disableSorting;
     #endregion
 
     #region ctor
     /// <summary>
     /// Static Constructor for the Playlistplayer instance
     /// </summary>
-    static MPlayer_GUIPlugin()
+    static MPlayerGUIPlugin()
     {
-      playlistPlayer = PlayListPlayer.SingletonPlayer;
+      PlaylistPlayer = PlayListPlayer.SingletonPlayer;
     }
 
     /// <summary>
     /// Standard constructor which set the WindowID
     /// </summary>
-    public MPlayer_GUIPlugin()
+    public MPlayerGUIPlugin()
     {
       GetID = 9533;
-      virtualPath = String.Empty;
+      _virtualPath = String.Empty;
       using (MediaPortal.Profile.Settings xmlreader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml")))
       {
-        currentView = (View)xmlreader.GetValueAsInt(string.Empty, "view", (int)View.List);
+        CurrentView = (View)xmlreader.GetValueAsInt(string.Empty, "view", (int)View.List);
 
-        currentSortMethod = (VideoSort.SortMethod)xmlreader.GetValueAsInt(string.Empty, "sortmethod", (int)VideoSort.SortMethod.Name);
+        CurrentSortMethod = (VideoSort.SortMethod)xmlreader.GetValueAsInt(string.Empty, "sortmethod", (int)VideoSort.SortMethod.Name);
 
-        displayName = xmlreader.GetValueAsString("mplayer", "displayNameOfGUI", "My MPlayer");
-        useMyVideoShares = xmlreader.GetValueAsBool("mplayer", "useMyVideoShares", true);
-        useMyMusicShares = xmlreader.GetValueAsBool("mplayer", "useMyMusicShares", true);
-        treatPlaylistsAsFolders = xmlreader.GetValueAsBool("mplayer", "treatPlaylistAsFolders", false);
-        useDVDNAV = xmlreader.GetValueAsBool("mplayer", "useDVDNAV", false);
-        String m_strLanguage = xmlreader.GetValueAsString("skin", "language", "English");
-        LocalizeStrings.Load(m_strLanguage);
+        _displayName = xmlreader.GetValueAsString("mplayer", "displayNameOfGUI", "My MPlayer");
+        _useMyVideoShares = xmlreader.GetValueAsBool("mplayer", "useMyVideoShares", true);
+        _useMyMusicShares = xmlreader.GetValueAsBool("mplayer", "useMyMusicShares", true);
+        _treatPlaylistsAsFolders = xmlreader.GetValueAsBool("mplayer", "treatPlaylistAsFolders", false);
+        _useDvdnav = xmlreader.GetValueAsBool("mplayer", "useDVDNAV", false);
+        String mStrLanguage = xmlreader.GetValueAsString("skin", "language", "English");
+        LocalizeStrings.Load(mStrLanguage);
       }
     }
     #endregion
 
     #region GUI methods
+
     /// <summary>
     /// Gets/Sets the current view mode
     /// </summary>
-    protected virtual View CurrentView
-    {
-      get { return currentView; }
-      set { currentView = value; }
-    }
+    private View CurrentView { get; set; }
 
     /// <summary>
     /// Gets/Sets the current sort method
     /// </summary>
-    protected virtual VideoSort.SortMethod CurrentSortMethod
-    {
-      get { return currentSortMethod; }
-      set { currentSortMethod = value; }
-    }
+    private VideoSort.SortMethod CurrentSortMethod { get; set; }
 
     /// <summary>
     /// Gets/Sets the current sorting direction
     /// </summary>
-    protected virtual bool CurrentSortAsc
-    {
-      get { return m_bSortAscending; }
-      set { m_bSortAscending = value; }
-    }
+    private bool CurrentSortAsc { get; set; }
 
     /// <summary>
     /// Inits the window plugin
@@ -245,7 +220,7 @@ namespace MPlayer
     /// <summary>
     /// Handler for the GUIMessage of the MP System
     /// </summary>
-    /// <param _name="message">Message of MP</param>
+    /// <param name="message">Message of MP</param>
     /// <returns>Result</returns>
     public override bool OnMessage(GUIMessage message)
     {
@@ -288,7 +263,7 @@ namespace MPlayer
           string driveLetter = driveElement.Substring(0, 1);
           if (File.Exists(String.Format(@"{0}:\VIDEO_TS\VIDEO_TS.IFO", driveLetter)))
           {
-            if (useDVDNAV)
+            if (_useDvdnav)
             {
               url = "dvdnav://" + driveLetter + ":.mplayer";
             }else
@@ -377,9 +352,9 @@ namespace MPlayer
     /// <summary>
     /// Handles click events of GUI controls
     /// </summary>
-    /// <param _name="controlId">ID of the GUI control</param>
-    /// <param _name="control">Control Object</param>
-    /// <param _name="actionType">Performed ActionType</param>
+    /// <param name="controlId">ID of the GUI control</param>
+    /// <param name="control">Control Object</param>
+    /// <param name="actionType">Performed ActionType</param>
     protected override void OnClicked(int controlId, GUIControl control, Action.ActionType actionType)
     {
       if (control == btnViewAs)
@@ -392,31 +367,31 @@ namespace MPlayer
           {
             case View.List:
               CurrentView = View.Icons;
-              if (facadeView.ThumbnailView == null)
+              if (facadeView.ThumbnailLayout == null)
                 shouldContinue = true;
               else
-                facadeView.View = GUIFacadeControl.ViewMode.SmallIcons;
+                facadeView.CurrentLayout = GUIFacadeControl.Layout.SmallIcons;
               break;
             case View.Icons:
               CurrentView = View.LargeIcons;
-              if (facadeView.ThumbnailView == null)
+              if (facadeView.ThumbnailLayout == null)
                 shouldContinue = true;
               else
-                facadeView.View = GUIFacadeControl.ViewMode.LargeIcons;
+                facadeView.CurrentLayout = GUIFacadeControl.Layout.LargeIcons;
               break;
             case View.LargeIcons:
               CurrentView = View.FilmStrip;
-              if (facadeView.FilmstripView == null)
+              if (facadeView.FilmstripLayout == null)
                 shouldContinue = true;
               else
-                facadeView.View = GUIFacadeControl.ViewMode.Filmstrip;
+                facadeView.CurrentLayout = GUIFacadeControl.Layout.Filmstrip;
               break;
             case View.FilmStrip:
               CurrentView = View.List;
-              if (facadeView.ListView == null)
+              if (facadeView.ListLayout == null)
                 shouldContinue = true;
               else
-                facadeView.View = GUIFacadeControl.ViewMode.List;
+                facadeView.CurrentLayout = GUIFacadeControl.Layout.List;
               break;
           }
         } while (shouldContinue);
@@ -492,7 +467,7 @@ namespace MPlayer
         if ((File.Exists(path + @"\VIDEO_TS\VIDEO_TS.IFO")) && (item.Label != ".."))
         {
           isFolderAMovie = true;
-          if(useDVDNAV)
+          if(_useDvdnav)
           {
             path = "dvdnav://" + path;
           }else
@@ -521,7 +496,7 @@ namespace MPlayer
       if ((item.IsFolder) && (!isFolderAMovie))
       {
         //currentSelectedItem = -1;
-        virtualPath = path;
+        _virtualPath = path;
         LoadDirectory(path);
       }
       else
@@ -531,7 +506,7 @@ namespace MPlayer
           LoadPlayList(path);
           return;
         }
-        string movieFileName = m_directory.GetLocalFilename(path) + ".mplayer";
+        string movieFileName = _mDirectory.GetLocalFilename(path) + ".mplayer";
         if (movieFileName.StartsWith("rtsp:"))
         {
           movieFileName = "ZZZZ:" + movieFileName.Remove(0, 5);
@@ -566,9 +541,9 @@ namespace MPlayer
     /// <summary>
     /// Sorts the facadeView
     /// </summary>        
-    protected virtual void OnSort()
+    private void OnSort()
     {
-      if (!disableSorting)
+      if (!_disableSorting)
       {
         btnSortBy.Disabled = false;
         facadeView.Sort(new VideoSort(CurrentSortMethod, CurrentSortAsc));
@@ -583,7 +558,7 @@ namespace MPlayer
     /// <summary>
     /// Updates the labels of the button
     /// </summary>
-    protected virtual void UpdateButtonStates()
+    private void UpdateButtonStates()
     {
       GUIControl.HideControl(GetID, facadeView.GetID);
 
@@ -639,7 +614,7 @@ namespace MPlayer
       if ((videoOverlay != null) && (videoOverlay.Focused))
         videoOverlay.Focused = false;
 
-      LoadDirectory(virtualPath);
+      LoadDirectory(_virtualPath);
       if (btnSortBy != null)
       {
         btnSortBy.SortChanged += SortChanged;
@@ -664,16 +639,16 @@ namespace MPlayer
       switch (CurrentView)
       {
         case View.List:
-          facadeView.View = GUIFacadeControl.ViewMode.List;
+          facadeView.CurrentLayout = GUIFacadeControl.Layout.List;
           break;
         case View.Icons:
-          facadeView.View = GUIFacadeControl.ViewMode.SmallIcons;
+          facadeView.CurrentLayout = GUIFacadeControl.Layout.SmallIcons;
           break;
         case View.LargeIcons:
-          facadeView.View = GUIFacadeControl.ViewMode.LargeIcons;
+          facadeView.CurrentLayout = GUIFacadeControl.Layout.LargeIcons;
           break;
         case View.FilmStrip:
-          facadeView.View = GUIFacadeControl.ViewMode.Filmstrip;
+          facadeView.CurrentLayout = GUIFacadeControl.Layout.Filmstrip;
           break;
       }
     }
@@ -704,7 +679,7 @@ namespace MPlayer
     /// <summary>
     /// Loads a playlist and starts the playback
     /// </summary>
-    /// <param _name="playListFileName">Filename of the playlist</param>
+    /// <param name="playListFileName">Filename of the playlist</param>
     private void LoadPlayList(string playListFileName)
     {
       IPlayListIO loader = PlayListFactory.CreateIO(playListFileName);
@@ -712,13 +687,13 @@ namespace MPlayer
 
       if (!loader.Load(playlist, playListFileName))
       {
-        GUIDialogOK dlgOK = (GUIDialogOK)GUIWindowManager.GetWindow((int)Window.WINDOW_DIALOG_OK);
-        if (dlgOK != null)
+        GUIDialogOK dlgOk = (GUIDialogOK)GUIWindowManager.GetWindow((int)Window.WINDOW_DIALOG_OK);
+        if (dlgOk != null)
         {
-          dlgOK.SetHeading(6);
-          dlgOK.SetLine(1, 477);
-          dlgOK.SetLine(2, String.Empty);
-          dlgOK.DoModal(GetID);
+          dlgOk.SetHeading(6);
+          dlgOk.SetLine(1, 477);
+          dlgOk.SetLine(2, String.Empty);
+          dlgOk.DoModal(GetID);
         }
         return;
       }
@@ -740,7 +715,7 @@ namespace MPlayer
         return;
       }
 
-      playlistPlayer.GetPlaylist(PlayListType.PLAYLIST_VIDEO).Clear();
+      PlaylistPlayer.GetPlaylist(PlayListType.PLAYLIST_VIDEO).Clear();
 
       for (int i = 0; i < playlist.Count; ++i)
       {
@@ -752,16 +727,16 @@ namespace MPlayer
         playlist[i].FileName = movieFileName;
         PlayListItem playListItem = playlist[i];
         playListItem.Type = PlayListItem.PlayListItemType.Unknown;
-        playlistPlayer.GetPlaylist(PlayListType.PLAYLIST_VIDEO).Add(playListItem);
+        PlaylistPlayer.GetPlaylist(PlayListType.PLAYLIST_VIDEO).Add(playListItem);
       }
 
 
-      if (playlistPlayer.GetPlaylist(PlayListType.PLAYLIST_VIDEO).Count > 0)
+      if (PlaylistPlayer.GetPlaylist(PlayListType.PLAYLIST_VIDEO).Count > 0)
       {
-        playlistPlayer.GetPlaylist(PlayListType.PLAYLIST_VIDEO);
-        playlistPlayer.CurrentPlaylistType = PlayListType.PLAYLIST_VIDEO;
-        playlistPlayer.Reset();
-        playlistPlayer.Play(0);
+        PlaylistPlayer.GetPlaylist(PlayListType.PLAYLIST_VIDEO);
+        PlaylistPlayer.CurrentPlaylistType = PlayListType.PLAYLIST_VIDEO;
+        PlaylistPlayer.Reset();
+        PlaylistPlayer.Play(0);
 
         if (g_Player.Player != null && g_Player.IsVideo)
         {
@@ -774,14 +749,14 @@ namespace MPlayer
     /// <summary>
     /// Loads a new Directory
     /// </summary>
-    /// <param _name="newFolderName">Name of the folder</param>
+    /// <param name="newFolderName">Name of the folder</param>
     private void LoadDirectory(string newFolderName)
     {
-      disableSorting = false;
-      String _currentFolder = newFolderName;
+      _disableSorting = false;
+      String currentFolder = newFolderName;
 
       GUIControl.ClearControl(GetID, facadeView.GetID);
-      List<GUIListItem> itemlist = m_directory.GetDirectoryExt(_currentFolder);
+      List<GUIListItem> itemlist = _mDirectory.GetDirectoryExt(currentFolder);
       List<GUIListItem> itemfiltered = new List<GUIListItem>();
       for (int x = 0; x < itemlist.Count; ++x)
       {
@@ -816,7 +791,7 @@ namespace MPlayer
 
           Utils.RemoveStackEndings(ref label);
           item1.Label = label;
-          if (treatPlaylistsAsFolders && PlayListFactory.IsPlayList(item1.Path))
+          if (_treatPlaylistsAsFolders && PlayListFactory.IsPlayList(item1.Path))
           {
             item1.IsFolder = true;
             Utils.SetDefaultIcons(item1);
@@ -826,23 +801,20 @@ namespace MPlayer
       }
       itemlist = itemfiltered;
 
-      if (treatPlaylistsAsFolders && PlayListFactory.IsPlayList(newFolderName))
+      if (_treatPlaylistsAsFolders && PlayListFactory.IsPlayList(newFolderName))
       {
         IPlayListIO loader = PlayListFactory.CreateIO(newFolderName);
         PlayList playlist = new PlayList();
-        disableSorting = true;
+        _disableSorting = true;
         String basePath = Path.GetDirectoryName(Path.GetFullPath(newFolderName));
-        String mainPath;
         if (loader.Load(playlist, newFolderName))
         {
-          GUIListItem item;
           foreach (PlayListItem plItem in playlist)
           {
-            item = new GUIListItem();
-            item.Path = plItem.FileName;
+            GUIListItem item = new GUIListItem {Path = plItem.FileName};
             if (plItem.FileName.StartsWith(basePath))
             {
-              mainPath = plItem.FileName.Remove(0, basePath.Length + 1);
+              String mainPath = plItem.FileName.Remove(0, basePath.Length + 1);
               if (mainPath.StartsWith("cue://") ||
               mainPath.StartsWith("cue://") ||
               mainPath.StartsWith("http://") ||
@@ -879,7 +851,7 @@ namespace MPlayer
     /// <summary>
     /// Overrides on action for deleting item
     /// </summary>
-    /// <param _name="action"></param>
+    /// <param name="action"></param>
     public override void OnAction(Action action)
     {
       if (action.wID == Action.ActionType.ACTION_DELETE_ITEM)
@@ -900,8 +872,8 @@ namespace MPlayer
     /// <summary>
     /// Handles the event, when the Sorting method changes
     /// </summary>
-    /// <param _name="sender">Sender object</param>
-    /// <param _name="e">Event arguments</param>
+    /// <param name="sender">Sender object</param>
+    /// <param name="e">Event arguments</param>
     private void SortChanged(object sender, SortEventArgs e)
     {
       CurrentSortAsc = e.Order != System.Windows.Forms.SortOrder.Descending;
@@ -913,12 +885,12 @@ namespace MPlayer
     /// <summary>
     /// Deletes an item from the gui list
     /// </summary>
-    /// <param _name="item">item to delete</param>
+    /// <param name="item">item to delete</param>
     private void OnDeleteItem(GUIListItem item)
     {
       if (item.IsRemote)
         return;
-      if (!m_directory.RequestPin(item.Path))
+      if (!_mDirectory.RequestPin(item.Path))
       {
         return;
       }
@@ -942,7 +914,7 @@ namespace MPlayer
       int currentSelectedItem = facadeView.SelectedListItemIndex;
       if (currentSelectedItem > 0)
         currentSelectedItem--;
-      LoadDirectory(virtualPath);
+      LoadDirectory(_virtualPath);
       if (currentSelectedItem >= 0)
       {
         GUIControl.SelectItemControl(GetID, facadeView.GetID, currentSelectedItem);
@@ -952,7 +924,7 @@ namespace MPlayer
     /// <summary>
     /// Deletes the item
     /// </summary>
-    /// <param _name="item">Item to delete</param>
+    /// <param name="item">Item to delete</param>
     private void DoDeleteItem(GUIListItem item)
     {
       if (item.IsFolder)
@@ -961,7 +933,7 @@ namespace MPlayer
           return;
         if (item.Label != "..")
         {
-          List<GUIListItem> items = m_directory.GetDirectoryUnProtectedExt(item.Path, false);
+          List<GUIListItem> items = _mDirectory.GetDirectoryUnProtectedExt(item.Path, false);
           foreach (GUIListItem subItem in items)
           {
             DoDeleteItem(subItem);
@@ -983,21 +955,20 @@ namespace MPlayer
     /// </summary>
     private void InitializeVirtualDirectory()
     {
-      sharePaths = new List<string>();
-      m_directory.SetExtensions(GetExtenstions());
-      m_directory.AddExtension(".pls");
-      m_directory.AddExtension(".m3u");
+      _sharePaths = new List<string>();
+      _mDirectory.SetExtensions(GetExtenstions());
+      _mDirectory.AddExtension(".pls");
+      _mDirectory.AddExtension(".m3u");
 
-      m_directory.Clear();
-      if (useMyVideoShares)
+      _mDirectory.Clear();
+      if (_useMyVideoShares)
       {
         AddSection("movies");
       }
-      if (useMyMusicShares)
+      if (_useMyMusicShares)
       {
         AddSection("music");
       }
-      Share share;
       XmlDocument doc = new XmlDocument();
       string path = Config.GetFile(Config.Dir.Config, "MPlayer_GUIPlugin.xml");
       doc.Load(path);
@@ -1007,13 +978,12 @@ namespace MPlayer
         if (listShare != null)
           foreach (XmlNode nodeShare in listShare)
           {
-            share = new Share();
-            share.Name = nodeShare.Attributes["name"].Value;
-            share.Path = nodeShare.Attributes["path"].Value;
-            if (!sharePaths.Contains(share.Path.ToLower()))
+            Share share = new Share
+                            {Name = nodeShare.Attributes["name"].Value, Path = nodeShare.Attributes["path"].Value};
+            if (!_sharePaths.Contains(share.Path.ToLower()))
             {
-              sharePaths.Add(share.Path.ToLower());
-              m_directory.Add(share);
+              _sharePaths.Add(share.Path.ToLower());
+              _mDirectory.Add(share);
             }
           }
       }
@@ -1022,7 +992,7 @@ namespace MPlayer
     /// <summary>
     /// Adds a section of MP shares
     /// </summary>
-    /// <param _name="section">Name of the section</param>
+    /// <param name="section">Name of the section</param>
     private void AddSection(String section)
     {
       Share defaultshare = null;
@@ -1043,9 +1013,11 @@ namespace MPlayer
           string remoteFolder = String.Format("shareremotepath{0}", i);
           string shareViewPath = String.Format("shareview{0}", i);
 
-          Share share = new Share();
-          share.Name = xmlreader.GetValueAsString(section, strShareName, String.Empty);
-          share.Path = xmlreader.GetValueAsString(section, strSharePath, String.Empty);
+          Share share = new Share
+                          {
+                            Name = xmlreader.GetValueAsString(section, strShareName, String.Empty),
+                            Path = xmlreader.GetValueAsString(section, strSharePath, String.Empty)
+                          };
 
           string pinCode = Utils.DecryptPin(xmlreader.GetValueAsString(section, strPincode, string.Empty));
           if (pinCode != string.Empty)
@@ -1059,7 +1031,7 @@ namespace MPlayer
           share.FtpPassword = xmlreader.GetValueAsString(section, sharePwd, String.Empty);
           share.FtpPort = xmlreader.GetValueAsInt(section, sharePort, 21);
           share.FtpFolder = xmlreader.GetValueAsString(section, remoteFolder, "/");
-          share.DefaultView = (Share.Views)xmlreader.GetValueAsInt(section, shareViewPath, (int)Share.Views.List);
+          share.DefaultLayout = (GUIFacadeControl.Layout)xmlreader.GetValueAsInt(section, shareViewPath, (int)GUIFacadeControl.Layout.List);
 
           if (share.Name.Length > 0)
           {
@@ -1073,10 +1045,10 @@ namespace MPlayer
               }
             }
 
-            if (!sharePaths.Contains(share.Path.ToLower()))
+            if (!_sharePaths.Contains(share.Path.ToLower()))
             {
-              sharePaths.Add(share.Path.ToLower());
-              m_directory.Add(share);
+              _sharePaths.Add(share.Path.ToLower());
+              _mDirectory.Add(share);
             }
           }
           else
@@ -1110,14 +1082,14 @@ namespace MPlayer
     /// <summary>
     /// Returns Information of the Plugin for displaying in menu
     /// </summary>
-    /// <param _name="strButtonText">Text on the button</param>
-    /// <param _name="strButtonImage">Image of the button</param>
-    /// <param _name="strButtonImageFocus">Image of the button when focused</param>
-    /// <param _name="strPictureImage">Hover image of the plugin</param>
+    /// <param name="strButtonText">Text on the button</param>
+    /// <param name="strButtonImage">Image of the button</param>
+    /// <param name="strButtonImageFocus">Image of the button when focused</param>
+    /// <param name="strPictureImage">Hover image of the plugin</param>
     /// <returns>true, if it should be display in menu</returns>
     public bool GetHome(out string strButtonText, out string strButtonImage, out string strButtonImageFocus, out string strPictureImage)
     {
-      strButtonText = displayName;
+      strButtonText = _displayName;
       strButtonImage = String.Empty;
       strButtonImageFocus = String.Empty;
       strPictureImage = "hover_my videos.png";

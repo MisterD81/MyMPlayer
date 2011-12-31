@@ -143,7 +143,7 @@ namespace MPlayer
     /// <summary>
     /// Public method to load the text from a strings/xml file into memory
     /// </summary>
-    /// <param _name="language">Language</param>
+    /// <param name="language">Language</param>
     /// <returns>
     /// true when text is loaded
     /// false when it was unable to load the text
@@ -183,7 +183,7 @@ namespace MPlayer
     /// <summary>
     /// Changes the current lagnuage
     /// </summary>
-    /// <param _name="language">New Language</param>
+    /// <param name="language">New Language</param>
     static public void ChangeLanguage(string language)
     {
       if (_stringProvider == null)
@@ -196,8 +196,8 @@ namespace MPlayer
     /// Get the translation for a given id and format the sting with
     /// the given parameters
     /// </summary>
-    /// <param _name="dwCode">id of text</param>
-    /// <param _name="parameters">parameters used in the formating</param>
+    /// <param name="dwCode">id of text</param>
+    /// <param name="parameters">parameters used in the formating</param>
     /// <returns>
     /// string containing the translated text
     /// </returns>
@@ -217,7 +217,8 @@ namespace MPlayer
       try
       {
         return String.Format(translation, parameters);
-      } catch (System.FormatException e)
+      }
+      catch (System.FormatException e)
       {
         Log.Error("Error formatting translation with id {0}", dwCode);
         Log.Error("Unformatted translation: {0}", translation);
@@ -229,7 +230,7 @@ namespace MPlayer
     /// <summary>
     /// Get the translation for a given id
     /// </summary>
-    /// <param _name="dwCode">id of text</param>
+    /// <param name="dwCode">id of text</param>
     /// <returns>
     /// string containing the translated text
     /// </returns>
@@ -252,7 +253,7 @@ namespace MPlayer
     /// <summary>
     /// Localize a label
     /// </summary>
-    /// <param _name="strLabel">Label</param>
+    /// <param name="strLabel">Label</param>
     static public void LocalizeLabel(ref string strLabel)
     {
       if (_stringProvider == null)
@@ -274,7 +275,8 @@ namespace MPlayer
       try
       {
         dwLabelID = Int32.Parse(strLabel);
-      } catch (FormatException e)
+      }
+      catch (FormatException e)
       {
         Log.Error(e);
         strLabel = String.Empty;
@@ -334,7 +336,7 @@ namespace MPlayer
     /// <summary>
     /// Retrieves the _name of the culture
     /// </summary>
-    /// <param _name="language">Language</param>
+    /// <param name="language">Language</param>
     /// <returns>Culture</returns>
     static public string GetCultureName(string language)
     {

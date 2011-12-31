@@ -10,7 +10,7 @@
     /// <summary> 
     /// Verwendete Ressourcen bereinigen.
     /// </summary>
-    /// <param _name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
+    /// <param name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
     protected override void Dispose(bool disposing)
     {
       if (disposing && (components != null))
@@ -100,7 +100,7 @@
       this.shareList.Name = "shareList";
       this.shareList.Size = new System.Drawing.Size(366, 95);
       this.shareList.TabIndex = 27;
-      this.shareList.SelectedIndexChanged += new System.EventHandler(this.shareList_SelectedIndexChanged);
+      this.shareList.SelectedIndexChanged += new System.EventHandler(this.ShareListSelectedIndexChanged);
       // 
       // shareAdd
       // 
@@ -111,7 +111,7 @@
       this.shareAdd.TabIndex = 28;
       this.shareAdd.Text = "&Add";
       this.shareAdd.UseVisualStyleBackColor = true;
-      this.shareAdd.Click += new System.EventHandler(this.shareAdd_Click);
+      this.shareAdd.Click += new System.EventHandler(this.ShareAddClick);
       // 
       // shareDelete
       // 
@@ -122,7 +122,7 @@
       this.shareDelete.TabIndex = 29;
       this.shareDelete.Text = "&Delete";
       this.shareDelete.UseVisualStyleBackColor = true;
-      this.shareDelete.Click += new System.EventHandler(this.shareDelete_Click);
+      this.shareDelete.Click += new System.EventHandler(this.ShareDeleteClick);
       // 
       // label1
       // 
@@ -142,7 +142,7 @@
       this.shareName.Name = "shareName";
       this.shareName.Size = new System.Drawing.Size(207, 20);
       this.shareName.TabIndex = 30;
-      this.shareName.Leave += new System.EventHandler(this.shareName_Leave);
+      this.shareName.Leave += new System.EventHandler(this.ShareNameLeave);
       // 
       // browseButton
       // 
@@ -153,7 +153,7 @@
       this.browseButton.TabIndex = 34;
       this.browseButton.Text = "Browse...";
       this.browseButton.UseVisualStyleBackColor = true;
-      this.browseButton.Click += new System.EventHandler(this.browseButton_Click);
+      this.browseButton.Click += new System.EventHandler(this.BrowseButtonClick);
       // 
       // label23
       // 
@@ -174,7 +174,7 @@
       this.shareLocation.Name = "shareLocation";
       this.shareLocation.Size = new System.Drawing.Size(207, 20);
       this.shareLocation.TabIndex = 33;
-      this.shareLocation.Leave += new System.EventHandler(this.shareLocation_Leave);
+      this.shareLocation.Leave += new System.EventHandler(this.ShareLocationLeave);
       // 
       // label24
       // 

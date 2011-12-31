@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -33,19 +33,9 @@ namespace ExternalOSDLibrary
   /// <summary>
   /// This class is a windows form on which the osd is displayed
   /// </summary>
-  public class OSDForm : Form
+  public class OSDForm : FloatingWindow
   {
     #region variables
-    /// <summary>
-    /// Event handler for the position changed event
-    /// </summary>
-    private EventHandler _positionChanged;
-
-    /// <summary>
-    /// Parent form (MP)
-    /// </summary>
-    private Form _parent;
-
     /// <summary>
     /// Image to be displayed
     /// </summary>
@@ -54,37 +44,13 @@ namespace ExternalOSDLibrary
 
     #region ctor
     /// <summary>
-    /// Constructor, which sets the initial layout and registers the event handler
+    /// Constructor, which registers the event handler
     /// </summary>
     public OSDForm()
     {
-      Init();
+      GUIGraphicsContext.form.LocationChanged += MePoLocationOrSizeChanged;
+      GUIGraphicsContext.form.SizeChanged += MePoLocationOrSizeChanged;
     }
-
-    /// <summary>
-    /// Initialise the object
-    /// </summary>
-    private void Init()
-    {
-      SuspendLayout();
-      _positionChanged = parent_PositionChanged;
-      _parent = GUIGraphicsContext.form;
-      BackColor = Color.FromArgb(1, 1, 1);
-      ForeColor = Color.FromArgb(1, 1, 1);
-      TransparencyKey = BackColor;
-      ControlBox = false;
-      FormBorderStyle = FormBorderStyle.None;
-      MaximizeBox = false;
-      MinimizeBox = false;
-      ShowIcon = false;
-      ShowInTaskbar = false;
-      StartPosition = FormStartPosition.CenterParent;
-      ResumeLayout();
-      Opacity = 1;
-      GotFocus += OSDForm_GotFocus;
-      _parent.LocationChanged += _positionChanged;
-    }
-
     #endregion
 
     #region properties
@@ -94,31 +60,26 @@ namespace ExternalOSDLibrary
     public Bitmap Image
     {
       get { return _image; }
-      set { _image = value; }
+      set
+      {
+        if (_image != null) _image.Dispose();
+        _image = value;
+        Invalidate();
+      }
     }
     #endregion
 
     #region private methods
-    /// <summary>
-    /// Action handler to prevent that the osd from got a focus
-    /// </summary>
-    /// <param name="sender">Sender object</param>
-    /// <param name="e">Event arguments</param>
-    private void OSDForm_GotFocus(object sender, EventArgs e)
-    {
-      _parent.Focus();
-    }
 
     /// <summary>
     /// Event handler to adjust this form to the new location/size of the parent
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="args"></param>
-    private void parent_PositionChanged(Object sender, EventArgs args)
+    private void MePoLocationOrSizeChanged(Object sender, EventArgs args)
     {
-      Location = _parent.PointToScreen(new Point(0, 0));
-      Size = _parent.ClientSize;
-      BringToFront();
+      Location = GUIGraphicsContext.form.PointToScreen(new Point(0, 0));
+      Size = GUIGraphicsContext.form.ClientSize;
     }
     #endregion
 
@@ -131,20 +92,17 @@ namespace ExternalOSDLibrary
     {
       try
       {
-        _parent.LocationChanged -= _positionChanged;
-        _parent.SizeChanged -= _positionChanged;
-      } catch (Exception ex)
+        GUIGraphicsContext.form.LocationChanged -= MePoLocationOrSizeChanged;
+        GUIGraphicsContext.form.SizeChanged -= MePoLocationOrSizeChanged;
+      }
+      catch (Exception ex)
       {
         Log.Error(ex);
       }
       base.Dispose(disposing);
     }
 
-    /// <summary>
-    /// Paints the image
-    /// </summary>
-    /// <param name="e">Event arguments</param>
-    protected override void OnPaint(PaintEventArgs e)
+    protected override void PerformPaint(PaintEventArgs e)
     {
       try
       {
@@ -154,7 +112,8 @@ namespace ExternalOSDLibrary
           graph.SmoothingMode = SmoothingMode.AntiAlias;
           graph.DrawImage(_image, 0, 0, Size.Width, Size.Height);
         }
-      } catch (Exception ex)
+      }
+      catch (Exception ex)
       {
         Log.Error(ex);
       }
@@ -167,12 +126,9 @@ namespace ExternalOSDLibrary
     /// </summary>
     public void ShowForm()
     {
-      Enabled = true;
-      Show(_parent);
-      parent_PositionChanged(null, null);
-      BringToFront();
-      _parent.Focus();
-      Enabled = false;
+      Show();
+      MePoLocationOrSizeChanged(null, null);
+      GUIGraphicsContext.form.Focus();
     }
     #endregion
   }

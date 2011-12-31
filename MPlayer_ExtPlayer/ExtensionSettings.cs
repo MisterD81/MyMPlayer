@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -55,25 +55,7 @@ namespace MPlayer
   {
 
     #region variables
-    /// <summary>
-    /// PlayMode of the extension
-    /// </summary>
-    private PlayMode _playMode;
 
-    /// <summary>
-    /// Arguments for the extension
-    /// </summary>
-    private String _arguments;
-
-    /// <summary>
-    /// Extension
-    /// </summary>
-    private String _name;
-
-    /// <summary>
-    /// Use this extension in external player
-    /// </summary>
-    private bool _extPlayerUse;
     #endregion
 
     #region ctor
@@ -82,61 +64,47 @@ namespace MPlayer
     /// </summary>
     public ExtensionSettings()
     {
-      _playMode = PlayMode.Unrecognized;
+      PlayMode = PlayMode.Unrecognized;
     }
 
     /// <summary>
     /// Constructor which gets all data
     /// </summary>
-    /// <param _name="_name">Extension</param>
-    /// <param _name="_playMode">PlayMode</param>
-    /// <param _name="_arguments">Arguments</param>
-    /// <param _name="_extPlayerUse">Use in external player</param>
+    /// <param name="name">Extension</param>
+    /// <param name="playMode">PlayMode</param>
+    /// <param name="arguments">Arguments</param>
+    /// <param name="extPlayerUse">Use in external player</param>
     public ExtensionSettings(String name, PlayMode playMode, String arguments, bool extPlayerUse)
     {
-      _name = name;
-      _playMode = playMode;
-      _arguments = arguments;
-      _extPlayerUse = extPlayerUse;
+      Name = name;
+      PlayMode = playMode;
+      Arguments = arguments;
+      ExtPlayerUse = extPlayerUse;
     }
     #endregion
 
     #region properties
+
     /// <summary>
     /// PlayMode of the Extension
     /// </summary>
-    public PlayMode PlayMode
-    {
-      get { return _playMode; }
-      set { _playMode = value; }
-    }
+    public PlayMode PlayMode { get; set; }
 
     /// <summary>
     /// Arguments of the Externsion
     /// </summary>
-    public String Arguments
-    {
-      get { return _arguments; }
-      set { _arguments = value; }
-    }
+    public string Arguments { get; set; }
 
     /// <summary>
     /// Extension
     /// </summary>
-    public String Name
-    {
-      get { return _name; }
-      set { _name = value; }
-    }
+    public string Name { get; set; }
 
     /// <summary>
     /// Use this extension in external player
     /// </summary>
-    public bool ExtPlayerUse
-    {
-      get { return _extPlayerUse; }
-      set { _extPlayerUse = value; }
-    }
+    public bool ExtPlayerUse { get; set; }
+
     #endregion
 
     #region Overrides
@@ -146,13 +114,13 @@ namespace MPlayer
     /// <returns>Extension _name</returns>
     public override string ToString()
     {
-      return _name;
+      return Name;
     }
 
     /// <summary>
     /// Compares a given string with the _name
     /// </summary>
-    /// <param _name="obj">Object to compare</param>
+    /// <param name="obj">Object to compare</param>
     /// <returns>true, if objects or by a given string the names are equal</returns>
     public override bool Equals(object obj)
     {
@@ -161,7 +129,7 @@ namespace MPlayer
       {
         return base.Equals(obj);
       }
-      return temp.Equals(_name);
+      return temp.Equals(Name);
     }
 
     /// <summary>

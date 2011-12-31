@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,17 +25,20 @@
 using System;
 using MediaPortal.UserInterface.Controls;
 
-namespace MPlayer {
+namespace MPlayer
+{
   /// <summary>
   /// Configuration Form for the External player plugin
   /// </summary>
-  public partial class ConfigurationForm : MPConfigForm {
+  public partial class ConfigurationForm : MPConfigForm
+  {
 
     #region ctor
     /// <summary>
     /// Standard Windows Form constructor
     /// </summary>
-    public ConfigurationForm() {
+    public ConfigurationForm()
+    {
       InitializeComponent();
     }
     #endregion
@@ -44,18 +47,20 @@ namespace MPlayer {
     /// <summary>
     /// Handles the form load event
     /// </summary>
-    /// <param _name="sender">Sender object</param>
-    /// <param _name="e">Event Arguments</param>
-    private void ConfigurationForm_Load(object sender, EventArgs e) {
+    /// <param name="sender">Sender object</param>
+    /// <param name="e">Event Arguments</param>
+    private void ConfigurationForm_Load(object sender, EventArgs e)
+    {
       loadConfiguration();
     }
 
     /// <summary>
     /// Handles the OK-Button click event
     /// </summary>
-    /// <param _name="sender">Sender object</param>
-    /// <param _name="e">Event Arguments</param>
-    private void okButton_Click(object sender, EventArgs e) {
+    /// <param name="sender">Sender object</param>
+    /// <param name="e">Event Arguments</param>
+    private void okButton_Click(object sender, EventArgs e)
+    {
       saveConfiguration();
       Close();
     }
@@ -63,9 +68,10 @@ namespace MPlayer {
     /// <summary>
     /// Handles the Cancel-Button click event
     /// </summary>
-    /// <param _name="sender">Sender object</param>
-    /// <param _name="e">Event Arguments</param>
-    private void cancelButton_Click(object sender, EventArgs e) {
+    /// <param name="sender">Sender object</param>
+    /// <param name="e">Event Arguments</param>
+    private void cancelButton_Click(object sender, EventArgs e)
+    {
       Close();
     }
     #endregion
@@ -74,7 +80,8 @@ namespace MPlayer {
     /// <summary>
     /// Loads the whole configuration
     /// </summary>
-    private void loadConfiguration() {
+    private void loadConfiguration()
+    {
       generalSection1.LoadConfiguration();
       videoSection1.LoadConfiguration();
       subtitleSection1.LoadConfiguration();
@@ -86,7 +93,8 @@ namespace MPlayer {
     /// <summary>
     /// Stores the whole configuration
     /// </summary>
-    private void saveConfiguration() {
+    private void saveConfiguration()
+    {
       generalSection1.SaveConfiguration();
       videoSection1.SaveConfiguration();
       subtitleSection1.SaveConfiguration();

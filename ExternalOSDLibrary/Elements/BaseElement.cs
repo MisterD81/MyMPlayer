@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// Control of the base element
     /// </summary>
-    protected GUIControl _control;
+    protected GUIControl Control;
     #endregion
 
     #region ctor
@@ -52,7 +52,7 @@ namespace ExternalOSDLibrary
     /// <param name="control">GUIControl</param>
     protected BaseElement(GUIControl control)
     {
-      _control = control;
+      Control = control;
     }
     #endregion
 
@@ -99,7 +99,7 @@ namespace ExternalOSDLibrary
     /// </summary>
     /// <param name="name">Name of the font</param>
     /// <returns>Font </returns>
-    protected static Font getFont(String name)
+    protected static Font GetFont(String name)
     {
       GUIFont guiFont = GUIFontManager.GetFont(name);
       return new Font(guiFont.FileName, guiFont.FontSize, guiFont.FontStyle);
@@ -110,7 +110,7 @@ namespace ExternalOSDLibrary
     /// </summary>
     /// <param name="fileName">Filename of the bitmap</param>
     /// <returns>Bitmap</returns>
-    protected static Bitmap loadBitmap(String fileName)
+    protected static Bitmap LoadBitmap(String fileName)
     {
       return ImageCache.GetImage(fileName);
     }
@@ -132,8 +132,12 @@ namespace ExternalOSDLibrary
     /// <returns>true, if an update is needed</returns>
     public bool CheckForUpdate()
     {
-      _control.UpdateVisibility();
-      bool newVisible = _control.Visible || GUIInfoManager.GetBool(_control.GetVisibleCondition(),_control.ParentID);
+      Control.UpdateVisibility();
+      Control.DoRender(GUIGraphicsContext.TimePassed, (uint)System.Windows.Media.Animation.AnimationTimer.TickCount);
+
+      int visibleCondition = Control.GetVisibleCondition();
+      bool newVisible = visibleCondition == 0 ? Control.Visible : GUIInfoManager.GetBool(visibleCondition, Control.ParentID);
+
       if (newVisible == _wasVisible)
       {
         if (newVisible)

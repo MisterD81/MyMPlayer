@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ namespace ExternalOSDLibrary
     /// </summary>
     private ImageCache()
     {
-      
+
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ namespace ExternalOSDLibrary
     /// </summary>
     public static void Dispose()
     {
-      foreach(Bitmap bitmap in _imageCache.Values)
+      foreach (Bitmap bitmap in _imageCache.Values)
       {
         bitmap.Dispose();
       }
@@ -73,23 +73,23 @@ namespace ExternalOSDLibrary
     /// <returns>The image for the given filename</returns>
     public static Bitmap GetImage(string fileName)
     {
-      if(_imageCache==null)
+      if (_imageCache == null)
       {
         _imageCache = new Dictionary<string, Bitmap>();
       }
-      if(_imageCache.ContainsKey(fileName))
+      if (_imageCache.ContainsKey(fileName))
       {
         return _imageCache[fileName];
       }
       Bitmap result = null;
       String realFileName = GUIPropertyManager.Parse(fileName);
-      String location = GUIGraphicsContext.Skin + @"\media\" + realFileName;
-      if (File.Exists(location))
+      if (!Path.IsPathRooted(realFileName)) realFileName = GUIGraphicsContext.Skin + @"\media\" + realFileName;
+      if (File.Exists(realFileName))
       {
-        result = new Bitmap(location);
-        UpdateBitmap(result);
+        result = new Bitmap(realFileName);
+        //UpdateBitmap(result);
       }
-      if(result!=null)
+      if (result != null)
       {
         _imageCache.Add(fileName, result);
       }
@@ -108,12 +108,11 @@ namespace ExternalOSDLibrary
     {
       try
       {
-        Color temp;
         for (int i = 0; i < bitmap.Width; i++)
         {
           for (int j = 0; j < bitmap.Height; j++)
           {
-            temp = bitmap.GetPixel(i, j);
+            Color temp = bitmap.GetPixel(i, j);
             if (temp.R == 0 && temp.G == 0 && temp.B == 0 && temp.A > 150)
             {
               bitmap.SetPixel(i, j, Color.FromArgb(temp.A, 5, 5, 5));
@@ -124,7 +123,8 @@ namespace ExternalOSDLibrary
             }
           }
         }
-      }catch
+      }
+      catch
       {
         Log.Info("Could not update bitmap");
       }

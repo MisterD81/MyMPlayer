@@ -10,7 +10,7 @@
     /// <summary> 
     /// Verwendete Ressourcen bereinigen.
     /// </summary>
-    /// <param _name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
+    /// <param name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
     protected override void Dispose(bool disposing)
     {
       if (disposing && (components != null))
@@ -66,7 +66,7 @@
       this.videoExtList.Size = new System.Drawing.Size(78, 160);
       this.videoExtList.TabIndex = 18;
       this.toolTip.SetToolTip(this.videoExtList, "List of supported video extensions");
-      this.videoExtList.SelectedIndexChanged += new System.EventHandler(this.videoExtList_SelectedIndexChanged);
+      this.videoExtList.SelectedIndexChanged += new System.EventHandler(this.VideoExtListSelectedIndexChanged);
       // 
       // videoDelete
       // 
@@ -79,7 +79,7 @@
       this.videoDelete.Text = "&Delete";
       this.toolTip.SetToolTip(this.videoDelete, "Deletes the selected video extension");
       this.videoDelete.UseVisualStyleBackColor = true;
-      this.videoDelete.Click += new System.EventHandler(this.videoDelete_Click);
+      this.videoDelete.Click += new System.EventHandler(this.VideoDeleteClick);
       // 
       // videoExtension
       // 
@@ -90,7 +90,7 @@
       this.videoExtension.Size = new System.Drawing.Size(192, 20);
       this.videoExtension.TabIndex = 21;
       this.toolTip.SetToolTip(this.videoExtension, "Name of the selected video extension");
-      this.videoExtension.Leave += new System.EventHandler(this.videoExtension_Leave);
+      this.videoExtension.Leave += new System.EventHandler(this.VideoExtensionLeave);
       // 
       // videoPlayerUse
       // 
@@ -115,7 +115,7 @@
       this.videoAdd.Text = "&Add";
       this.toolTip.SetToolTip(this.videoAdd, "Adds a new video extension to the\r\nlist of supported extensions.");
       this.videoAdd.UseVisualStyleBackColor = true;
-      this.videoAdd.Click += new System.EventHandler(this.videoAdd_Click);
+      this.videoAdd.Click += new System.EventHandler(this.VideoAddClick);
       // 
       // videoArgument
       // 
@@ -158,7 +158,7 @@
       this.audioExtension.Size = new System.Drawing.Size(192, 20);
       this.audioExtension.TabIndex = 39;
       this.toolTip.SetToolTip(this.audioExtension, "Name of the selected audio  extension");
-      this.audioExtension.Leave += new System.EventHandler(this.audioExtension_Leave);
+      this.audioExtension.Leave += new System.EventHandler(this.AudioExtensionLeave);
       // 
       // audioDelete
       // 
@@ -171,7 +171,7 @@
       this.audioDelete.Text = "&Delete";
       this.toolTip.SetToolTip(this.audioDelete, "Deletes the selected video extension");
       this.audioDelete.UseVisualStyleBackColor = true;
-      this.audioDelete.Click += new System.EventHandler(this.audioDelete_Click);
+      this.audioDelete.Click += new System.EventHandler(this.AudioDeleteClick);
       // 
       // audioAdd
       // 
@@ -184,7 +184,7 @@
       this.audioAdd.Text = "&Add";
       this.toolTip.SetToolTip(this.audioAdd, "Adds a new audio extension to the\r\nlist of supported extensions.\r\n");
       this.audioAdd.UseVisualStyleBackColor = true;
-      this.audioAdd.Click += new System.EventHandler(this.audioAdd_Click);
+      this.audioAdd.Click += new System.EventHandler(this.AudioAddClick);
       // 
       // audioExtList
       // 
@@ -197,7 +197,7 @@
       this.audioExtList.Size = new System.Drawing.Size(78, 160);
       this.audioExtList.TabIndex = 36;
       this.toolTip.SetToolTip(this.audioExtList, "List of supported audio extensions");
-      this.audioExtList.SelectedIndexChanged += new System.EventHandler(this.audioExtList_SelectedIndexChanged);
+      this.audioExtList.SelectedIndexChanged += new System.EventHandler(this.AudioExtListSelectedIndexChanged);
       // 
       // groupBox1
       // 

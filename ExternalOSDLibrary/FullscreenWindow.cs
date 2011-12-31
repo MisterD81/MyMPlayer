@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,7 +27,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using MediaPortal.GUI.Library;
 using MediaPortal.GUI.Video;
-using System.Windows;
 
 namespace ExternalOSDLibrary
 {
@@ -75,32 +74,32 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// ID of the label
     /// </summary>
-    private const int LABEL_ID = 10;
+    private const int LabelId = 10;
 
     /// <summary>
     /// ID of the background image
     /// </summary>
-    private const int BACKGROUND_ID = 0;
+    private const int BackgroundId = 0;
 
     /// <summary>
     /// ID of the background image
     /// </summary>
-    private const int BACKGROUND_ID2 = 104;
+    private const int BackgroundId2 = 104;
 
     /// <summary>
     /// ID of the Progress bar
     /// </summary>
-    private const int PROGRESS_ID = 1;
+    private const int ProgressId = 1;
 
     /// <summary>
     /// Start ID of the additional elements
     /// </summary>
-    private const int PANEL_START = 100;
+    private const int PanelStart = 100;
 
     /// <summary>
     /// End IF of the additional elements
     /// </summary>
-    private const int PANEL_END = 150;
+    private const int PanelEnd = 150;
     #endregion
 
     #region ctor
@@ -110,40 +109,41 @@ namespace ExternalOSDLibrary
     public FullscreenWindow()
     {
       _fullscreenWindow = GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_FULLSCREEN_VIDEO) as GUIVideoFullscreen;
-      if (_fullscreenWindow != null) _controlList = _fullscreenWindow.controlList;
-      GenerateElements();
-      _cacheElements = new List<BaseElement>();
-      _imageCacheElements = new List<BaseElement>();
-      GUIControl temp;
-      GUIGroup help;
-      foreach (UIElement element in _controlList)
+      if (_fullscreenWindow != null)
       {
-        temp = element as GUIControl;
-        if (temp != null)
+        _controlList = _fullscreenWindow.controlList;
+        GenerateElements();
+        _cacheElements = new List<BaseElement>();
+        _imageCacheElements = new List<BaseElement>();
+        foreach (var element in _controlList)
         {
-          if (temp.GetType() == typeof(GUIGroup))
+          GUIControl temp = element;
+          if (temp != null)
           {
-            help = temp as GUIGroup;
-            if (help != null)
-              foreach (UIElement uiElement in help.Children)
-              {
-                GUIControl temp2 = uiElement as GUIControl;
-                if (temp2 != null)
+            if (temp.GetType() == typeof(GUIGroup))
+            {
+              var help = temp as GUIGroup;
+              if (help != null)
+                foreach (var uiElement in help.Children)
                 {
-                  CheckElement(temp2);
+                  GUIControl temp2 = uiElement;
+                  if (temp2 != null)
+                  {
+                    CheckElement(temp2);
+                  }
                 }
-              }
+            }
+            CheckElement(temp);
           }
-          CheckElement(temp);
         }
-      }
-      if (_background == null)
-      {
-        _background = _background2;
-      }
-      if (_background == null)
-      {
-        _background = _background3;
+        if (_background == null)
+        {
+          _background = _background2;
+        }
+        if (_background == null)
+        {
+          _background = _background3;
+        }
       }
     }
     #endregion
@@ -151,7 +151,7 @@ namespace ExternalOSDLibrary
     private void CheckElement(GUIControl temp)
     {
       Log.Info(temp.GetType() + " : " + temp.GetID);
-      if (temp.GetID == LABEL_ID)
+      if (temp.GetID == LabelId)
       {
         if (temp.GetType() == typeof(GUILabelControl))
         {
@@ -162,7 +162,7 @@ namespace ExternalOSDLibrary
           Log.Info("VIDEO OSD: TYPE LABEL NOT FOUND FOR LABEL_ID=10 IN FULLSCREEN WINDOW. FOUND: " + temp.GetType());
         }
       }
-      if (temp.GetID == BACKGROUND_ID)
+      if (temp.GetID == BackgroundId)
       {
         if (temp.GetType() == typeof(GUIImage))
         {
@@ -173,7 +173,7 @@ namespace ExternalOSDLibrary
           Log.Info("VIDEO OSD: TYPE IMAGE NOT FOUND FOR BACKGROUND_ID=0 IN FULLSCREEN WINDOW. FOUND: " + temp.GetType());
         }
       }
-      if (temp.GetID == BACKGROUND_ID2)
+      if (temp.GetID == BackgroundId2)
       {
         if (temp.GetType() == typeof(GUIImage))
         {
@@ -186,15 +186,15 @@ namespace ExternalOSDLibrary
       }
       if (temp.GetType() == typeof(GUIImage))
       {
-        GUIImage imageElement = temp as GUIImage;
+        var imageElement = temp as GUIImage;
         if (imageElement != null)
           if (imageElement.FileName.Equals("osd_bg_top.png"))
           {
             _background3 = new ImageElement(temp);
           }
       }
-      if ((temp.GetID == PROGRESS_ID) && (temp.GetType() == typeof(GUIProgressControl) || temp.GetType() == typeof(GUILabelControl))
-        || (temp.GetID > PANEL_START && temp.GetID < PANEL_END))
+      if ((temp.GetID == ProgressId) && (temp.GetType() == typeof(GUIProgressControl) || temp.GetType() == typeof(GUILabelControl))
+        || (temp.GetID > PanelStart && temp.GetID < PanelEnd))
       {
         if (temp.GetType() == typeof(GUIImage))
         {
@@ -225,8 +225,11 @@ namespace ExternalOSDLibrary
     protected override void BaseInit()
     {
       _fullscreenWindow = GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_FULLSCREEN_VIDEO) as GUIVideoFullscreen;
+      _baseWindow = _fullscreenWindow;
       if (_fullscreenWindow != null)
+      {
         _controlList = _fullscreenWindow.controlList;
+      }
     }
     #endregion
 
@@ -299,7 +302,7 @@ namespace ExternalOSDLibrary
       _background.Dispose();
       foreach (BaseElement element in _cacheElements)
       {
-        element.Dispose();
+        if (element != null) element.Dispose();
       }
       base.Dispose();
     }

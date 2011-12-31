@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -96,10 +96,10 @@ namespace ExternalOSDLibrary
       _button = control as GUIButtonControl;
       if (_button != null)
       {
-        _font = getFont(_button.FontName);
-        _focusBitmap = loadBitmap(_button.TexutureFocusName);
-        _noFocusBitmap = loadBitmap(_button.TexutureNoFocusName);
-        _hoverBitmap = loadBitmap(_button.HoverFilename);
+        _font = GetFont(_button.FontName);
+        _focusBitmap = LoadBitmap(_button.TexutureFocusName);
+        _noFocusBitmap = LoadBitmap(_button.TexutureNoFocusName);
+        _hoverBitmap = LoadBitmap(_button.HoverFilename);
         _textColor = GetColor(_button.TextColor);
         _textColorNoFocus = GetColor(_button.TextColorNoFocus);
         _disabledColor = GetColor(_button.DisabledColor);
@@ -116,7 +116,7 @@ namespace ExternalOSDLibrary
     /// <param name="graph">Graphics</param>
     public override void DrawElement(Graphics graph)
     {
-      if (_button.Visible || GUIInfoManager.GetBool(_button.GetVisibleCondition(), _button.ParentID))
+      if (_wasVisible)
       {
         if (_focus)
         {

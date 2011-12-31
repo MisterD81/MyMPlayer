@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@ using System.IO;
 using System.Threading;
 using MediaPortal.Player;
 using MediaPortal.GUI.Library;
+using Action = MediaPortal.GUI.Library.Action;
 
 namespace MPlayer
 {
@@ -36,7 +37,7 @@ namespace MPlayer
   /// <summary>
   /// External Player for the Mplayer Video (and audio) player
   /// </summary>
-  public class MPlayer_ExtPlayer : IExternalPlayer, ISetupForm
+  public class MPlayerExtPlayer : IExternalPlayer, ISetupForm
   {
 
     #region variables
@@ -104,13 +105,19 @@ namespace MPlayer
     /// List of all message handlers
     /// </summary>
     private List<IMessageHandler> _messageHandlers;
+
+    /// <summary>
+    /// MediaInfoWrapper
+    /// </summary>
+    private MediaInfoWrapper _mediaInfo;
+
     #endregion
 
     #region ctor
     /// <summary>
     /// Simple dummy constructor
     /// </summary>
-    public MPlayer_ExtPlayer()
+    public MPlayerExtPlayer()
     {
       _configManager = ConfigurationManager.GetInstance();
 
@@ -146,7 +153,7 @@ namespace MPlayer
     /// <summary>
     /// Method which specifiy, if the player supports the file
     /// </summary>
-    /// <param _name="filename">Filename</param>
+    /// <param name="filename">Filename</param>
     /// <returns>true, if the player can play this file</returns>
     public override bool SupportsFile(string filename)
     {
@@ -174,10 +181,10 @@ namespace MPlayer
     /// <summary>
     /// Returns Information of the Plugin for displaying in menu
     /// </summary>
-    /// <param _name="strButtonText">Text on the button</param>
-    /// <param _name="strButtonImage">Image of the button</param>
-    /// <param _name="strButtonImageFocus">Image of the button when focused</param>
-    /// <param _name="strPictureImage">Hover image of the plugin</param>
+    /// <param name="strButtonText">Text on the button</param>
+    /// <param name="strButtonImage">Image of the button</param>
+    /// <param name="strButtonImageFocus">Image of the button when focused</param>
+    /// <param name="strPictureImage">Hover image of the plugin</param>
     /// <returns>true, if it should be display in menu</returns>
     public override bool GetHome(out string strButtonText, out string strButtonImage, out string strButtonImageFocus, out string strPictureImage)
     {
@@ -229,7 +236,7 @@ namespace MPlayer
     /// <summary>
     /// Plays the file
     /// </summary>
-    /// <param _name="strFile">Filename</param>
+    /// <param name="strFile">Filename</param>
     /// <returns>true, if playing has started</returns>
     public override bool Play(string strFile)
     {
@@ -246,8 +253,8 @@ namespace MPlayer
           strFile = "rtsp:" + strFile.Remove(0, 5);
         }
         bool isVideo = _configManager.HasFileOrStreamVideo(strFile);
-        InitSystem(isVideo);
         _currentFile = strFile;
+        InitSystem(isVideo);
         _mplayerProcess = _configManager.CreateProcessForFileName(strFile, _videoHandler.GetVideoHandle());
         _videoHandler.HasVideo = isVideo;
         if (isVideo)
@@ -260,15 +267,16 @@ namespace MPlayer
         {
           _isVisible = false;
         }
-        _exitHandler = MplayerProcess_Exited;
+        _exitHandler = MplayerProcessExited;
         _mplayerProcess.Exited += _exitHandler;
         _mplayerProcess.Start();
-        _dataReceivedHandler = MplayerProcess_OutputDataReceived;
+        _dataReceivedHandler = MplayerProcessOutputDataReceived;
         _mplayerProcess.OutputDataReceived += _dataReceivedHandler;
         _mplayerProcess.BeginOutputReadLine();
         _input = _mplayerProcess.StandardInput;
         result = true;
-      } catch (Exception e)
+      }
+      catch (Exception e)
       {
         Log.Info("MPlayer Error: " + e.Message);
         Log.Error(e);
@@ -436,7 +444,7 @@ namespace MPlayer
     /// Handles the actions of Mediaportal.
     /// Here are the OSD-Actions are handled to use the mplayer _osd
     /// </summary>
-    /// <param _name="action">Performed Action</param>
+    /// <param name="action">Performed Action</param>
     private void OnNewAction(Action action)
     {
       _osdHandler.OnAction(action);
@@ -506,6 +514,17 @@ namespace MPlayer
       {
         _seekingHandler.CheckPosition();
       }
+      if (_mediaInfo != null)
+      {
+        GUIPropertyManager.SetProperty("#Play.Current.VideoCodec.Texture",
+                                       MediaPortal.Util.Utils.MakeFileName(_mediaInfo.VideoCodec));
+        GUIPropertyManager.SetProperty("#Play.Current.VideoResolution", _mediaInfo.VideoResolution);
+        GUIPropertyManager.SetProperty("#Play.Current.AudioCodec.Texture",
+                                       MediaPortal.Util.Utils.MakeFileName(_mediaInfo.AudioCodec));
+        GUIPropertyManager.SetProperty("#Play.Current.AudioChannels", _mediaInfo.AudioChannelsFriendly);
+        GUIPropertyManager.SetProperty("#Play.Current.HasSubtitles", _mediaInfo.HasSubtitles.ToString());
+        GUIPropertyManager.SetProperty("#Play.Current.AspectRatio", _mediaInfo.AspectRatio);
+      }
       base.Process();
     }
     #endregion
@@ -514,7 +533,7 @@ namespace MPlayer
     /// <summary>
     /// Release the player
     /// </summary>
-    public override void Release()
+    public override void Dispose()
     {
       if (_playState == PlayState.Playing || _playState == PlayState.Paused)
       {
@@ -532,9 +551,11 @@ namespace MPlayer
     /// <summary>
     /// Initialize the system (Objects, Controls etc.)
     /// </summary>
-    /// <param _name="isVideo">Indícate if the file has video</param>
+    /// <param name="isVideo">Indícate if the file has video</param>
     private void InitSystem(bool isVideo)
     {
+      _mediaInfo = new MediaInfoWrapper(_currentFile);
+
       _playState = PlayState.Playing;
       if (_configManager.OsdMode == OSDMode.InternalMPlayer || !isVideo)
       {
@@ -547,11 +568,7 @@ namespace MPlayer
       _videoHandler = new VideoHandler(this, _osdHandler);
       _audioSubtitleHandler = new AudioSubtitleHandler(this, _osdHandler);
       _seekingHandler = new SeekingHandler(this, _osdHandler);
-      _messageHandlers = new List<IMessageHandler>();
-      _messageHandlers.Add(_videoHandler);
-      _messageHandlers.Add(_audioSubtitleHandler);
-      _messageHandlers.Add(_seekingHandler);
-      _messageHandlers.Add(_osdHandler);
+      _messageHandlers = new List<IMessageHandler> { _videoHandler, _audioSubtitleHandler, _seekingHandler, _osdHandler };
       _actionHandler = OnNewAction;
       GUIWindowManager.OnNewAction += _actionHandler;
     }
@@ -561,9 +578,9 @@ namespace MPlayer
     /// <summary>
     /// Occures, when the mplayer process exists
     /// </summary>
-    /// <param _name="sender">Sender</param>
-    /// <param _name="e">EventArguments</param>
-    private void MplayerProcess_Exited(object sender, EventArgs e)
+    /// <param name="sender">Sender</param>
+    /// <param name="e">EventArguments</param>
+    private void MplayerProcessExited(object sender, EventArgs e)
     {
       Log.Info("MPlayer: Player exited");
       _playState = PlayState.Ended;
@@ -572,7 +589,7 @@ namespace MPlayer
     /// <summary>
     /// Sends a command with pausing_keep to the mplayer process
     /// </summary>
-    /// <param _name="command">Mplayer command</param>
+    /// <param name="command">Mplayer command</param>
     internal void SendPausingKeepCommand(string command)
     {
       SendCommand("pausing_keep " + command);
@@ -581,7 +598,7 @@ namespace MPlayer
     /// <summary>
     /// Sends a command to the mplayer process
     /// </summary>
-    /// <param _name="command">Mplayer command</param>
+    /// <param name="command">Mplayer command</param>
     internal void SendCommand(string command)
     {
       Log.Debug("MPlayer: Send command: " + command);
@@ -593,9 +610,9 @@ namespace MPlayer
     /// Method which handles asynchron the received data of the mplayer process
     /// Therefor the information will be parsed and the data extracted and stored in the object
     /// </summary>
-    /// <param _name="sender">Sender object</param>
-    /// <param _name="e">Event _arguments</param>
-    private void MplayerProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
+    /// <param name="sender">Sender object</param>
+    /// <param name="e">Event _arguments</param>
+    private void MplayerProcessOutputDataReceived(object sender, DataReceivedEventArgs e)
     {
       try
       {
@@ -612,7 +629,8 @@ namespace MPlayer
             _playState = PlayState.Ended;
           }
         }
-      } catch (Exception ex)
+      }
+      catch (Exception ex)
       {
         Log.Error("MPlayer: exception occured while handling message\n{0}", ex);
       }
@@ -627,7 +645,7 @@ namespace MPlayer
     {
       get
       {
-        return _videoHandler.HasVideo;
+        return _videoHandler != null && _videoHandler.HasVideo;
       }
     }
 
@@ -636,7 +654,10 @@ namespace MPlayer
     /// </summary>
     public override void SetVideoWindow()
     {
-      _videoHandler.SetVideoWindow();
+      if (_videoHandler != null)
+      {
+        _videoHandler.SetVideoWindow();
+      }
     }
 
     /// <summary>
@@ -644,10 +665,13 @@ namespace MPlayer
     /// </summary>
     public override int PositionX
     {
-      get { return _videoHandler.PositionX; }
+      get { return _videoHandler != null ? _videoHandler.PositionX : 0; }
       set
       {
-        _videoHandler.PositionX = value;
+        if (_videoHandler != null)
+        {
+          _videoHandler.PositionX = value;
+        }
       }
     }
 
@@ -656,10 +680,13 @@ namespace MPlayer
     /// </summary>
     public override int PositionY
     {
-      get { return _videoHandler.PositionY; }
+      get { return _videoHandler != null ? _videoHandler.PositionY : 0; }
       set
       {
-        _videoHandler.PositionY = value;
+        if (_videoHandler != null)
+        {
+          _videoHandler.PositionY = value;
+        }
       }
     }
 
@@ -668,10 +695,13 @@ namespace MPlayer
     /// </summary>
     public override int RenderWidth
     {
-      get { return _videoHandler.RenderWidth; }
+      get { return _videoHandler != null ? _videoHandler.RenderWidth : 0; }
       set
       {
-        _videoHandler.RenderWidth = value;
+        if (_videoHandler != null)
+        {
+          _videoHandler.RenderWidth = value;
+        }
       }
     }
 
@@ -680,10 +710,13 @@ namespace MPlayer
     /// </summary>
     public override int RenderHeight
     {
-      get { return _videoHandler.RenderHeight; }
+      get { return _videoHandler != null ? _videoHandler.RenderHeight : 0; }
       set
       {
-        _videoHandler.RenderHeight = value;
+        if (_videoHandler != null)
+        {
+          _videoHandler.RenderHeight = value;
+        }
       }
     }
 
@@ -692,7 +725,7 @@ namespace MPlayer
     /// </summary>
     public override int Width
     {
-      get { return _videoHandler.Width; }
+      get { return _videoHandler != null ? _videoHandler.Width : 0; }
     }
 
     /// <summary>
@@ -700,7 +733,7 @@ namespace MPlayer
     /// </summary>
     public override int Height
     {
-      get { return _videoHandler.Height; }
+      get { return _videoHandler != null ? _videoHandler.Height : 0; }
     }
 
     /// <summary>
@@ -718,7 +751,10 @@ namespace MPlayer
       }
       set
       {
-        _videoHandler.FullScreen = value;
+        if (_videoHandler != null)
+        {
+          _videoHandler.FullScreen = value;
+        }
       }
     }
 
@@ -729,11 +765,14 @@ namespace MPlayer
     {
       get
       {
-        return _videoHandler.Contrast;
+        return _videoHandler != null ? _videoHandler.Contrast : 0;
       }
       set
       {
-        _videoHandler.Contrast = value;
+        if (_videoHandler != null)
+        {
+          _videoHandler.Contrast = value;
+        }
       }
     }
 
@@ -744,11 +783,14 @@ namespace MPlayer
     {
       get
       {
-        return _videoHandler.Brightness;
+        return _videoHandler != null ? _videoHandler.Brightness : 0;
       }
       set
       {
-        _videoHandler.Brightness = value;
+        if (_videoHandler != null)
+        {
+          _videoHandler.Brightness = value;
+        }
       }
     }
 
@@ -759,11 +801,14 @@ namespace MPlayer
     {
       get
       {
-        return _videoHandler.Gamma;
+        return _videoHandler != null ? _videoHandler.Gamma : 0;
       }
       set
       {
-        _videoHandler.Gamma = value;
+        if (_videoHandler != null)
+        {
+          _videoHandler.Gamma = value;
+        }
       }
     }
 
@@ -772,10 +817,13 @@ namespace MPlayer
     /// </summary>
     public override Geometry.Type ARType
     {
-      get { return _videoHandler.ARType; }
+      get { return _videoHandler != null ? _videoHandler.ArType : Geometry.Type.Normal; }
       set
       {
-        _videoHandler.ARType = value;
+        if (_videoHandler != null)
+        {
+          _videoHandler.ArType = value;
+        }
       }
     }
 
@@ -789,7 +837,7 @@ namespace MPlayer
     {
       get
       {
-        return _audioSubtitleHandler.AudioStreams;
+        return _audioSubtitleHandler != null ? _audioSubtitleHandler.AudioStreams : 0;
       }
     }
 
@@ -800,7 +848,7 @@ namespace MPlayer
     {
       get
       {
-        return _audioSubtitleHandler.SubtitleStreams;
+        return _audioSubtitleHandler != null ? _audioSubtitleHandler.SubtitleStreams : 0;
       }
     }
 
@@ -811,11 +859,14 @@ namespace MPlayer
     {
       get
       {
-        return _audioSubtitleHandler.CurrentAudioStream;
+        return _audioSubtitleHandler != null ? _audioSubtitleHandler.CurrentAudioStream : 0;
       }
       set
       {
-        _audioSubtitleHandler.CurrentAudioStream = value;
+        if (_audioSubtitleHandler != null)
+        {
+          _audioSubtitleHandler.CurrentAudioStream = value;
+        }
       }
     }
 
@@ -826,32 +877,35 @@ namespace MPlayer
     {
       get
       {
-        return _audioSubtitleHandler.CurrentSubtitleStream;
+        return _audioSubtitleHandler != null ? _audioSubtitleHandler.CurrentSubtitleStream : 0;
       }
       set
       {
-        _audioSubtitleHandler.CurrentSubtitleStream = value;
+        if (_audioSubtitleHandler != null)
+        {
+          _audioSubtitleHandler.CurrentSubtitleStream = value;
+        }
       }
     }
 
     /// <summary>
     /// Gives the _name of the audio language
     /// </summary>
-    /// <param _name="iStream">Index of the audio language</param>
+    /// <param name="iStream">Index of the audio language</param>
     /// <returns>Name of the audio language</returns>
     public override string AudioLanguage(int iStream)
     {
-      return _audioSubtitleHandler.AudioLanguage(iStream);
+      return _audioSubtitleHandler != null ? _audioSubtitleHandler.AudioLanguage(iStream) : String.Empty;
     }
 
     /// <summary>
     /// Gives the _name of the subtitle language
     /// </summary>
-    /// <param _name="iStream">Index of the subtitle language</param>
+    /// <param name="iStream">Index of the subtitle language</param>
     /// <returns>Name of the subtitle language</returns>
     public override string SubtitleLanguage(int iStream)
     {
-      return _audioSubtitleHandler.SubtitleLanguage(iStream);
+      return _audioSubtitleHandler != null ? _audioSubtitleHandler.SubtitleLanguage(iStream) : String.Empty;
     }
 
     /// <summary>
@@ -861,11 +915,14 @@ namespace MPlayer
     {
       get
       {
-        return _audioSubtitleHandler.EnableSubtitle;
+        return _audioSubtitleHandler != null && _audioSubtitleHandler.EnableSubtitle;
       }
       set
       {
-        _audioSubtitleHandler.EnableSubtitle = value;
+        if (_audioSubtitleHandler != null)
+        {
+          _audioSubtitleHandler.EnableSubtitle = value;
+        }
       }
     }
 
@@ -876,11 +933,14 @@ namespace MPlayer
     {
       get
       {
-        return _audioSubtitleHandler.Volume;
+        return _audioSubtitleHandler != null ? _audioSubtitleHandler.Volume : 0;
       }
       set
       {
-        _audioSubtitleHandler.Volume = value;
+        if (_audioSubtitleHandler != null)
+        {
+          _audioSubtitleHandler.Volume = value;
+        }
       }
     }
     #endregion
@@ -892,43 +952,55 @@ namespace MPlayer
     /// <returns>true</returns>
     public override bool CanSeek()
     {
-      return _seekingHandler.CanSeek();
+      return _seekingHandler != null && _seekingHandler.CanSeek();
     }
 
     /// <summary>
     /// Seek to an absoulte position in seconds
     /// </summary>
-    /// <param _name="dTime">New absoulte position in seconds</param>
+    /// <param name="dTime">New absoulte position in seconds</param>
     public override void SeekAbsolute(double dTime)
     {
-      _seekingHandler.SeekAbsolute(dTime);
+      if (_seekingHandler != null)
+      {
+        _seekingHandler.SeekAbsolute(dTime);
+      }
     }
 
     /// <summary>
     /// Seek to an relative position in seconds
     /// </summary>
-    /// <param _name="dTime">Relative position in seconds</param>
+    /// <param name="dTime">Relative position in seconds</param>
     public override void SeekRelative(double dTime)
     {
-      _seekingHandler.SeekRelative(dTime);
+      if (_seekingHandler != null)
+      {
+        _seekingHandler.SeekRelative(dTime);
+      }
     }
 
     /// <summary>
     /// Seek to an absoulte position in percentage
     /// </summary>
-    /// <param _name="iPercentage">New absoulte position in percentage</param>
+    /// <param name="iPercentage">New absoulte position in percentage</param>
     public override void SeekAsolutePercentage(int iPercentage)
     {
-      _seekingHandler.SeekAsolutePercentage(iPercentage);
+      if (_seekingHandler != null)
+      {
+        _seekingHandler.SeekAsolutePercentage(iPercentage);
+      }
     }
 
     /// <summary>
     /// Seek to an relative position in percentage
     /// </summary>
-    /// <param _name="iPercentage">Relative position in percentage</param>
+    /// <param name="iPercentage">Relative position in percentage</param>
     public override void SeekRelativePercentage(int iPercentage)
     {
-      _seekingHandler.SeekRelativePercentage(iPercentage);
+      if (_seekingHandler != null)
+      {
+        _seekingHandler.SeekRelativePercentage(iPercentage);
+      }
     }
 
     /// <summary>
@@ -938,11 +1010,14 @@ namespace MPlayer
     {
       get
       {
-        return _seekingHandler.Speed;
+        return _seekingHandler != null ? _seekingHandler.Speed : 1;
       }
       set
       {
-        _seekingHandler.Speed = value;
+        if(_seekingHandler!=null)
+        {
+          _seekingHandler.Speed = value;
+        }
       }
     }
 
@@ -953,7 +1028,7 @@ namespace MPlayer
     {
       get
       {
-        return _seekingHandler.CurrentPosition;
+        return _seekingHandler != null ? _seekingHandler.CurrentPosition : 0;
       }
     }
 
@@ -964,7 +1039,7 @@ namespace MPlayer
     {
       get
       {
-        return _seekingHandler.Duration;
+        return _seekingHandler != null ? _seekingHandler.Duration : 0;
       }
     }
     #endregion

@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ using System.Globalization;
 using System.Threading;
 using MediaPortal.GUI.Library;
 using ExternalOSDLibrary;
+using Action = MediaPortal.GUI.Library.Action;
 
 namespace MPlayer
 {
@@ -57,8 +58,8 @@ namespace MPlayer
     /// <summary>
     /// Constructor which initialises the external osd library handler
     /// </summary>
-    /// <param _name="player">Instance of external player</param>
-    public ExternalOSDLibrary(MPlayer_ExtPlayer player)
+    /// <param name="player">Instance of external player</param>
+    public ExternalOSDLibrary(MPlayerExtPlayer player)
     {
       _showingCacheStatus = false;
       _internalOSDHandler = new InternalOSDHandler(player, false);
@@ -72,7 +73,6 @@ namespace MPlayer
           Thread.Sleep(100);
         }
       }
-      _osd.Activate();
       _osd.ShowInit(LocalizeStrings.Get((int)LocalizedMessages.Initializing));
     }
 
@@ -81,7 +81,7 @@ namespace MPlayer
     /// </summary>
     private void OsdGetInstance()
     {
-      _osd = OSDController.getInstance();
+      _osd = OSDController.Instance;
     }
 
     /// <summary>
@@ -89,7 +89,7 @@ namespace MPlayer
     /// </summary>
     public void Dispose()
     {
-      _osd.Deactivate();
+      _osd.Dispose();
     }
     #endregion
 
@@ -97,7 +97,7 @@ namespace MPlayer
     /// <summary>
     /// Deactivates the internal osd
     /// </summary>
-    /// <param _name="deactivate">If false, OSD will only be deactivate when OSDVisbileForPause is true; If true always</param>
+    /// <param name="deactivate">If false, OSD will only be deactivate when OSDVisbileForPause is true; If true always</param>
     public void DeactivateOSD(bool deactivate)
     {
       _internalOSDHandler.DeactivateOSD(true);
@@ -114,7 +114,7 @@ namespace MPlayer
     /// <summary>
     /// Shows the new subtitle language
     /// </summary>
-    /// <param _name="newSubtitleLanguage">Name of the new subtitle langauge</param>
+    /// <param name="newSubtitleLanguage">Name of the new subtitle langauge</param>
     public void ShowSubtitleChanged(String newSubtitleLanguage)
     {
       _osd.ShowAlternativeOSD(LocalizeStrings.Get((int)LocalizedMessages.Subtitles) + ": " + newSubtitleLanguage, false);
@@ -123,7 +123,7 @@ namespace MPlayer
     /// <summary>
     /// Shows the new subtitle position
     /// </summary>
-    /// <param _name="newSubtitlePosition">Value of the new subtitle position</param>
+    /// <param name="newSubtitlePosition">Value of the new subtitle position</param>
     public void ShowSubtitlePositionChanged(String newSubtitlePosition)
     {
       _osd.ShowAlternativeOSD(LocalizeStrings.Get((int)LocalizedMessages.SubtitlePosition) + ": " + newSubtitlePosition, false);
@@ -132,7 +132,7 @@ namespace MPlayer
     /// <summary>
     /// Shows the new subtitle size
     /// </summary>
-    /// <param _name="newSubtitleSize">Value of the new subtitle size</param>
+    /// <param name="newSubtitleSize">Value of the new subtitle size</param>
     public void ShowSubtitleSizeChanged(String newSubtitleSize)
     {
       _osd.ShowAlternativeOSD(LocalizeStrings.Get((int)LocalizedMessages.SubtitleSize) + ": " + newSubtitleSize, false);
@@ -141,7 +141,7 @@ namespace MPlayer
     /// <summary>
     /// Shows the new audio delay
     /// </summary>
-    /// <param _name="newAudioDelay">Value of the new audio delay</param>
+    /// <param name="newAudioDelay">Value of the new audio delay</param>
     public void ShowAudioDelayChanged(String newAudioDelay)
     {
       _osd.ShowAlternativeOSD(LocalizeStrings.Get((int)LocalizedMessages.AudioDelay) + ": " + newAudioDelay, false);
@@ -150,7 +150,7 @@ namespace MPlayer
     /// <summary>
     /// Shows the new subtitle delay
     /// </summary>
-    /// <param _name="newSubtitleDelay">Value of the new subtitle delay</param>
+    /// <param name="newSubtitleDelay">Value of the new subtitle delay</param>
     public void ShowSubtitleDelayChanged(String newSubtitleDelay)
     {
       _osd.ShowAlternativeOSD(LocalizeStrings.Get((int)LocalizedMessages.SubtitleDelay) + ": " + newSubtitleDelay, false);
@@ -159,7 +159,7 @@ namespace MPlayer
     /// <summary>
     /// Shows the new status of the subtitles
     /// </summary>
-    /// <param _name="enabled">New status of the subtitles</param>
+    /// <param name="enabled">New status of the subtitles</param>
     public void ShowSubtitleAcDeActivated(bool enabled)
     {
       _osd.ShowAlternativeOSD(LocalizeStrings.Get((int)LocalizedMessages.Subtitles), !enabled);
@@ -177,7 +177,7 @@ namespace MPlayer
     /// <summary>
     /// Handles MP internal action related for the internal osd handler
     /// </summary>
-    /// <param _name="action">Action to handle</param>
+    /// <param name="action">Action to handle</param>
     public void OnAction(Action action)
     {
     }
@@ -185,7 +185,7 @@ namespace MPlayer
     /// <summary>
     /// Activate the osd of MPlayer
     /// </summary>
-    /// <param _name="activate">If false, OSD will only be activated when OSDVisbileForPause is true; If true always</param>
+    /// <param name="activate">If false, OSD will only be activated when OSDVisbileForPause is true; If true always</param>
     public void ActivateOSD(bool activate)
     {
     }
@@ -193,7 +193,7 @@ namespace MPlayer
     /// <summary>
     /// Sets that osd osd should be visible, because of pausing
     /// </summary>
-    /// <param _name="osdVisibleForPause">true/false</param>
+    /// <param name="osdVisibleForPause">true/false</param>
     public void SetOSDVisibleForPause(bool osdVisibleForPause)
     {
     }
@@ -201,7 +201,7 @@ namespace MPlayer
     /// <summary>
     /// Shows the new audio language
     /// </summary>
-    /// <param _name="newAudioLanguage">Name of the new audio langauge</param>
+    /// <param name="newAudioLanguage">Name of the new audio langauge</param>
     public void ShowAudioChanged(String newAudioLanguage)
     {
     }
@@ -209,7 +209,7 @@ namespace MPlayer
     /// <summary>
     /// Shows the new speed value
     /// </summary>
-    /// <param _name="newSpeed">Value of the new speed value</param>
+    /// <param name="newSpeed">Value of the new speed value</param>
     public void ShowSpeedChanged(String newSpeed)
     {
     }
@@ -217,7 +217,7 @@ namespace MPlayer
     /// <summary>
     /// Shows the new display mode
     /// </summary>
-    /// <param _name="newDisplayMode">Name of the new display mode</param>
+    /// <param name="newDisplayMode">Name of the new display mode</param>
     public void ShowDisplayModeChanged(String newDisplayMode)
     {
     }
@@ -228,7 +228,7 @@ namespace MPlayer
     /// <summary>
     /// Handles a message that is retrieved from the MPlayer process
     /// </summary>
-    /// <param _name="message">Message to handle</param>
+    /// <param name="message">Message to handle</param>
     public void HandleMessage(string message)
     {
       // Cache fill:  0.00% (0 bytes)  

@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -497,8 +497,8 @@ namespace MPlayer
     /// <summary>
     /// Checks if we can retrieve the filename of the font family
     /// </summary>
-    /// <param _name="subtitleFont">Name of the font family</param>
-    /// <param _name="fileName">Filename of the font family</param>
+    /// <param name="subtitleFont">Name of the font family</param>
+    /// <param name="fileName">Filename of the font family</param>
     /// <returns>true, if Filename can be retrieved</returns>
     private static bool CheckSubtitleFont(string subtitleFont, out string fileName)
     {
@@ -638,7 +638,8 @@ namespace MPlayer
           LocalizeStrings.Load(m_strLanguage);
         }
         LoadXMLData();
-      } catch (Exception e)
+      }
+      catch (Exception e)
       {
         Log.Error(e);
       }
@@ -651,7 +652,7 @@ namespace MPlayer
     /// </summary>
     private static void LoadXMLData()
     {
-      ExtensionSettings settings ;
+      ExtensionSettings settings;
       PlayMode mode = PlayMode.Unrecognized;
       XmlDocument doc = new XmlDocument();
       string path = Config.GetFile(Config.Dir.Config, "MPlayer_ExtPlayer.xml");
@@ -760,7 +761,8 @@ namespace MPlayer
         arguments.Append("-cache ");
         arguments.Append(_cacheSize);
         arguments.Append(" ");
-      }else
+      }
+      else
       {
         arguments.Append("-nocache ");
       }
@@ -888,7 +890,7 @@ namespace MPlayer
     /// <summary>
     /// Checks if the fileName has a video or not
     /// </summary>
-    /// <param _name="fileName">Filename to check</param>
+    /// <param name="fileName">Filename to check</param>
     /// <returns>true, when file or stream has a video</returns>
     public bool HasFileOrStreamVideo(String fileName)
     {
@@ -896,7 +898,8 @@ namespace MPlayer
       if (fileName.StartsWith("dvd://"))
       {
         isVideo = true;
-      } else if (fileName.StartsWith("dvdnav://"))
+      }
+      else if (fileName.StartsWith("dvdnav://"))
       {
         isVideo = true;
       }
@@ -944,8 +947,8 @@ namespace MPlayer
     /// <summary>
     /// Creates a process object and sets the starting _arguments
     /// </summary>
-    /// <param _name="fileName">FileName that should be started</param>
-    /// <param _name="handle">Handle of inner panel</param>
+    /// <param name="fileName">FileName that should be started</param>
+    /// <param name="handle">Handle of inner panel</param>
     /// <returns>UpdateGUI object</returns>
     public Process CreateProcessForFileName(String fileName, IntPtr handle)
     {
@@ -955,7 +958,7 @@ namespace MPlayer
       mplayerProcess.StartInfo.RedirectStandardOutput = true;
       mplayerProcess.StartInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(_mplayerPath);
       mplayerProcess.StartInfo.FileName = _mplayerPath;
-      StringBuilder arguments = GetGeneralArguments(handle,fileName.StartsWith("dvdnav://"));
+      StringBuilder arguments = GetGeneralArguments(handle, fileName.StartsWith("dvdnav://"));
       if (fileName.StartsWith("dvd://"))
       {
         String file = fileName.Substring(6);
@@ -968,7 +971,8 @@ namespace MPlayer
         arguments.Append(" -slang ");
         arguments.Append(CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
         arguments.Append(" dvd://");
-      } else if (fileName.StartsWith("dvdnav://"))
+      }
+      else if (fileName.StartsWith("dvdnav://"))
       {
         String file = fileName.Substring(9);
         arguments.Append(_extensionSettings["dvd://"].Arguments);
@@ -980,7 +984,8 @@ namespace MPlayer
         arguments.Append(" -slang ");
         arguments.Append(CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
         arguments.Append(" dvdnav://");
-      } else if (fileName.StartsWith("vcd://"))
+      }
+      else if (fileName.StartsWith("vcd://"))
       {
         String file = fileName.Substring(6);
         arguments.Append(_extensionSettings["vcd://"].Arguments);
@@ -1058,7 +1063,7 @@ namespace MPlayer
     /// <summary>
     /// Method which specifiy, if the player supports the file
     /// </summary>
-    /// <param _name="filename">Filename</param>
+    /// <param name="filename">Filename</param>
     /// <returns>true, if the player can play this file</returns>
     public bool SupportsFile(String filename)
     {
@@ -1073,11 +1078,11 @@ namespace MPlayer
       ext = ext.ToLower();
       if (ext.Equals(".mplayer"))
       {
-        if (filename.StartsWith("dvd://") || filename.StartsWith("dvdnav://") ||  filename.StartsWith("vcd://") || 
-            filename.StartsWith("svcd://") || filename.StartsWith("ftp://") || filename.StartsWith("http://") || 
-            filename.StartsWith("http_proxy://") || filename.StartsWith("mms://") || filename.StartsWith("mmst://") || 
-            filename.StartsWith("mpst://") || filename.StartsWith("rtp://") || filename.StartsWith("rtsp://") || 
-            filename.StartsWith("sdp://") || filename.StartsWith("udp://") || filename.StartsWith("unsv://") || 
+        if (filename.StartsWith("dvd://") || filename.StartsWith("dvdnav://") || filename.StartsWith("vcd://") ||
+            filename.StartsWith("svcd://") || filename.StartsWith("ftp://") || filename.StartsWith("http://") ||
+            filename.StartsWith("http_proxy://") || filename.StartsWith("mms://") || filename.StartsWith("mmst://") ||
+            filename.StartsWith("mpst://") || filename.StartsWith("rtp://") || filename.StartsWith("rtsp://") ||
+            filename.StartsWith("sdp://") || filename.StartsWith("udp://") || filename.StartsWith("unsv://") ||
             filename.StartsWith("ZZZZ://"))
         {
           return true;

@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -81,12 +81,12 @@ namespace ExternalOSDLibrary
       _slider = control as GUISliderControl;
       if (_slider != null)
       {
-        _backgroundBitmap = loadBitmap(_slider.BackGroundTextureName);
-        _sliderBitmap = loadBitmap(_slider.BackTextureMidName);
-        _sliderFocusBitmap = loadBitmap(_slider.BackTextureMidNameFocus);
+        _backgroundBitmap = LoadBitmap(_slider.BackGroundTextureName);
+        _sliderBitmap = LoadBitmap(_slider.BackTextureMidName);
+        _sliderFocusBitmap = LoadBitmap(_slider.BackTextureMidNameFocus);
         _focus = _slider.Focus;
         _percentage = _slider.Percentage;
-        _strValue = getStringValue();
+        _strValue = GetStringValue();
       }
     }
     #endregion
@@ -98,10 +98,10 @@ namespace ExternalOSDLibrary
     /// <param name="graph">Graphics</param>
     public override void DrawElement(Graphics graph)
     {
-      if (_slider.Visible || GUIInfoManager.GetBool(_slider.GetVisibleCondition(), _slider.ParentID))
+      if (_wasVisible)
       {
         const string strValue = "";
-        Font font = getFont("font13");
+        Font font = GetFont("font13");
         float backgroundPositionX = _slider.XPosition;
         float backgroundPositionY = _slider.YPosition;
         if (null != font)
@@ -110,7 +110,7 @@ namespace ExternalOSDLibrary
           graph.DrawString(GUIPropertyManager.Parse(strValue), font, brush, _slider.XPosition, _slider.YPosition);
           brush.Dispose();
         }
-        backgroundPositionX += 60;
+        //backgroundPositionX += 60;
 
         //int iHeight=25;
         graph.DrawImage(_backgroundBitmap, backgroundPositionX, backgroundPositionY, _backgroundBitmap.Width, _backgroundBitmap.Height);
@@ -124,14 +124,7 @@ namespace ExternalOSDLibrary
         //fPos += 10.0f;
         if ((int)fWidth > 1)
         {
-          if (_slider.IsFocused)
-          {
-            graph.DrawImage(_sliderFocusBitmap, fPos, backgroundPositionY);
-          }
-          else
-          {
-            graph.DrawImage(_sliderBitmap, fPos, backgroundPositionY);
-          }
+          graph.DrawImage(_slider.IsFocused ? _sliderFocusBitmap : _sliderBitmap, fPos, backgroundPositionY);
         }
       }
     }
@@ -160,7 +153,7 @@ namespace ExternalOSDLibrary
         _focus = _slider.Focus;
         result = true;
       }
-      String newStrValue = getStringValue();
+      String newStrValue = GetStringValue();
       if (newStrValue != _strValue)
       {
         _strValue = newStrValue;
@@ -171,7 +164,7 @@ namespace ExternalOSDLibrary
     #endregion
 
     #region private methods
-    private String getStringValue()
+    private String GetStringValue()
     {
       String strValue = String.Empty;
       switch (_slider.SpinType)

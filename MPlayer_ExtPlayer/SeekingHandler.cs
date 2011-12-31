@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ using System;
 using System.Globalization;
 using System.Threading;
 using MediaPortal.GUI.Library;
+using Action = MediaPortal.GUI.Library.Action;
 
 namespace MPlayer
 {
@@ -68,7 +69,7 @@ namespace MPlayer
     /// <summary>
     /// Reference to the main player component
     /// </summary>
-    private readonly MPlayer_ExtPlayer _player;
+    private readonly MPlayerExtPlayer _player;
 
     /// <summary>
     /// Instance of the current OSD Handler
@@ -93,7 +94,7 @@ namespace MPlayer
     /// <summary>
     /// Indicates if a possible dvd menu was detected
     /// </summary>
-    private bool _isDVDMenu;
+    private bool _isDvdMenu;
 
     /// <summary>
     /// Stores the last stream pos
@@ -105,9 +106,9 @@ namespace MPlayer
     /// <summary>
     /// Constructor which initialises the seeking handler
     /// </summary>
-    /// <param _name="player">Instance of external player</param>
-    /// <param _name="osdHandler">Instance of the osdHandler</param>
-    public SeekingHandler(MPlayer_ExtPlayer player, IOSDHandler osdHandler)
+    /// <param name="player">Instance of external player</param>
+    /// <param name="osdHandler">Instance of the osdHandler</param>
+    public SeekingHandler(MPlayerExtPlayer player, IOSDHandler osdHandler)
     {
       _player = player;
       _osdHandler = osdHandler;
@@ -116,7 +117,7 @@ namespace MPlayer
       _speed = 1;
       _performSeekRelative = false;
       _checkTime = false;
-      _isDVDMenu = false;
+      _isDvdMenu = false;
       _lastStreamPos = -1;
     }
     #endregion
@@ -186,7 +187,7 @@ namespace MPlayer
     /// </summary>
     public bool IsDVDMenu
     {
-      get { return _isDVDMenu; }
+      get { return _isDvdMenu; }
     }
     #endregion
 
@@ -203,7 +204,7 @@ namespace MPlayer
     /// <summary>
     /// Seek to an absoulte position in seconds
     /// </summary>
-    /// <param _name="dTime">New absoulte position in seconds</param>
+    /// <param name="dTime">New absoulte position in seconds</param>
     public void SeekAbsolute(double dTime)
     {
       _seekAbsoluteDestinationTime = dTime;
@@ -216,7 +217,7 @@ namespace MPlayer
     /// <summary>
     /// Seek to an relative position in seconds
     /// </summary>
-    /// <param _name="dTime">Relative position in seconds</param>
+    /// <param name="dTime">Relative position in seconds</param>
     public void SeekRelative(double dTime)
     {
       _player.SendPausingKeepCommand("seek " + ((int)dTime) + " 0");
@@ -229,7 +230,7 @@ namespace MPlayer
     /// <summary>
     /// Seek to an absoulte position in percentage
     /// </summary>
-    /// <param _name="iPercentage">New absoulte position in percentage</param>
+    /// <param name="iPercentage">New absoulte position in percentage</param>
     public void SeekAsolutePercentage(int iPercentage)
     {
       _player.SendPausingKeepCommand("seek " + iPercentage + " 2");
@@ -242,7 +243,7 @@ namespace MPlayer
     /// <summary>
     /// Seek to an relative position in percentage
     /// </summary>
-    /// <param _name="iPercentage">Relative position in percentage</param>
+    /// <param name="iPercentage">Relative position in percentage</param>
     public void SeekRelativePercentage(int iPercentage)
     {
       _player.SendPausingKeepCommand("get_percent_pos");
@@ -252,7 +253,7 @@ namespace MPlayer
     /// <summary>
     /// Handles MP internal action related for the internal osd handler
     /// </summary>
-    /// <param _name="action">Action to handle</param>
+    /// <param name="action">Action to handle</param>
     public void OnAction(Action action)
     {
       switch (action.wID)
@@ -303,7 +304,7 @@ namespace MPlayer
     /// <summary>
     /// Performs the real seek to an relative position in percentage
     /// </summary>
-    /// <param _name="percentage">Relative position in percentage</param>
+    /// <param name="percentage">Relative position in percentage</param>
     private void PerformSeekRelativePercentage(int percentage)
     {
       _relativSeekPercentage += percentage;
@@ -319,7 +320,7 @@ namespace MPlayer
     /// <summary>
     /// Handles a message that is retrieved from the MPlayer process
     /// </summary>
-    /// <param _name="message">Message to handle</param>
+    /// <param name="message">Message to handle</param>
     public void HandleMessage(string message)
     {
       if (message.StartsWith("ANS_PERCENT_POSITION="))
@@ -335,28 +336,30 @@ namespace MPlayer
         Double.TryParse(message.Substring(18).Replace(".",
         CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator), out _baseTime);
         PerformSeekRelative();
-      }else if(message.StartsWith("ANS_stream_pos=") && !_player.Paused && _player.IsDVD)
+      }
+      else if (message.StartsWith("ANS_stream_pos=") && !_player.Paused && _player.IsDVD)
       {
         int newStreamPos;
         int.TryParse(message.Substring(15), out newStreamPos);
-        if(newStreamPos!=_lastStreamPos)
+        if (newStreamPos != _lastStreamPos)
         {
           _lastStreamPos = newStreamPos;
-          if (_isDVDMenu)
+          if (_isDvdMenu)
           {
             Log.Info("MPlayer: DVD Menu lost");
-            _isDVDMenu = false;
+            _isDvdMenu = false;
             _player.SendPausingKeepCommand("get_time_length");
             _player.SendPausingKeepCommand("get_property stream_pos");
           }
-        }else
+        }
+        else
         {
-          if (!_isDVDMenu)
+          if (!_isDvdMenu)
           {
             Log.Info("MPlayer: DVD Menu detected");
             _player.SendPausingKeepCommand("get_time_length");
             _player.SendPausingKeepCommand("get_property stream_pos");
-            _isDVDMenu = true;
+            _isDvdMenu = true;
           }
         }
       }
@@ -364,7 +367,8 @@ namespace MPlayer
       {
         Double.TryParse(message.Substring(10).Replace(".",
         CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator), out _duration);
-      } else if (message.StartsWith("ANS_LENGTH"))
+      }
+      else if (message.StartsWith("ANS_LENGTH"))
       {
         Double.TryParse(message.Substring(11).Replace(".",
         CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator), out _duration);

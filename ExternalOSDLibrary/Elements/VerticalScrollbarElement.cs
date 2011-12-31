@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -70,9 +70,9 @@ namespace ExternalOSDLibrary
       _verticalScrollBar = control as GUIVerticalScrollbar;
       if (_verticalScrollBar != null)
       {
-        _scrollBarBackground = loadBitmap(_verticalScrollBar.BackGroundTextureName);
-        _scrollBarTop = loadBitmap(_verticalScrollBar.BackTextureTopName);
-        _scrollBarBottom = loadBitmap(_verticalScrollBar.BackTextureBottomName);
+        _scrollBarBackground = LoadBitmap(_verticalScrollBar.BackGroundTextureName);
+        _scrollBarTop = LoadBitmap(_verticalScrollBar.BackTextureTopName);
+        _scrollBarBottom = LoadBitmap(_verticalScrollBar.BackTextureBottomName);
         _percentage = _verticalScrollBar.Percentage;
       }
     }
@@ -85,7 +85,7 @@ namespace ExternalOSDLibrary
     /// <param name="graph">Graphics</param>
     public override void DrawElement(Graphics graph)
     {
-      if (_verticalScrollBar.Visible || GUIInfoManager.GetBool(_verticalScrollBar.GetVisibleCondition(), _verticalScrollBar.ParentID))
+      if (_wasVisible)
       {
         if (_scrollBarBackground != null && _scrollBarTop != null && _scrollBarBottom != null)
         {
@@ -96,15 +96,15 @@ namespace ExternalOSDLibrary
           float fPercent = _percentage;
           float fPosYOff = (fPercent / 100.0f);
 
-          int _startPositionY = _verticalScrollBar.YPosition;
-          int _endPositionY = _startPositionY + iHeight;
+          int startPositionY = _verticalScrollBar.YPosition;
+          int endPositionY = startPositionY + iHeight;
 
           int iKnobHeight = _scrollBarTop.Height;
-          fPosYOff *= _endPositionY - _startPositionY - iKnobHeight;
+          fPosYOff *= endPositionY - startPositionY - iKnobHeight;
 
-          int _knobPositionY = _startPositionY + (int)fPosYOff;
+          int knobPositionY = startPositionY + (int)fPosYOff;
           int iXPos = _verticalScrollBar.XPosition + ((_verticalScrollBar.Width / 2) - (_scrollBarTop.Width));
-          int iYPos = _knobPositionY;
+          int iYPos = knobPositionY;
           graph.DrawImage(_scrollBarTop, iXPos, iYPos);
 
           iXPos += _scrollBarTop.Width;

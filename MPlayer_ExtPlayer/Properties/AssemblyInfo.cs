@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using MediaPortal.Common.Utils;
 
 // Allgemeine Informationen über eine Assembly werden über die folgenden 
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("-")]
 [assembly: AssemblyProduct("MPlayer_ExtPlayer")]
-[assembly: AssemblyCopyright("Copyright © - 2006 - 2009")]
+[assembly: AssemblyCopyright("Copyright © - 2006 - 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -33,3 +33,8 @@ using System.Runtime.InteropServices;
 // übernehmen, indem Sie "*" eingeben:
 [assembly: AssemblyVersion("1.0.1.0")]
 [assembly: AssemblyFileVersion("1.0.1.0")]
+[assembly: CompatibleVersion("1.1.6.27644")]
+[assembly: UsesSubsystem("MP.SkinEngine")]
+[assembly: UsesSubsystem("MP.Players")]
+[assembly: UsesSubsystem("MP.Config")]
+

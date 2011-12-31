@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ namespace MPlayer
     /// <summary>
     /// Handles a message that is retrieved from the MPlayer process
     /// </summary>
-    /// <param _name="message">Message to handle</param>
+    /// <param name="message">Message to handle</param>
     void HandleMessage(String message);
   }
 }

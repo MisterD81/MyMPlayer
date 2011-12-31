@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using MediaPortal.Player;
 using MediaPortal.GUI.Library;
+using Action = MediaPortal.GUI.Library.Action;
 
 namespace MPlayer
 {
@@ -120,7 +121,7 @@ namespace MPlayer
     /// <summary>
     /// Reference to the main player component
     /// </summary>
-    private readonly MPlayer_ExtPlayer _player;
+    private readonly MPlayerExtPlayer _player;
 
     /// <summary>
     /// Configuration Manager;
@@ -142,9 +143,9 @@ namespace MPlayer
     /// <summary>
     /// Constructor which initialises the audio and subtitle handler
     /// </summary>
-    /// <param _name="player">Instance of external player</param>
-    /// <param _name="osdHandler">Instance of the osdHandler</param>
-    public AudioSubtitleHandler(MPlayer_ExtPlayer player, IOSDHandler osdHandler)
+    /// <param name="player">Instance of external player</param>
+    /// <param name="osdHandler">Instance of the osdHandler</param>
+    public AudioSubtitleHandler(MPlayerExtPlayer player, IOSDHandler osdHandler)
     {
       _player = player;
       _osdHandler = osdHandler;
@@ -381,7 +382,7 @@ namespace MPlayer
     /// <summary>
     /// Gives the _name of the audio language
     /// </summary>
-    /// <param _name="iStream">Index of the audio language</param>
+    /// <param name="iStream">Index of the audio language</param>
     /// <returns>Name of the audio language</returns>
     public string AudioLanguage(int iStream)
     {
@@ -397,12 +398,14 @@ namespace MPlayer
         {
           CultureInfo info = new CultureInfo(temp);
           audioName = info.DisplayName;
-        } catch
+        }
+        catch
         {
           Log.Info("MPlayer: Error while getting CulturInfo for: " + temp);
         }
         return audioName;
-      } catch (Exception e)
+      }
+      catch (Exception e)
       {
         Log.Info("MPlayer Error: Audiolanguage not found: " + e.Message);
         return Strings.Unknown;
@@ -412,7 +415,7 @@ namespace MPlayer
     /// <summary>
     /// Gives the _name of the subtitle language
     /// </summary>
-    /// <param _name="iStream">Index of the subtitle language</param>
+    /// <param name="iStream">Index of the subtitle language</param>
     /// <returns>Name of the subtitle language</returns>
     public string SubtitleLanguage(int iStream)
     {
@@ -423,7 +426,8 @@ namespace MPlayer
           return Strings.Unknown;
         }
         return _subtitleNames[_subtitleID[iStream]];
-      } catch (Exception e)
+      }
+      catch (Exception e)
       {
         Log.Info("MPlayer Error: SubtitleLanguage not found: " + e.Message);
         return Strings.Unknown;
@@ -433,7 +437,7 @@ namespace MPlayer
     /// <summary>
     /// Handles MP internal action related for the internal osd handler
     /// </summary>
-    /// <param _name="action">Action to handle</param>
+    /// <param name="action">Action to handle</param>
     public void OnAction(Action action)
     {
       if (_player.FullScreen && !_osdHandler.OsdVisible)
@@ -473,9 +477,9 @@ namespace MPlayer
     /// <summary>
     /// Tries to get the language _name by creating a culture info
     /// </summary>
-    /// <param _name="languageName">Identification of the lanugae (2 or 3 characters)</param>
+    /// <param name="languageName">Identification of the lanugae (2 or 3 characters)</param>
     /// <returns></returns>
-    private static String getLanguageName(String languageName)
+    private static String GetLanguageName(String languageName)
     {
       String result = languageName;
       String temp = languageName.Substring(0, 2);
@@ -483,7 +487,8 @@ namespace MPlayer
       {
         CultureInfo info = new CultureInfo(temp);
         result = info.DisplayName;
-      } catch
+      }
+      catch
       {
         Log.Info("MPlayer: Error while getting CulturInfo for: " + temp);
       }
@@ -493,7 +498,7 @@ namespace MPlayer
     /// <summary>
     /// Handles the on message event. Needed for handling the volume change event
     /// </summary>
-    /// <param _name="message">Message to handle</param>
+    /// <param name="message">Message to handle</param>
     private void OnMessage(GUIMessage message)
     {
       switch (message.Message)
@@ -520,7 +525,7 @@ namespace MPlayer
     /// <summary>
     /// Handles a message that is retrieved from the MPlayer process
     /// </summary>
-    /// <param _name="message">Message to handle</param>
+    /// <param name="message">Message to handle</param>
     public void HandleMessage(string message)
     {
       if (message.StartsWith("DVDNAV, switched to title"))
@@ -531,7 +536,8 @@ namespace MPlayer
         _numberOfSubtitles = 0;
         _subtitleID.Clear();
         _subtitleNames.Clear();
-      }else if (message.StartsWith("ID_AUDIO_ID"))
+      }
+      else if (message.StartsWith("ID_AUDIO_ID"))
       {
         int temp;
         Int32.TryParse(message.Substring(12), out temp);
@@ -549,7 +555,7 @@ namespace MPlayer
         int temp;
         Int32.TryParse(help.Substring(0, index), out temp);
         index = message.IndexOf('=');
-        _audioNames[temp] = getLanguageName(message.Substring(index + 1));
+        _audioNames[temp] = GetLanguageName(message.Substring(index + 1));
       }
       else if (message.StartsWith("ID_SUBTITLE_ID"))
       {
@@ -569,7 +575,7 @@ namespace MPlayer
         int temp;
         Int32.TryParse(help.Substring(0, index), out temp);
         index = message.IndexOf('=');
-        _subtitleNames[temp] = getLanguageName(message.Substring(index + 1));
+        _subtitleNames[temp] = GetLanguageName(message.Substring(index + 1));
       }
       else if (message.StartsWith("VO: [directx] ") ||
         message.StartsWith("VO: [direct3d] ") ||

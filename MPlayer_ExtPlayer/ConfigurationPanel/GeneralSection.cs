@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -97,9 +97,9 @@ namespace MPlayer.ConfigurationPanel
     /// <summary>
     /// Handles the cache size textbox key press event
     /// </summary>
-    /// <param _name="sender">Sender object</param>
-    /// <param _name="e">Event Arguments</param>
-    private static void cacheSize_KeyPress(object sender, KeyPressEventArgs e)
+    /// <param name="sender">Sender object</param>
+    /// <param name="e">Event Arguments</param>
+    private static void CacheSizeKeyPress(object sender, KeyPressEventArgs e)
     {
       if (!Char.IsNumber(e.KeyChar) && !Char.IsControl(e.KeyChar))
       {
@@ -110,11 +110,11 @@ namespace MPlayer.ConfigurationPanel
     /// <summary>
     /// Handles the Browse-Button click event
     /// </summary>
-    /// <param _name="sender">Sender object</param>
-    /// <param _name="e">Event Arguments</param>
-    private void folderSearch_Click(object sender, EventArgs e)
+    /// <param name="sender">Sender object</param>
+    /// <param name="e">Event Arguments</param>
+    private void FolderSearchClick(object sender, EventArgs e)
     {
-      openFileDialog1.Filter = "MPlayer commandline version (mplayer.exe)|mplayer.exe|MPlayer GUI version (gmplayer.exe)|gmplayer.exe";
+      openFileDialog1.Filter = @"MPlayer commandline version (mplayer.exe)|mplayer.exe|MPlayer GUI version (gmplayer.exe)|gmplayer.exe";
       openFileDialog1.InitialDirectory = System.IO.Path.GetDirectoryName(mplayerPath.Text);
       openFileDialog1.FileName = System.IO.Path.GetFileName(mplayerPath.Text);
       openFileDialog1.FilterIndex = openFileDialog1.FileName.Equals("mplayer.exe") ? 1 : 2;

@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -29,11 +29,9 @@ using System.Drawing.Text;
 using System.Windows.Forms;
 using MediaPortal.GUI.Library;
 using MediaPortal.Player;
-using MediaPortal.Configuration;
 
 namespace ExternalOSDLibrary
 {
-
   /// <summary>
   /// Controller for the ExternalOSDLibrary. This is the main entry point for usage in an external player
   /// </summary>
@@ -43,7 +41,7 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// Singleton instance
     /// </summary>
-    private static OSDController singleton;
+    private static OSDController _singleton;
 
     /// <summary>
     /// Fullscreen window
@@ -64,11 +62,6 @@ namespace ExternalOSDLibrary
     /// Form of the osd
     /// </summary>
     private readonly OSDForm _osdForm;
-
-    /// <summary>
-    /// Second form of the osd
-    /// </summary>
-    private readonly OSDForm _osdForm2;
 
     /// <summary>
     /// Indicates, if additional osd information is displayed
@@ -111,16 +104,6 @@ namespace ExternalOSDLibrary
     private bool _needUpdate;
 
     /// <summary>
-    /// Event handler for the size changed event
-    /// </summary>
-    private readonly EventHandler _sizeChanged;
-
-    /// <summary>
-    /// MP parent form
-    /// </summary>
-    private readonly Form _parentForm;
-
-    /// <summary>
     /// Indicates if MP is minimized
     /// </summary>
     private bool _minimized;
@@ -139,6 +122,8 @@ namespace ExternalOSDLibrary
     /// Rectangle of the video window
     /// </summary>
     private Rectangle _videoRectangle;
+
+    private bool _isActive;
     #endregion
 
     #region ctor
@@ -146,13 +131,9 @@ namespace ExternalOSDLibrary
     /// Returns the singleton instance
     /// </summary>
     /// <returns>Singleton instance</returns>
-    public static OSDController getInstance()
+    public static OSDController Instance
     {
-      if (singleton == null)
-      {
-        singleton = new OSDController();
-      }
-      return singleton;
+      get { return _singleton ?? (_singleton = new OSDController()); }
     }
 
     /// <summary>
@@ -164,40 +145,39 @@ namespace ExternalOSDLibrary
       _videoOSDWindow = new VideoOSDWindow();
       _dialogWindow = new DialogWindow();
       _osdForm = new OSDForm();
-      _osdForm2 = new OSDForm();
-      _parentForm = GUIGraphicsContext.form;
-      _sizeChanged = parent_SizeChanged;
-      _parentForm.SizeChanged += _sizeChanged;
-      _minimized = false;
-      using (MediaPortal.Profile.Settings xmlreader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml")))
+      GUIGraphicsContext.form.SizeChanged += ParentSizeChanged;
+      using (MediaPortal.Profile.Settings settings = new MediaPortal.Profile.MPSettings())
       {
-        _blankScreen = xmlreader.GetValueAsBool("externalOSDLibrary", "blankScreen", true);
+        _blankScreen = settings.GetValueAsBool("externalOSDLibrary", "blankScreen", false);
       }
     }
     #endregion
 
     #region public methods
-    /// <summary>
-    /// Activates the osd. This methods must be called first, otherwise nothing will displayed
-    /// </summary>
-    public void Activate()
-    {
-      _fullscreen = g_Player.Player != null && g_Player.FullScreen;
-      if (GUIGraphicsContext.VideoWindow != null)
-      {
-        _videoRectangle = GUIGraphicsContext.VideoWindow;
-      }
-      _osdForm.ShowForm();
-      _osdForm2.ShowForm();
-      _needUpdate = true;
-      UpdateGUI();
-    }
+
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    public static extern IntPtr GetForegroundWindow();
 
     /// <summary>
     /// Performs an update on the osd, should be called from the process method of the player
     /// </summary>
     public void UpdateGUI()
     {
+      if (_isActive)
+      {
+        if (!GUIGraphicsContext.IsFullScreenVideo || GetForegroundWindow() != Application.OpenForms[0].Handle)
+        {
+          Deactivate();
+        }
+      }
+      else
+      {
+        if (GUIGraphicsContext.IsFullScreenVideo && !g_Player.Stopped && GetForegroundWindow() == Application.OpenForms[0].Handle)
+        {
+          Activate();
+        }
+      }
+
       bool a1 = _needUpdate;
       bool a2 = _videoOSDWindow.CheckForUpdate();
       bool a3 = _dialogWindow.CheckForUpdate();
@@ -231,20 +211,16 @@ namespace ExternalOSDLibrary
         _videoRectangle = GUIGraphicsContext.VideoWindow;
         update = true;
       }
-      if (update)
+      if (update && _osdForm.Width > 0 && _osdForm.Height > 0)
       {
         Bitmap image = new Bitmap(_osdForm.Width, _osdForm.Height);
         Graphics graph = Graphics.FromImage(image);
         if (_blankScreen && GUIGraphicsContext.Fullscreen)
         {
-          if (_fullscreen)
-          {
-            graph.FillRectangle(new SolidBrush(Color.FromArgb(0, 0, 0)), new Rectangle(0, 0, _osdForm.Size.Width, _osdForm.Size.Height));
-          }
-          else
-          {
-            graph.FillRectangle(new SolidBrush(Color.FromArgb(0, 0, 0)), _videoRectangle);
-          }
+          graph.FillRectangle(new SolidBrush(Color.FromArgb(0, 0, 0)),
+                              _fullscreen
+                                ? new Rectangle(0, 0, _osdForm.Size.Width, _osdForm.Size.Height)
+                                : _videoRectangle);
         }
         graph.TextRenderingHint = TextRenderingHint.AntiAlias;
         graph.SmoothingMode = SmoothingMode.AntiAlias;
@@ -260,32 +236,13 @@ namespace ExternalOSDLibrary
         {
           _fullscreenWindow.DrawCacheStatus(graph, _cacheFill);
         }
-        _fullscreenWindow.DrawWindow(graph);
         _videoOSDWindow.DrawWindow(graph);
+        _fullscreenWindow.DrawWindow(graph);
         _dialogWindow.DrawWindow(graph);
+        graph.Dispose();
+        GC.Collect();
         _osdForm.Image = image;
-        _osdForm.Refresh();
-        _osdForm2.Image = image;
-        _osdForm2.Refresh();
       }
-    }
-
-    /// <summary>
-    /// Deactivates the osd. Nothing will be displayed until it will be reactivated.
-    /// </summary>
-    public void Deactivate()
-    {
-      _osdForm.Hide();
-      _osdForm2.Hide();
-    }
-
-    /// <summary>
-    /// Indicates if the video osd is visible
-    /// </summary>
-    /// <returns></returns>
-    public bool IsOSDVisible()
-    {
-      return _videoOSDWindow.CheckVisibility();
     }
 
     /// <summary>
@@ -345,24 +302,59 @@ namespace ExternalOSDLibrary
       _showInit = false;
       _needUpdate = true;
     }
+
+    /// <summary>
+    /// Indicates if the video osd is visible
+    /// </summary>
+    /// <returns></returns>
+    public bool IsOSDVisible()
+    {
+      return _videoOSDWindow.CheckVisibility();
+    }
+
     #endregion
 
     #region private methods
+
+    /// <summary>
+    /// Activates the osd. This methods must be called first, otherwise nothing will displayed
+    /// </summary>
+    private void Activate()
+    {
+      _fullscreen = g_Player.Player != null && g_Player.FullScreen;
+      if (GUIGraphicsContext.VideoWindow != null)
+      {
+        _videoRectangle = GUIGraphicsContext.VideoWindow;
+      }
+      _osdForm.ShowForm();
+      _needUpdate = true;
+      _isActive = true;
+    }
+
+    /// <summary>
+    /// Deactivates the osd. Nothing will be displayed until it will be reactivated.
+    /// </summary>
+    private void Deactivate()
+    {
+      _osdForm.Hide();
+      _isActive = false;
+    }
+
     /// <summary>
     /// Event handler to adjust this form to the new location/size of the parent
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="args"></param>
-    private void parent_SizeChanged(Object sender, EventArgs args)
+    private void ParentSizeChanged(Object sender, EventArgs args)
     {
-      if (_parentForm.WindowState == FormWindowState.Minimized)
+      if (GUIGraphicsContext.form.WindowState == FormWindowState.Minimized)
       {
         _minimized = true;
         return;
       }
       if (!_minimized)
       {
-        singleton.Dispose();
+        _singleton.Dispose();
       }
       _minimized = false;
     }
@@ -378,10 +370,9 @@ namespace ExternalOSDLibrary
       _dialogWindow.Dispose();
       _videoOSDWindow.Dispose();
       _osdForm.Dispose();
-      _osdForm2.Dispose();
-      _parentForm.SizeChanged -= _sizeChanged;
+      GUIGraphicsContext.form.SizeChanged -= ParentSizeChanged;
       ImageCache.Dispose();
-      singleton = null;
+      _singleton = null;
     }
     #endregion
   }

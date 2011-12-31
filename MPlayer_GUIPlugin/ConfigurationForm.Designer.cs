@@ -1,7 +1,7 @@
-﻿#region Copyright (C) 2006-2009 MisterD
+﻿#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ namespace MPlayer
     /// <summary>
     /// Verwendete Ressourcen bereinigen.
     /// </summary>
-    /// <param _name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
+    /// <param name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
     protected override void Dispose(bool disposing)
     {
       if (disposing && (components != null))
@@ -66,7 +66,7 @@ namespace MPlayer
       this.okButton.TabIndex = 3;
       this.okButton.Text = "&OK";
       this.okButton.UseVisualStyleBackColor = true;
-      this.okButton.Click += new System.EventHandler(this.okButton_Click);
+      this.okButton.Click += new System.EventHandler(this.OkButtonClick);
       // 
       // cancelButton
       // 
@@ -79,7 +79,7 @@ namespace MPlayer
       this.cancelButton.TabIndex = 20;
       this.cancelButton.Text = "&Cancel";
       this.cancelButton.UseVisualStyleBackColor = true;
-      this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+      this.cancelButton.Click += new System.EventHandler(this.CancelButtonClick);
       // 
       // guiConfiguration1
       // 
@@ -104,7 +104,7 @@ namespace MPlayer
       this.Name = "ConfigurationForm";
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
       this.Text = "MPlayer Configuration";
-      this.Load += new System.EventHandler(this.ConfigurationForm_Load);
+      this.Load += new System.EventHandler(this.ConfigurationFormLoad);
       this.ResumeLayout(false);
       this.PerformLayout();
 

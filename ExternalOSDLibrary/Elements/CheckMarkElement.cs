@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -96,9 +96,9 @@ namespace ExternalOSDLibrary
       _checkMark = control as GUICheckMarkControl;
       if (_checkMark != null)
       {
-        _checkFocusBitmap = loadBitmap(_checkMark.CheckMarkTextureName);
-        _checkNoFocusBitmap = loadBitmap(_checkMark.CheckMarkTextureNameNF);
-        _font = getFont(_checkMark.FontName);
+        _checkFocusBitmap = LoadBitmap(_checkMark.CheckMarkTextureName);
+        _checkNoFocusBitmap = LoadBitmap(_checkMark.CheckMarkTextureNameNF);
+        _font = GetFont(_checkMark.FontName);
         _disabledColor = GetColor(_checkMark.DisabledColor);
         _textColor = GetColor(_checkMark.TextColor);
         _focus = _checkMark.Focus;
@@ -116,20 +116,15 @@ namespace ExternalOSDLibrary
     /// <param name="graph">Graphics</param>
     public override void DrawElement(Graphics graph)
     {
-      if (_checkMark.Visible || GUIInfoManager.GetBool(_checkMark.GetVisibleCondition(), _checkMark.ParentID))
+      if (_wasVisible)
       {
         int dwTextPosX = _checkMark.XPosition;
         int dwCheckMarkPosX = _checkMark.XPosition;
-        Rectangle _rectangle = new Rectangle();
-        _rectangle.X = _checkMark.YPosition;
-        _rectangle.Y = _checkMark.YPosition;
-        _rectangle.Height = _checkFocusBitmap.Height;
         if (null != _font)
         {
-          SizeF sizeF;
           if (_checkMark.TextAlignment == GUIControl.Alignment.ALIGN_LEFT)
           {
-            sizeF = graph.MeasureString(GUIPropertyManager.Parse(_label), _font);
+            SizeF sizeF = graph.MeasureString(GUIPropertyManager.Parse(_label), _font);
             dwCheckMarkPosX += ((int)(sizeF.Width) + 5);
           }
           else
@@ -159,14 +154,7 @@ namespace ExternalOSDLibrary
             }
           }
         }
-        if (_selected)
-        {
-          graph.DrawImage(_checkFocusBitmap, dwCheckMarkPosX, _checkMark.YPosition);
-        }
-        else
-        {
-          graph.DrawImage(_checkNoFocusBitmap, dwCheckMarkPosX, _checkMark.YPosition);
-        }
+        graph.DrawImage(_selected ? _checkFocusBitmap : _checkNoFocusBitmap, dwCheckMarkPosX, _checkMark.YPosition);
       }
     }
 

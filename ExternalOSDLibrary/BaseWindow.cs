@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -26,7 +26,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using MediaPortal.GUI.Library;
-using System.Windows;
 
 namespace ExternalOSDLibrary
 {
@@ -59,7 +58,12 @@ namespace ExternalOSDLibrary
     /// <summary>
     /// List of all elements of the window
     /// </summary>
-    protected UIElementCollection _controlList;
+    protected GUIControlCollection _controlList;
+
+    /// <summary>
+    /// Base window instance
+    /// </summary>
+    protected GUIWindow _baseWindow;
     #endregion
 
     #region protected methods
@@ -70,20 +74,18 @@ namespace ExternalOSDLibrary
     {
       _imageElementList = new List<BaseElement>();
       _elementList = new List<BaseElement>();
-      GUIControl controlElement;
-      GUIGroup groupElement;
-      foreach (UIElement uiElement in _controlList)
+      foreach (var uiElement in _controlList)
       {
-        controlElement = uiElement as GUIControl;
+        GUIControl controlElement = uiElement;
         if (controlElement != null)
         {
           if (controlElement.GetType() == typeof(GUIGroup))
           {
-            groupElement = controlElement as GUIGroup;
+            GUIGroup groupElement = controlElement as GUIGroup;
             if (groupElement != null)
-              foreach (UIElement uiElement2 in groupElement.Children)
+              foreach (var uiElement2 in groupElement.Children)
               {
-                GUIControl groupControlElement = uiElement2 as GUIControl;
+                GUIControl groupControlElement = uiElement2;
                 if (groupControlElement != null)
                 {
                   AnalyzeElement(groupControlElement);
@@ -129,13 +131,14 @@ namespace ExternalOSDLibrary
     /// - GUIButtonControl
     /// - GUIFadeLabel
     /// - GUIProgressControl
+    /// - GUITVProgressControl
     /// - GUIVolumeBar
     /// - GUILabelControl
     /// - GUIImage
     /// - GUIGroup are handled directly
     /// </summary>
     /// <param name="control">Control</param>
-    /// <returns>Elmenet based on the GUIControl</returns>
+    /// <returns>Element based on the GUIControl</returns>
     public static BaseElement GenerateElement(GUIControl control)
     {
       if (control.GetType() == typeof(GUIImage))
@@ -153,6 +156,10 @@ namespace ExternalOSDLibrary
       if (control.GetType() == typeof(GUIProgressControl))
       {
         return new ProgressControlElement(control);
+      }
+      if (control.GetType() == typeof(GUITVProgressControl))
+      {
+        return new TVProgressControlElement(control);
       }
       if (control.GetType() == typeof(GUIFadeLabel))
       {
@@ -185,6 +192,40 @@ namespace ExternalOSDLibrary
       Log.Debug("VIDEOPLAYER_OSD FOUND UNEXPECTED TYPE: " + control.GetType());
       return null;
     }
+
+    protected bool CheckForElementUpdate()
+    {
+      bool result = false;
+      if (_baseWindow != null)
+      {
+        bool update = false;
+        foreach (var baseElement in _baseWindow.controlList)
+        {
+          if (!_controlList.Contains(baseElement))
+          {
+            _controlList.Add(baseElement);
+            update = true;
+          }
+        }
+        for (int i = 0; i < _controlList.Count; i++)
+        {
+          var baseElement = _controlList[i];
+          if (!_baseWindow.controlList.Contains(baseElement))
+          {
+            _controlList.Remove(baseElement);
+            update = true;
+          }
+        }
+
+        if (update)
+        {
+          GenerateElements();
+          result = true;
+        }
+      }
+      return result;
+
+    }
     #endregion
 
     #region public methods
@@ -207,7 +248,8 @@ namespace ExternalOSDLibrary
             element.DrawElement(graph);
           }
         }
-      } catch (Exception ex)
+      }
+      catch (Exception ex)
       {
         Log.Error(ex);
       }
@@ -224,17 +266,14 @@ namespace ExternalOSDLibrary
       {
         _visible = result;
         _visibleChanged = true;
-        if(_visibleChanged)
+        if (_visible)
         {
-          if (_visible)
-          {
-            BaseInit();
-            GenerateElements();
-          }
-          else
-          {
-            Dispose();
-          }
+          BaseInit();
+          GenerateElements();
+        }
+        else
+        {
+          Dispose();
         }
       }
       return result;
@@ -247,7 +286,8 @@ namespace ExternalOSDLibrary
     public bool CheckForUpdate()
     {
       CheckVisibility();
-      bool result = false;
+      
+      bool result = CheckForElementUpdate();
       if (_visibleChanged)
       {
         _visibleChanged = false;
@@ -264,7 +304,7 @@ namespace ExternalOSDLibrary
           result = result | element.CheckForUpdate();
         }
       }
-      return true;
+      return result;
     }
     #endregion
 

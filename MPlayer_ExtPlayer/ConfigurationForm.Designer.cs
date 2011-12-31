@@ -1,7 +1,7 @@
-﻿#region Copyright (C) 2006-2009 MisterD
+﻿#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,16 +22,20 @@
 
 #endregion
 
-namespace MPlayer {
-  partial class ConfigurationForm {
+namespace MPlayer
+{
+  partial class ConfigurationForm
+  {
 
     #region Dispose
     /// <summary>
     /// Verwendete Ressourcen bereinigen.
     /// </summary>
-    /// <param _name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
-    protected override void Dispose(bool disposing) {
-      if (disposing && (components != null)) {
+    /// <param name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
+    protected override void Dispose(bool disposing)
+    {
+      if (disposing && (components != null))
+      {
         components.Dispose();
       }
       base.Dispose(disposing);
@@ -44,7 +48,8 @@ namespace MPlayer {
     /// Erforderliche Methode für die Designerunterstützung.
     /// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
     /// </summary>
-    private void InitializeComponent() {
+    private void InitializeComponent()
+    {
       this.components = new System.ComponentModel.Container();
       System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigurationForm));
       this.okButton = new System.Windows.Forms.Button();

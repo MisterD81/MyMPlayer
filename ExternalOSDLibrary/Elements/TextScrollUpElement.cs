@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -66,7 +66,7 @@ namespace ExternalOSDLibrary
       _textScrollUp = control as GUITextScrollUpControl;
       if (_textScrollUp != null)
       {
-        _font = getFont(_textScrollUp.FontName);
+        _font = GetFont(_textScrollUp.FontName);
         _brush = new SolidBrush(GetColor(_textScrollUp.TextColor));
         _label = _textScrollUp.Property;
       }
@@ -80,7 +80,7 @@ namespace ExternalOSDLibrary
     /// <param name="graph">Graphics</param>
     public override void DrawElement(Graphics graph)
     {
-      if (_textScrollUp.Visible || GUIInfoManager.GetBool(_textScrollUp.GetVisibleCondition(), _textScrollUp.ParentID))
+      if (_wasVisible)
       {
         SizeF textSize = graph.MeasureString(_label, _font);
         RectangleF rectangle;

@@ -1,7 +1,7 @@
-﻿#region Copyright (C) 2006-2009 MisterD
+﻿#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ namespace MPlayer.ConfigurationPanel
     /// <summary> 
     /// Verwendete Ressourcen bereinigen.
     /// </summary>
-    /// <param _name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
+    /// <param name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
     protected override void Dispose(bool disposing)
     {
       if (disposing && (components != null))
@@ -123,7 +123,7 @@ namespace MPlayer.ConfigurationPanel
       this.cacheSize.TabIndex = 73;
       this.toolTip.SetToolTip(this.cacheSize, "The size of cache that MPlayer will be used in KB (Kilobytes).\r\nFor streaming a v" +
               "alue of at least 4096 is recommend.\r\n");
-      this.cacheSize.KeyPress += new System.Windows.Forms.KeyPressEventHandler(cacheSize_KeyPress);
+      this.cacheSize.KeyPress += new System.Windows.Forms.KeyPressEventHandler(CacheSizeKeyPress);
       // 
       // folderSearch
       // 
@@ -136,7 +136,7 @@ namespace MPlayer.ConfigurationPanel
       this.folderSearch.Text = "&Browse ...";
       this.toolTip.SetToolTip(this.folderSearch, "Search for the executable of MPlayer\r\n");
       this.folderSearch.UseVisualStyleBackColor = true;
-      this.folderSearch.Click += new System.EventHandler(this.folderSearch_Click);
+      this.folderSearch.Click += new System.EventHandler(this.FolderSearchClick);
       // 
       // label8
       // 

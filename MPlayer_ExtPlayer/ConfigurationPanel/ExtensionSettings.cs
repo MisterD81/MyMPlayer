@@ -15,12 +15,12 @@ namespace MPlayer.ConfigurationPanel
     /// <summary>
     /// Last video extension setting
     /// </summary>
-    private ExtensionSettings lastVideoSettings;
+    private ExtensionSettings _lastVideoSettings;
 
     /// <summary>
     /// Last audio extension setting
     /// </summary>
-    private ExtensionSettings lastAudioSettings;
+    private ExtensionSettings _lastAudioSettings;
     #endregion
 
     #region ctor
@@ -40,7 +40,6 @@ namespace MPlayer.ConfigurationPanel
     public void LoadConfiguration()
     {
       ListBox workingList = null;
-      ExtensionSettings settings;
       PlayMode mode = PlayMode.Unrecognized;
       XmlDocument doc = new XmlDocument();
       string path = Config.GetFile(Config.Dir.Config, "MPlayer_ExtPlayer.xml");
@@ -66,15 +65,18 @@ namespace MPlayer.ConfigurationPanel
             if (listExtensions != null)
               foreach (XmlNode nodeExtension in listExtensions)
               {
-                settings = new ExtensionSettings();
-                settings.Name = nodeExtension.Attributes["name"].Value;
-                settings.Arguments = nodeExtension.Attributes["arguments"].Value;
-                settings.ExtPlayerUse = Boolean.Parse(nodeExtension.Attributes["extPlayerUse"].Value);
-                settings.PlayMode = mode;
+                ExtensionSettings settings = new ExtensionSettings
+                                               {
+                                                 Name = nodeExtension.Attributes["name"].Value,
+                                                 Arguments = nodeExtension.Attributes["arguments"].Value,
+                                                 ExtPlayerUse =
+                                                   Boolean.Parse(nodeExtension.Attributes["extPlayerUse"].Value),
+                                                 PlayMode = mode
+                                               };
                 if (workingList != null && !workingList.Items.Contains(settings.Name))
-                  {
-                    workingList.Items.Add(settings);
-                  }
+                {
+                  workingList.Items.Add(settings);
+                }
               }
           }
       }
@@ -87,10 +89,8 @@ namespace MPlayer.ConfigurationPanel
     {
       videoExtList.SelectedIndex = -1;
       audioExtList.SelectedIndex = -1;
-      XmlTextWriter writer = new XmlTextWriter(Config.GetFile(Config.Dir.Config, "MPlayer_ExtPlayer.xml"), System.Text.Encoding.UTF8);
-      writer.Formatting = Formatting.Indented;
-      writer.Indentation = 1;
-      writer.IndentChar = (char)9;
+      XmlTextWriter writer = new XmlTextWriter(Config.GetFile(Config.Dir.Config, "MPlayer_ExtPlayer.xml"),
+                                               System.Text.Encoding.UTF8) { Formatting = Formatting.Indented, Indentation = 1, IndentChar = (char)9 };
       writer.WriteStartDocument(true);
       writer.WriteStartElement("mplayer"); //<mplayer>
       writer.WriteAttributeString("version", "1");
@@ -135,24 +135,24 @@ namespace MPlayer.ConfigurationPanel
     /// <summary>
     /// Handles the Selected index change on the video Extension List
     /// </summary>
-    /// <param _name="sender">Sender object</param>
-    /// <param _name="e">Event Arguments</param>
-    private void videoExtList_SelectedIndexChanged(object sender, EventArgs e)
+    /// <param name="sender">Sender object</param>
+    /// <param name="e">Event Arguments</param>
+    private void VideoExtListSelectedIndexChanged(object sender, EventArgs e)
     {
-      if (lastVideoSettings != null)
+      if (_lastVideoSettings != null)
       {
-        lastVideoSettings.Arguments = videoArgument.Text;
-        lastVideoSettings.ExtPlayerUse = videoPlayerUse.Checked;
+        _lastVideoSettings.Arguments = videoArgument.Text;
+        _lastVideoSettings.ExtPlayerUse = videoPlayerUse.Checked;
       }
 
       if (videoExtList.SelectedIndex > -1)
       {
-        lastVideoSettings = videoExtList.SelectedItem as ExtensionSettings;
-        if (lastVideoSettings != null)
+        _lastVideoSettings = videoExtList.SelectedItem as ExtensionSettings;
+        if (_lastVideoSettings != null)
         {
-          videoExtension.Text = lastVideoSettings.Name;
-          videoArgument.Text = lastVideoSettings.Arguments;
-          videoPlayerUse.Checked = lastVideoSettings.ExtPlayerUse;
+          videoExtension.Text = _lastVideoSettings.Name;
+          videoArgument.Text = _lastVideoSettings.Arguments;
+          videoPlayerUse.Checked = _lastVideoSettings.ExtPlayerUse;
         }
         videoExtension.Enabled = true;
         videoArgument.Enabled = true;
@@ -163,7 +163,7 @@ namespace MPlayer.ConfigurationPanel
         videoExtension.Text = String.Empty;
         videoArgument.Text = String.Empty;
         videoPlayerUse.Checked = false;
-        lastVideoSettings = null;
+        _lastVideoSettings = null;
         videoExtension.Enabled = false;
         videoArgument.Enabled = false;
         videoPlayerUse.Enabled = false;
@@ -174,9 +174,9 @@ namespace MPlayer.ConfigurationPanel
     /// <summary>
     /// Handles the Add-Button click event on the video_audio tab
     /// </summary>
-    /// <param _name="sender">Sender object</param>
-    /// <param _name="e">Event Arguments</param>
-    private void videoAdd_Click(object sender, EventArgs e)
+    /// <param name="sender">Sender object</param>
+    /// <param name="e">Event Arguments</param>
+    private void VideoAddClick(object sender, EventArgs e)
     {
       ExtensionSettings temp = new ExtensionSettings(".newExt", PlayMode.Video, "", false);
       videoExtList.Items.Add(temp);
@@ -186,9 +186,9 @@ namespace MPlayer.ConfigurationPanel
     /// <summary>
     /// Handles the Delete-Button click event on the video_audio tab
     /// </summary>
-    /// <param _name="sender">Sender object</param>
-    /// <param _name="e">Event Arguments</param>
-    private void videoDelete_Click(object sender, EventArgs e)
+    /// <param name="sender">Sender object</param>
+    /// <param name="e">Event Arguments</param>
+    private void VideoDeleteClick(object sender, EventArgs e)
     {
       if (videoExtList.SelectedIndex > -1)
       {
@@ -207,45 +207,45 @@ namespace MPlayer.ConfigurationPanel
     /// <summary>
     /// Handles the Leave event on the extension Textfield on the video_audio tab
     /// </summary>
-    /// <param _name="sender">Sender object</param>
-    /// <param _name="e">Event Arguments</param>
-    private void videoExtension_Leave(object sender, EventArgs e)
+    /// <param name="sender">Sender object</param>
+    /// <param name="e">Event Arguments</param>
+    private void VideoExtensionLeave(object sender, EventArgs e)
     {
-      if (lastVideoSettings != null && (!videoExtension.Text.Equals(lastVideoSettings.Name))
+      if (_lastVideoSettings != null && (!videoExtension.Text.Equals(_lastVideoSettings.Name))
           && videoExtList.Items.Contains(videoExtension.Text))
       {
-        MessageBox.Show(this, "Video Extension: " + videoExtension.Text + " already in the list", "MPlayer configuration", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        MessageBox.Show(this, @"Video Extension: " + videoExtension.Text + @" already in the list", @"MPlayer configuration", MessageBoxButtons.OK, MessageBoxIcon.Error);
         videoExtension.Focus();
         return;
       }
-      if (lastVideoSettings != null)
+      if (_lastVideoSettings != null)
       {
-        lastVideoSettings.Name = videoExtension.Text;
-        videoExtList.Items[videoExtList.SelectedIndex] = lastVideoSettings;
+        _lastVideoSettings.Name = videoExtension.Text;
+        videoExtList.Items[videoExtList.SelectedIndex] = _lastVideoSettings;
       }
     }
 
     /// <summary>
     /// Handles the Selected index change on the audio Extension List
     /// </summary>
-    /// <param _name="sender">Sender object</param>
-    /// <param _name="e">Event Arguments</param>
-    private void audioExtList_SelectedIndexChanged(object sender, EventArgs e)
+    /// <param name="sender">Sender object</param>
+    /// <param name="e">Event Arguments</param>
+    private void AudioExtListSelectedIndexChanged(object sender, EventArgs e)
     {
-      if (lastAudioSettings != null)
+      if (_lastAudioSettings != null)
       {
-        lastAudioSettings.Arguments = audioArgument.Text;
-        lastAudioSettings.ExtPlayerUse = audioPlayerUse.Checked;
+        _lastAudioSettings.Arguments = audioArgument.Text;
+        _lastAudioSettings.ExtPlayerUse = audioPlayerUse.Checked;
       }
 
       if (audioExtList.SelectedIndex > -1)
       {
-        lastAudioSettings = audioExtList.SelectedItem as ExtensionSettings;
-        if (lastAudioSettings != null)
+        _lastAudioSettings = audioExtList.SelectedItem as ExtensionSettings;
+        if (_lastAudioSettings != null)
         {
-          audioExtension.Text = lastAudioSettings.Name;
-          audioArgument.Text = lastAudioSettings.Arguments;
-          audioPlayerUse.Checked = lastAudioSettings.ExtPlayerUse;
+          audioExtension.Text = _lastAudioSettings.Name;
+          audioArgument.Text = _lastAudioSettings.Arguments;
+          audioPlayerUse.Checked = _lastAudioSettings.ExtPlayerUse;
         }
         audioExtension.Enabled = true;
         audioArgument.Enabled = true;
@@ -256,7 +256,7 @@ namespace MPlayer.ConfigurationPanel
         audioExtension.Text = String.Empty;
         audioArgument.Text = String.Empty;
         audioPlayerUse.Checked = false;
-        lastAudioSettings = null;
+        _lastAudioSettings = null;
         audioExtension.Enabled = false;
         audioArgument.Enabled = false;
         audioPlayerUse.Enabled = false;
@@ -267,9 +267,9 @@ namespace MPlayer.ConfigurationPanel
     /// <summary>
     /// Handles the Add-Button click event on the video_audio tab
     /// </summary>
-    /// <param _name="sender">Sender object</param>
-    /// <param _name="e">Event Arguments</param>
-    private void audioAdd_Click(object sender, EventArgs e)
+    /// <param name="sender">Sender object</param>
+    /// <param name="e">Event Arguments</param>
+    private void AudioAddClick(object sender, EventArgs e)
     {
       ExtensionSettings temp = new ExtensionSettings(".newExt", PlayMode.Audio, "", false);
       audioExtList.Items.Add(temp);
@@ -279,9 +279,9 @@ namespace MPlayer.ConfigurationPanel
     /// <summary>
     /// Handles the Delete-Button click event on the video_audio tab
     /// </summary>
-    /// <param _name="sender">Sender object</param>
-    /// <param _name="e">Event Arguments</param>
-    private void audioDelete_Click(object sender, EventArgs e)
+    /// <param name="sender">Sender object</param>
+    /// <param name="e">Event Arguments</param>
+    private void AudioDeleteClick(object sender, EventArgs e)
     {
       if (audioExtList.SelectedIndex > -1)
       {
@@ -305,21 +305,21 @@ namespace MPlayer.ConfigurationPanel
     /// <summary>
     /// Handles the Leave event on the extension textfield on the video_audio tab
     /// </summary>
-    /// <param _name="sender">Sender object</param>
-    /// <param _name="e">Event Arguments</param>
-    private void audioExtension_Leave(object sender, EventArgs e)
+    /// <param name="sender">Sender object</param>
+    /// <param name="e">Event Arguments</param>
+    private void AudioExtensionLeave(object sender, EventArgs e)
     {
-      if (lastAudioSettings != null && (!audioExtension.Text.Equals(lastAudioSettings.Name))
+      if (_lastAudioSettings != null && (!audioExtension.Text.Equals(_lastAudioSettings.Name))
           && audioExtList.Items.Contains(audioExtension.Text))
       {
-        MessageBox.Show(this, "Audio Extension: " + audioExtension.Text + " already in the list", "MPlayer configuration", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        MessageBox.Show(this, @"Audio Extension: " + audioExtension.Text + @" already in the list", @"MPlayer configuration", MessageBoxButtons.OK, MessageBoxIcon.Error);
         audioExtension.Focus();
         return;
       }
-      if (lastAudioSettings != null)
+      if (_lastAudioSettings != null)
       {
-        lastAudioSettings.Name = audioExtension.Text;
-        audioExtList.Items[audioExtList.SelectedIndex] = lastAudioSettings;
+        _lastAudioSettings.Name = audioExtension.Text;
+        audioExtList.Items[audioExtList.SelectedIndex] = _lastAudioSettings;
       }
 
     }

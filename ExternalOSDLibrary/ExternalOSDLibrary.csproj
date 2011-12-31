@@ -29,6 +29,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -68,32 +69,37 @@
   <ItemGroup>
     <Reference Include="Core, Version=0.2.2.9991, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\MediaPortal\trunk\MediaPortal\xbmc\bin\Release\Core.dll</HintPath>
+      <HintPath>..\..\MediaPortal-1\mediaportal\Core\bin\Release\Core.dll</HintPath>
     </Reference>
     <Reference Include="Dialogs, Version=0.2.2.9991, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\MediaPortal\trunk\MediaPortal\Dialogs\bin\Release\Dialogs.dll</HintPath>
+      <HintPath>..\..\MediaPortal-1\mediaportal\Dialogs\bin\Release\Dialogs.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Utils, Version=2.2.2.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\MediaPortal\trunk\MediaPortal\xbmc\bin\Release\Utils.dll</HintPath>
+      <HintPath>..\..\MediaPortal-1\mediaportal\Utils\bin\Release\Utils.dll</HintPath>
     </Reference>
     <Reference Include="WindowPlugins, Version=0.2.2.9991, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\MediaPortal\trunk\MediaPortal\WindowPlugins\bin\Release\WindowPlugins.dll</HintPath>
+      <HintPath>..\..\MediaPortal-1\mediaportal\WindowPlugins\bin\Release\WindowPlugins.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseWindow.cs" />
     <Compile Include="Elements\ImageCache.cs" />
+    <Compile Include="Elements\TVProgressControlElement.cs" />
     <Compile Include="Elements\VerticalScrollbarElement.cs" />
     <Compile Include="Elements\TextScrollUpElement.cs" />
     <Compile Include="Elements\ListElement.cs" />
+    <Compile Include="FloatingWindow.cs" />
     <Compile Include="FullscreenWindow.cs">
     </Compile>
     <Compile Include="Elements\BaseElement.cs" />
@@ -105,7 +111,6 @@
     <Compile Include="Elements\LabelElement.cs" />
     <Compile Include="DialogWindow.cs" />
     <Compile Include="OSDForm.cs">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="OSDController.cs" />
     <Compile Include="OSDWindow.cs">

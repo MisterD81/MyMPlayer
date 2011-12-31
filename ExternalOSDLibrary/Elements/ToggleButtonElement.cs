@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -101,11 +101,11 @@ namespace ExternalOSDLibrary
       _button = control as GUIToggleButtonControl;
       if (_button != null)
       {
-        _font = getFont(_button.FontName);
-        _focusBitmap = loadBitmap(_button.TexutureFocusName);
-        _noFocusBitmap = loadBitmap(_button.TexutureNoFocusName);
-        _altFocusBitmap = loadBitmap(_button.AltTexutureFocusName);
-        _altNoFocusBitmap = loadBitmap(_button.AltTexutureNoFocusName);
+        _font = GetFont(_button.FontName);
+        _focusBitmap = LoadBitmap(_button.TexutureFocusName);
+        _noFocusBitmap = LoadBitmap(_button.TexutureNoFocusName);
+        _altFocusBitmap = LoadBitmap(_button.AltTexutureFocusName);
+        _altNoFocusBitmap = LoadBitmap(_button.AltTexutureNoFocusName);
         _textColor = GetColor(_button.TextColor);
         _disabledColor = GetColor(_button.DisabledColor);
         _focus = _button.Focus;
@@ -122,7 +122,7 @@ namespace ExternalOSDLibrary
     /// <param name="graph">Graphics</param>
     public override void DrawElement(Graphics graph)
     {
-      if (_button.Visible || GUIInfoManager.GetBool(_button.GetVisibleCondition(), _button.ParentID))
+      if (_wasVisible)
       {
         if (_button.Focus)
         {

@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -66,7 +66,7 @@ namespace ExternalOSDLibrary
       _label = control as GUILabelControl;
       if (_label != null)
       {
-        _font = getFont(_label.FontName);
+        _font = GetFont(_label.FontName);
         _brush = new SolidBrush(GetColor(_label.TextColor));
         _labelString = _label.Label;
       }
@@ -80,7 +80,7 @@ namespace ExternalOSDLibrary
     /// <param name="graph">Graphics</param>
     public override void DrawElement(Graphics graph)
     {
-      if (_label.Visible || GUIInfoManager.GetBool(_label.GetVisibleCondition(), _label.ParentID))
+      if (_wasVisible)
       {
         DrawStandard(graph, _labelString);
       }
@@ -127,6 +127,19 @@ namespace ExternalOSDLibrary
         FontStyle style = _font.Style | FontStyle.Strikeout;
         temp = new Font(_font.FontFamily.Name, _font.Size, style);
       }
+
+      int xFromAnim = 0;
+      int yFromAnim = 0;
+      foreach (VisualEffect effect in _label.Animations)
+      {
+        if (effect.CurrentState != AnimationState.None && effect.Effect == EffectType.Slide && (effect.Condition == 0 || GUIInfoManager.GetBool(effect.Condition, 0)))
+        {
+          xFromAnim += (int)effect.EndX;
+          yFromAnim += (int)effect.EndY;
+        }
+      }
+      rectangle.X += xFromAnim; rectangle.Y += yFromAnim;
+
       graph.DrawString(label, temp, _brush, rectangle, StringFormat.GenericTypographic);
     }
 
@@ -174,13 +187,19 @@ namespace ExternalOSDLibrary
     /// <param name="label">Label</param>
     private void DrawStandard(Graphics graph, String label)
     {
-      GUIControl.Alignment alignment = _label.TextAlignment;
       RectangleF rectangle;
-      if (alignment == GUIControl.Alignment.ALIGN_LEFT)
+      switch (_label.TextAlignment)
       {
-        rectangle = new RectangleF((float)_label.Location.X, (float)_label.Location.Y, _label.Width, _label.Height);
+        case GUIControl.Alignment.ALIGN_CENTER:
+          rectangle = new RectangleF((float)_label.Location.X + ((_label.Width - _label.TextWidth) / 2), (float)_label.Location.Y + ((_label.Height - _label.TextHeight) / 2), _label.Width, _label.Height);
+          break;
+        case GUIControl.Alignment.ALIGN_RIGHT:
+          rectangle = new RectangleF((float)_label.Location.X - _label.TextWidth, (float)_label.Location.Y, _label.Width, _label.Height);
+          break;
+        default: //left
+          rectangle = new RectangleF((float)_label.Location.X, (float)_label.Location.Y, _label.Width, _label.Height);
+          break;
       }
-      else rectangle = alignment == GUIControl.Alignment.ALIGN_RIGHT ? new RectangleF((float)_label.Location.X - _label.TextWidth, (float)_label.Location.Y, _label.Width, _label.Height) : new RectangleF((float)_label.Location.X - (_label.TextWidth / 2), (float)_label.Location.Y - (_label.TextHeight / 2), _label.Width, _label.Height);
       DrawElementAlternative(graph, label, false, rectangle);
     }
     #endregion

@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ namespace MPlayer.ConfigurationPanel
     /// <summary>
     /// Last selected Share in the form
     /// </summary>
-    private MPlayer_Share lastShare;
+    private MPlayerShare _lastShare;
     #endregion
 
     #region
@@ -56,12 +56,11 @@ namespace MPlayer.ConfigurationPanel
     /// <summary>
     /// Handles the Add-Button click event
     /// </summary>
-    /// <param _name="sender">Sender object</param>
-    /// <param _name="e">Event Arguments</param>
-    private void shareAdd_Click(object sender, EventArgs e)
+    /// <param name="sender">Sender object</param>
+    /// <param name="e">Event Arguments</param>
+    private void ShareAddClick(object sender, EventArgs e)
     {
-      MPlayer_Share temp = new MPlayer_Share();
-      temp.Name = "NewLocation";
+      MPlayerShare temp = new MPlayerShare {Name = "NewLocation"};
       shareList.Items.Add(temp);
       shareList.SelectedItem = temp;
 
@@ -70,9 +69,9 @@ namespace MPlayer.ConfigurationPanel
     /// <summary>
     /// Handles the Delete-Button click event
     /// </summary>
-    /// <param _name="sender">Sender object</param>
-    /// <param _name="e">Event Arguments</param>
-    private void shareDelete_Click(object sender, EventArgs e)
+    /// <param name="sender">Sender object</param>
+    /// <param name="e">Event Arguments</param>
+    private void ShareDeleteClick(object sender, EventArgs e)
     {
       if (shareList.SelectedIndex > -1)
       {
@@ -90,22 +89,22 @@ namespace MPlayer.ConfigurationPanel
     /// <summary>
     /// Handles the Selected index change on the share list
     /// </summary>
-    /// <param _name="sender">Sender object</param>
-    /// <param _name="e">Event Arguments</param>
-    private void shareList_SelectedIndexChanged(object sender, EventArgs e)
+    /// <param name="sender">Sender object</param>
+    /// <param name="e">Event Arguments</param>
+    private void ShareListSelectedIndexChanged(object sender, EventArgs e)
     {
-      if (lastShare != null)
+      if (_lastShare != null)
       {
-        lastShare.Path = shareLocation.Text;
+        _lastShare.Path = shareLocation.Text;
       }
 
       if (shareList.SelectedIndex > -1)
       {
-        lastShare = shareList.SelectedItem as MPlayer_Share;
-        if (lastShare != null)
+        _lastShare = shareList.SelectedItem as MPlayerShare;
+        if (_lastShare != null)
         {
-          shareName.Text = lastShare.Name;
-          shareLocation.Text = lastShare.Path;
+          shareName.Text = _lastShare.Name;
+          shareLocation.Text = _lastShare.Path;
         }
         shareName.Enabled = true;
         shareLocation.Enabled = true;
@@ -116,7 +115,7 @@ namespace MPlayer.ConfigurationPanel
         shareLocation.Text = String.Empty;
         shareName.Enabled = false;
         shareLocation.Enabled = false;
-        lastShare = null;
+        _lastShare = null;
       }
 
     }
@@ -124,17 +123,17 @@ namespace MPlayer.ConfigurationPanel
     /// <summary>
     /// Handles the Leave event on the extension Textfield
     /// </summary>
-    /// <param _name="sender">Sender object</param>
-    /// <param _name="e">Event Arguments</param>
-    private void shareName_Leave(object sender, EventArgs e)
+    /// <param name="sender">Sender object</param>
+    /// <param name="e">Event Arguments</param>
+    private void ShareNameLeave(object sender, EventArgs e)
     {
-      if (lastShare != null)
+      if (_lastShare != null)
       {
         int selectedIndex = shareList.SelectedIndex;
         if (selectedIndex != -1)
         {
-          lastShare.Name = shareName.Text;
-          shareList.Items[selectedIndex] = lastShare;
+          _lastShare.Name = shareName.Text;
+          shareList.Items[selectedIndex] = _lastShare;
         }
       }
 
@@ -143,14 +142,14 @@ namespace MPlayer.ConfigurationPanel
     /// <summary>
     /// Handles the Leave event on the extension Textfield
     /// </summary>
-    /// <param _name="sender">Sender object</param>
-    /// <param _name="e">Event Arguments</param>
-    private void shareLocation_Leave(object sender, EventArgs e)
+    /// <param name="sender">Sender object</param>
+    /// <param name="e">Event Arguments</param>
+    private void ShareLocationLeave(object sender, EventArgs e)
     {
-      if (lastShare != null)
+      if (_lastShare != null)
       {
-        lastShare.Path = shareLocation.Text;
-        shareList.Items[shareList.SelectedIndex] = lastShare;
+        _lastShare.Path = shareLocation.Text;
+        shareList.Items[shareList.SelectedIndex] = _lastShare;
       }
 
 
@@ -159,9 +158,9 @@ namespace MPlayer.ConfigurationPanel
     /// <summary>
     /// Handles the Browse-Button click event
     /// </summary>
-    /// <param _name="sender">Sender object</param>
-    /// <param _name="e">Event Arguments</param>
-    private void browseButton_Click(object sender, EventArgs e)
+    /// <param name="sender">Sender object</param>
+    /// <param name="e">Event Arguments</param>
+    private void BrowseButtonClick(object sender, EventArgs e)
     {
       folderBrowserDialog1.SelectedPath = shareLocation.Text;
       folderBrowserDialog1.ShowDialog();
@@ -177,7 +176,6 @@ namespace MPlayer.ConfigurationPanel
     {
       try
       {
-        MPlayer_Share share;
         XmlDocument doc = new XmlDocument();
         string path = Config.GetFile(Config.Dir.Config, "MPlayer_GUIPlugin.xml");
         doc.Load(path);
@@ -187,9 +185,11 @@ namespace MPlayer.ConfigurationPanel
           if (listShare != null)
             foreach (XmlNode nodeShare in listShare)
             {
-              share = new MPlayer_Share();
-              share.Name = nodeShare.Attributes["name"].Value;
-              share.Path = nodeShare.Attributes["path"].Value;
+              MPlayerShare share = new MPlayerShare
+                                      {
+                                        Name = nodeShare.Attributes["name"].Value,
+                                        Path = nodeShare.Attributes["path"].Value
+                                      };
               shareList.Items.Add(share);
             }
         }
@@ -201,7 +201,8 @@ namespace MPlayer.ConfigurationPanel
           playlistFolder.Checked = xmlreader.GetValueAsBool("mplayer", "treatPlaylistAsFolders", false);
           dvdNavCheckbox.Checked = xmlreader.GetValueAsBool("mplayer", "useDVDNAV", false);
         }
-      } catch (Exception e)
+      }
+      catch (Exception e)
       {
         Log.Info("MPlayer GUI Error: Configuration could not be loaded: " + e.Message);
       }
@@ -214,17 +215,15 @@ namespace MPlayer.ConfigurationPanel
     public void SaveConfiguration()
     {
       shareList.SelectedIndex = -1;
-      XmlTextWriter writer = new XmlTextWriter(Config.GetFile(Config.Dir.Config, "MPlayer_GUIPlugin.xml"), System.Text.Encoding.UTF8);
-      writer.Formatting = Formatting.Indented;
-      writer.Indentation = 1;
-      writer.IndentChar = (char)9;
+      XmlTextWriter writer = new XmlTextWriter(Config.GetFile(Config.Dir.Config, "MPlayer_GUIPlugin.xml"),
+                                               System.Text.Encoding.UTF8)
+                               {Formatting = Formatting.Indented, Indentation = 1, IndentChar = (char)9};
       writer.WriteStartDocument(true);
       writer.WriteStartElement("mplayergui"); //<mplayer>
       writer.WriteAttributeString("version", "1");
-      MPlayer_Share temp;
       for (int i = 0; i < shareList.Items.Count; i++)
       {
-        temp = shareList.Items[i] as MPlayer_Share;
+        MPlayerShare temp = shareList.Items[i] as MPlayerShare;
         writer.WriteStartElement("Share"); //<Share>
         if (temp != null)
         {
@@ -238,14 +237,8 @@ namespace MPlayer.ConfigurationPanel
       writer.Close();
       using (MediaPortal.Profile.Settings xmlWriter = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml")))
       {
-        if (String.IsNullOrEmpty(pluginName.Text))
-        {
-          xmlWriter.SetValue("mplayer", "displayNameOfGUI", "My MPlayer");
-        }
-        else
-        {
-          xmlWriter.SetValue("mplayer", "displayNameOfGUI", pluginName.Text);
-        }
+        xmlWriter.SetValue("mplayer", "displayNameOfGUI",
+                           String.IsNullOrEmpty(pluginName.Text) ? "My MPlayer" : pluginName.Text);
         xmlWriter.SetValueAsBool("mplayer", "useMyMusicShares", myMusicShare.Checked);
         xmlWriter.SetValueAsBool("mplayer", "useMyVideoShares", myVideoShare.Checked);
         xmlWriter.SetValueAsBool("mplayer", "treatPlaylistAsFolders", playlistFolder.Checked);

@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -46,8 +46,11 @@ namespace ExternalOSDLibrary
     public DialogWindow()
     {
       _dialogWindow = GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_DIALOG_MENU) as GUIDialogMenu;
-      if (_dialogWindow != null) _controlList = _dialogWindow.controlList;
-      GenerateElements();
+      if (_dialogWindow != null)
+      {
+        _controlList = _dialogWindow.controlList;
+        GenerateElements();
+      }
     }
     #endregion
 
@@ -62,15 +65,22 @@ namespace ExternalOSDLibrary
     }
 
     /// <summary>
-    /// Performs a base uinut if the window. This includes the following tasks
+    /// Performs a base init of the window. This includes the following tasks
     /// - Setting the reference to the window in MP
     /// - Setting the reference to the control list of the MP window
     /// </summary>
     protected override void BaseInit()
     {
       _dialogWindow = GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_DIALOG_MENU) as GUIDialogMenu;
+      _baseWindow = _dialogWindow;
       if (_dialogWindow != null)
-        _controlList = _dialogWindow.controlList;
+      {
+        _controlList = new GUIControlCollection();
+        foreach (var baseElement in _dialogWindow.controlList)
+        {
+          _controlList.Add(baseElement);
+        }
+      }
     }
     #endregion
   }

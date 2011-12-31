@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2009 MisterD
+#region Copyright (C) 2006-2012 MisterD
 
 /* 
- *	Copyright (C) 2006-2009 MisterD
+ *	Copyright (C) 2006-2012 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -46,8 +46,11 @@ namespace ExternalOSDLibrary
     public VideoOSDWindow()
     {
       _osdWindow = GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_OSD) as GUIVideoOSD;
-      if (_osdWindow != null) _controlList = _osdWindow.controlList;
-      GenerateElements();
+      if (_osdWindow != null)
+      {
+        _controlList = _osdWindow.controlList;
+        GenerateElements();
+      }
     }
     #endregion
 
@@ -58,7 +61,7 @@ namespace ExternalOSDLibrary
     /// <returns>true, if window is visible; false otherwise</returns>
     protected override bool CheckSpecificVisibility()
     {
-      return GUIWindowManager.VisibleOsd == GUIWindow.Window.WINDOW_OSD;;
+      return (int)GUIWindowManager.VisibleOsd == _osdWindow.GetID;
     }
 
     /// <summary>
@@ -69,8 +72,11 @@ namespace ExternalOSDLibrary
     protected override void BaseInit()
     {
       _osdWindow = GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_OSD) as GUIVideoOSD;
+      _baseWindow = _osdWindow;
       if (_osdWindow != null)
+      {
         _controlList = _osdWindow.controlList;
+      }
     }
     #endregion
   }
