@@ -298,8 +298,14 @@ namespace ExternalOSDLibrary
     /// </summary>
     public void CompleteDispose()
     {
-      _label.Dispose();
-      _background.Dispose();
+      if (_label != null)
+      {
+        _label.Dispose();
+      }
+      if (_background != null)
+      {
+        _background.Dispose();
+      }
       foreach (BaseElement element in _cacheElements)
       {
         if (element != null) element.Dispose();

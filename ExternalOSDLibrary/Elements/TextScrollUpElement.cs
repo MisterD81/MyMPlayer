@@ -84,11 +84,20 @@ namespace ExternalOSDLibrary
       {
         SizeF textSize = graph.MeasureString(_label, _font);
         RectangleF rectangle;
-        if (_textScrollUp.TextAlignment == GUIControl.Alignment.ALIGN_LEFT)
+        if (_textScrollUp.TextAlignment == GUIControl.Alignment.ALIGN_LEFT || _textScrollUp.TextAlignment == GUIControl.Alignment.Left)
         {
           rectangle = new RectangleF((float)_textScrollUp.Location.X, (float)_textScrollUp.Location.Y, _textScrollUp.Width, Math.Max(textSize.Height, _textScrollUp.Height));
         }
-        else rectangle = _textScrollUp.TextAlignment == GUIControl.Alignment.ALIGN_RIGHT ? new RectangleF((float)_textScrollUp.Location.X - textSize.Width, (float)_textScrollUp.Location.Y, _textScrollUp.Width, Math.Max(textSize.Height, _textScrollUp.Height)) : new RectangleF((float)_textScrollUp.Location.X - (textSize.Width / 2), (float)_textScrollUp.Location.Y - (textSize.Height / 2), _textScrollUp.Width, Math.Max(textSize.Height, _textScrollUp.Height));
+        else if (_textScrollUp.TextAlignment == GUIControl.Alignment.ALIGN_RIGHT || _textScrollUp.TextAlignment == GUIControl.Alignment.Right)
+        {
+          rectangle = new RectangleF((float)_textScrollUp.Location.X - textSize.Width, (float)_textScrollUp.Location.Y,
+                         _textScrollUp.Width, Math.Max(textSize.Height, _textScrollUp.Height));
+        }
+        else
+        {
+          rectangle = new RectangleF((float)_textScrollUp.Location.X, (float)_textScrollUp.Location.Y, _textScrollUp.Width,
+                         Math.Max(textSize.Height, _textScrollUp.Height));
+        }
         graph.DrawString(GUIPropertyManager.Parse(_label), _font, _brush, rectangle, StringFormat.GenericTypographic);
       }
     }

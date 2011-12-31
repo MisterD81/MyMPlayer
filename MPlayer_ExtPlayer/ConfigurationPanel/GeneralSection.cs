@@ -52,18 +52,14 @@ namespace MPlayer.ConfigurationPanel
     {
       using (MediaPortal.Profile.Settings xmlreader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml")))
       {
-        osdSelect.SelectedIndex = xmlreader.GetValueAsInt("mplayer", "osd", 0);
+        osdSelect.SelectedIndex = xmlreader.GetValueAsInt("mplayer", "osd", (int) OSDMode.ExternalOSDLibrary);
         optionalArguments.Text = xmlreader.GetValueAsString("mplayer", "generalArguments", String.Empty);
         rebuildIndex.Checked = xmlreader.GetValueAsBool("mplayer", "rebuildIndex", false);
         priorityBoost.Checked = xmlreader.GetValueAsBool("mplayer", "priorityBoost", true);
         int tempCacheSize = xmlreader.GetValueAsInt("mplayer", "cacheSize", 4096);
         cacheSize.Text = tempCacheSize > 0 ? tempCacheSize.ToString() : String.Empty;
         mplayerPath.Text = xmlreader.GetValueAsString("mplayer", "mplayerPath", "C:\\Program Files\\MPlayer\\MPlayer.exe");
-        bool blankScreenStandardValue = true;
-        if (OSInfo.OSInfo.OSList.WindowsVista == OSInfo.OSInfo.GetOSName() || OSInfo.OSInfo.OSList.Windows2008 == OSInfo.OSInfo.GetOSName() || OSInfo.OSInfo.OSList.Windows7 == OSInfo.OSInfo.GetOSName())
-        {
-          blankScreenStandardValue = false;
-        }
+        bool blankScreenStandardValue = !(OSInfo.OSInfo.OSList.WindowsVista == OSInfo.OSInfo.GetOSName() || OSInfo.OSInfo.OSList.Windows2008 == OSInfo.OSInfo.GetOSName() || OSInfo.OSInfo.OSList.Windows7 == OSInfo.OSInfo.GetOSName());
         externalOSDLibraryBlank.Checked = xmlreader.GetValueAsBool("externalOSDLibrary", "blankScreen", blankScreenStandardValue);
       }
     }

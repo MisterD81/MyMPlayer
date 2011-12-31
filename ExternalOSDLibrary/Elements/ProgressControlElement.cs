@@ -176,7 +176,6 @@ namespace ExternalOSDLibrary
         if (_midBitmap != null)
         {
           iYPos = _progressControl.YPosition + (_progressControl.Height - iHeightMid) / 2;
-          Log.Info("WIDTH: " + fWidth);
           graph.DrawImage(_midBitmap, iXPos, iYPos, (int)Math.Abs(fWidth), iHeightMid);
         }
         iXPos += (int)fWidth;

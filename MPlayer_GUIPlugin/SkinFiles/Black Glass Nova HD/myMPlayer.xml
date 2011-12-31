@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!--version="1.0" encoding="utf-8" standalone="yes"-->
+<window>
+  <id>9533</id>
+  <defaultcontrol>50</defaultcontrol>
+  <allowoverlay>player.hasmedia</allowoverlay>
+  <define>#header.label:My MPlayer</define>
+  <define>#header.background:hover_my videos.png</define>
+  <define>#useSelectedFanart:Yes</define>
+  <animation effect="fade" time="250">WindowOpen</animation>
+  <animation effect="fade" time="250">WindowClose</animation>
+  <controls>
+    <import>common.window.xml</import>
+    <import>common.window.video.fanart.xml</import>
+    <import>common.window.time.xml</import>
+    <import>common.facade.background.xml</import>
+    <import>common.facade.itemcount.currentmodule.xml</import>
+    <import>common.facade.recordings.xml</import>
+    <control>
+      <type>image</type>
+      <description>artist art image</description>
+      <id>1000</id>
+      <posX>55</posX>
+      <posY>633</posY>
+      <width>627</width>
+      <height>351</height>
+      <keepaspectratio>yes</keepaspectratio>
+      <centered>yes</centered>
+      <zoom>yes</zoom>
+      <texture flipY="true" diffuse="Thumb_Mask.png">#selectedthumb</texture>
+      <visible>[facadeview.list|facadeview.album|facadeview.playlist]+control.hasfocus(50)</visible>
+      <animation effect="fade" time="250" reversible="false">visible</animation>
+    </control>
+    <control>
+      <description>Case</description>
+      <type>image</type>
+      <posX>37</posX>
+      <posY>615</posY>
+      <width>661</width>
+      <height>435</height>
+      <colordiffuse>ffffffff</colordiffuse>
+      <texture flipY="true" diffuse="Thumb_Mask.png">VideoCase.png</texture>
+      <visible>[facadeview.list|facadeview.album|facadeview.playlist]+control.hasfocus(50)+control.hasthumb(1000)</visible>
+      <animation effect="fade" time="250">hidden</animation>
+      <animation effect="fade" time="250">visible</animation>
+    </control>
+		<control>
+			<type>image</type>
+			<id>0</id>
+			<posX>-579</posX>
+			<posY>4</posY>
+			<width>627</width>
+			<height>1071</height>
+			<texture>bg_left.png</texture>
+			<colorDiffuse>ffffffff</colorDiffuse>
+			<visible>![control.hasfocus(2)|control.hasfocus(3)|control.hasfocus(5)|control.hasfocus(6)|control.hasfocus(20)|control.hasfocus(9)|control.hasfocus(9111)|control.hasfocus(9112)|control.hasfocus(9113)|control.hasfocus(9114)|control.hasfocus(66614)]</visible>
+			<animation effect="fade" time="50">WindowClose</animation>
+			<animation effect="fade" time="50">WindowOpen</animation>
+			<animation effect="fade" time="250">visiblechange</animation>
+		</control>
+		<control>
+			<type>actiongroup</type>
+			<description>action menu</description>
+			<defaultcontrol>2</defaultcontrol>
+			<onexit>0</onexit>
+			<buttonX>0</buttonX>
+			<buttonY>0</buttonY>
+			<buttonwidth>84</buttonwidth>
+			<buttonheight>1080</buttonheight>
+			<textureFocus>-</textureFocus>
+			<textureNoFocus>-</textureNoFocus>
+			<width>637</width>
+			<height>1080</height>
+			<dimColor>ffffffff</dimColor>
+			<visible>[control.hasfocus(2)|control.hasfocus(3)|control.hasfocus(5)|control.hasfocus(6)|control.hasfocus(20)|control.hasfocus(9)|control.hasfocus(9111)|control.hasfocus(9112)|control.hasfocus(9113)|control.hasfocus(9114)|control.hasfocus(66614)]</visible>
+			<animation effect="fade" time="250" start="75" reversible="false">visible</animation>
+			<animation effect="slide" tween="circle" easing="out" time="250" start="-312,0" reversible="false">visible</animation>
+			<animation effect="fade" time="250" end="75" reversible="false">hidden</animation>
+			<animation effect="slide" tween="circle" easing="out" time="250" end="-312,0" reversible="false">hidden</animation>
+			<animation effect="slide" time="150" end="-400,0" reversible="false">WindowClose</animation>
+			<animation effect="slide" tween="circle" easing="out" time="250" start="-312,0" reversible="false">WindowOpen</animation>
+			<animation effect="fade" time="250" start="75" reversible="false">WindowOpen</animation>
+			<control>
+				<type>image</type>
+				<id>0</id>
+				<posX>0</posX>
+				<posY>0</posY>
+				<width>627</width>
+				<height>1080</height>
+				<texture>bg_left.png</texture>
+				<colorDiffuse>ffffffff</colorDiffuse>
+			</control>
+			<control>
+				<id>0</id>
+				<type>label</type>
+				<posX>45</posX>
+				<posY>52</posY>
+				<label>#header.label</label>
+				<width>500</width>
+				<font>font24</font>
+				<align>left</align>
+				<textcolor>ffffffff</textcolor>
+			</control>
+			<control>
+				<type>image</type>
+				<id>0</id>
+				<posX>0</posX>
+				<posY>71</posY>
+				<width>579</width>
+				<height>79</height>
+				<texture>bg_button_nofocus.png</texture>
+			</control>
+			<control>
+				<description>button group</description>
+				<type>group</type>
+				<posX>0</posX>
+				<posY>150</posY>
+				<layout>StackLayout(0, Vertical, true)</layout>
+				<control>
+					<description>View-As button</description>
+					<type>button</type>
+					<id>2</id>
+					<label>100</label>
+					<onup>17</onup>
+					<onright>50</onright>
+				</control>
+				<control>
+					<type>sortbutton</type>
+					<id>3</id>
+					<label>103</label>
+				</control>
+				<control>
+					<description>Play Disc</description>
+					<type>button</type>
+					<id>6</id>
+					<label>Play Disc</label>
+				</control>
+				<control>
+					<description>Play Stream</description>
+					<type>button</type>
+					<id>5</id>
+					<label>Play Stream</label>
+				</control>
+				<control>
+					<description>Delete Item</description>
+					<type>button</type>
+					<id>7</id>
+					<label>Delete Item</label>
+				</control>
+			</control>
+			</control>
+		</control>
+  </controls>
+</window>

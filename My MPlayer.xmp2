@@ -136,6 +136,74 @@
           </Items>
         </Files>
       </GroupItem>
+      <GroupItem Name="BlackGlass">
+        <ParentGroup>Skins</ParentGroup>
+        <DisplayName>Black Glass</DisplayName>
+        <DefaulChecked>false</DefaulChecked>
+        <Description>BlackGlass</Description>
+        <Files>
+          <Items>
+            <FileItem InstallType="CopyFile" SystemFile="false" Modified="false">
+              <Param1 />
+              <UpdateOption>OverwriteIfOlder</UpdateOption>
+              <LocalFileName>MPlayer_GUIPlugin\SkinFiles\Black Glass\myMPlayer.xml</LocalFileName>
+              <ZipFileName>Installer{CopyFile}\{a7aa2a8b-9384-4534-b975-f21cdbc58cd2}-myMPlayer.xml</ZipFileName>
+              <DestinationFilename>%Skin%\Black Glass\myMPlayer.xml</DestinationFilename>
+            </FileItem>
+          </Items>
+        </Files>
+      </GroupItem>
+      <GroupItem Name="BlackGlassHD">
+        <ParentGroup>Skins</ParentGroup>
+        <DisplayName>Black Glass HD</DisplayName>
+        <DefaulChecked>false</DefaulChecked>
+        <Description>BlackGlassHD</Description>
+        <Files>
+          <Items>
+            <FileItem InstallType="CopyFile" SystemFile="false" Modified="false">
+              <Param1 />
+              <UpdateOption>AlwaysOverwrite</UpdateOption>
+              <LocalFileName>MPlayer_GUIPlugin\SkinFiles\Black Glass HD\myMPlayer.xml</LocalFileName>
+              <ZipFileName>Installer{CopyFile}\{3b9e2177-7041-40c0-b46e-2e73d3aa9510}-myMPlayer.xml</ZipFileName>
+              <DestinationFilename>%Skin%\Black Glass HD\myMPlayer.xml</DestinationFilename>
+            </FileItem>
+          </Items>
+        </Files>
+      </GroupItem>
+      <GroupItem Name="BlackGlassNova">
+        <ParentGroup>Skins</ParentGroup>
+        <DisplayName>Black Glass Nova</DisplayName>
+        <DefaulChecked>false</DefaulChecked>
+        <Description>BlackGlassNova</Description>
+        <Files>
+          <Items>
+            <FileItem InstallType="CopyFile" SystemFile="false" Modified="false">
+              <Param1 />
+              <UpdateOption>AlwaysOverwrite</UpdateOption>
+              <LocalFileName>MPlayer_GUIPlugin\SkinFiles\Black Glass Nova\myMPlayer.xml</LocalFileName>
+              <ZipFileName>Installer{CopyFile}\{f0cf5bb1-b0a0-43f1-b9bf-76638cd0e202}-myMPlayer.xml</ZipFileName>
+              <DestinationFilename>%Skin%\Black Glass Nova\myMPlayer.xml</DestinationFilename>
+            </FileItem>
+          </Items>
+        </Files>
+      </GroupItem>
+      <GroupItem Name="BlackGlassNovaHD">
+        <ParentGroup>Skins</ParentGroup>
+        <DisplayName>Black Glass Nova HD</DisplayName>
+        <DefaulChecked>false</DefaulChecked>
+        <Description>BlackGlassNovaHD</Description>
+        <Files>
+          <Items>
+            <FileItem InstallType="CopyFile" SystemFile="false" Modified="false">
+              <Param1 />
+              <UpdateOption>AlwaysOverwrite</UpdateOption>
+              <LocalFileName>MPlayer_GUIPlugin\SkinFiles\Black Glass Nova HD\myMPlayer.xml</LocalFileName>
+              <ZipFileName>Installer{CopyFile}\{e85ae47b-ac3a-4fa7-ac2d-4c334a7b3e6b}-myMPlayer.xml</ZipFileName>
+              <DestinationFilename>%Skin%\Black Glass Nova HD\myMPlayer.xml</DestinationFilename>
+            </FileItem>
+          </Items>
+        </Files>
+      </GroupItem>
     </Items>
   </Groups>
   <Sections>
@@ -343,9 +411,13 @@ Each version is given a distinguishing version number.  If the Program specifies
         <IncludedGroups>
           <string>Plugin</string>
           <string>Skins</string>
-          <string>Language</string>
           <string>Default</string>
           <string>DefaultWide</string>
+          <string>BlackGlass</string>
+          <string>BlackGlassHD</string>
+          <string>BlackGlassNova</string>
+          <string>BlackGlassNovaHD</string>
+          <string>Language</string>
         </IncludedGroups>
         <PanelName>Tree View Selector</PanelName>
         <WizardButtonsEnum>BackNextCancel</WizardButtonsEnum>
@@ -765,6 +837,34 @@ This version also includes a new OSD, which simulates the OSD of MP.</ExtensionD
         <ZipFileName>Installer{CopyFile}\{e53d163f-8007-4991-8f43-efceeed83da6}-strings_it.xml</ZipFileName>
         <DestinationFilename>%Language%\MPlayer\strings_it.xml</DestinationFilename>
       </FileItem>
+      <FileItem InstallType="CopyFile" SystemFile="false" Modified="false">
+        <Param1 />
+        <UpdateOption>OverwriteIfOlder</UpdateOption>
+        <LocalFileName>MPlayer_GUIPlugin\SkinFiles\Black Glass\myMPlayer.xml</LocalFileName>
+        <ZipFileName>Installer{CopyFile}\{a7aa2a8b-9384-4534-b975-f21cdbc58cd2}-myMPlayer.xml</ZipFileName>
+        <DestinationFilename>%Skin%\Black Glass\myMPlayer.xml</DestinationFilename>
+      </FileItem>
+      <FileItem InstallType="CopyFile" SystemFile="false" Modified="false">
+        <Param1 />
+        <UpdateOption>AlwaysOverwrite</UpdateOption>
+        <LocalFileName>MPlayer_GUIPlugin\SkinFiles\Black Glass HD\myMPlayer.xml</LocalFileName>
+        <ZipFileName>Installer{CopyFile}\{3b9e2177-7041-40c0-b46e-2e73d3aa9510}-myMPlayer.xml</ZipFileName>
+        <DestinationFilename>%Skin%\Black Glass HD\myMPlayer.xml</DestinationFilename>
+      </FileItem>
+      <FileItem InstallType="CopyFile" SystemFile="false" Modified="false">
+        <Param1 />
+        <UpdateOption>AlwaysOverwrite</UpdateOption>
+        <LocalFileName>MPlayer_GUIPlugin\SkinFiles\Black Glass Nova\myMPlayer.xml</LocalFileName>
+        <ZipFileName>Installer{CopyFile}\{f0cf5bb1-b0a0-43f1-b9bf-76638cd0e202}-myMPlayer.xml</ZipFileName>
+        <DestinationFilename>%Skin%\Black Glass Nova\myMPlayer.xml</DestinationFilename>
+      </FileItem>
+      <FileItem InstallType="CopyFile" SystemFile="false" Modified="false">
+        <Param1 />
+        <UpdateOption>AlwaysOverwrite</UpdateOption>
+        <LocalFileName>MPlayer_GUIPlugin\SkinFiles\Black Glass Nova HD\myMPlayer.xml</LocalFileName>
+        <ZipFileName>Installer{CopyFile}\{e85ae47b-ac3a-4fa7-ac2d-4c334a7b3e6b}-myMPlayer.xml</ZipFileName>
+        <DestinationFilename>%Skin%\Black Glass Nova HD\myMPlayer.xml</DestinationFilename>
+      </FileItem>
     </Items>
   </UniqueFileList>
   <ProjectSettings>
@@ -797,6 +897,46 @@ This version also includes a new OSD, which simulates the OSD of MP.</ExtensionD
         <DestinationFilename>%Language%\MPlayer</DestinationFilename>
         <Folder>MPlayer_ExtPlayer\Language</Folder>
         <Group>Language</Group>
+        <Recursive>true</Recursive>
+      </FolderGroup>
+      <FolderGroup InstallType="CopyFile" SystemFile="false" Modified="true">
+        <Param1 />
+        <UpdateOption>OverwriteIfOlder</UpdateOption>
+        <LocalFileName />
+        <ZipFileName>Installer{CopyFile}\{960e71e1-1985-48f0-8363-03b6789971f6}-</ZipFileName>
+        <DestinationFilename>%Skin%\Black Glass</DestinationFilename>
+        <Folder>MPlayer_GUIPlugin\SkinFiles\Black Glass</Folder>
+        <Group>BlackGlass</Group>
+        <Recursive>true</Recursive>
+      </FolderGroup>
+      <FolderGroup InstallType="CopyFile" SystemFile="false" Modified="true">
+        <Param1 />
+        <UpdateOption>AlwaysOverwrite</UpdateOption>
+        <LocalFileName />
+        <ZipFileName>Installer{CopyFile}\{1d8a8c5c-940d-40a9-ba60-5e6b9ce01b66}-</ZipFileName>
+        <DestinationFilename>%Skin%\Black Glass HD</DestinationFilename>
+        <Folder>MPlayer_GUIPlugin\SkinFiles\Black Glass HD</Folder>
+        <Group>BlackGlassHD</Group>
+        <Recursive>true</Recursive>
+      </FolderGroup>
+      <FolderGroup InstallType="CopyFile" SystemFile="false" Modified="true">
+        <Param1 />
+        <UpdateOption>AlwaysOverwrite</UpdateOption>
+        <LocalFileName />
+        <ZipFileName>Installer{CopyFile}\{bec457fb-749a-4b07-9b2a-d02b87b4376d}-</ZipFileName>
+        <DestinationFilename>%Skin%\Black Glass Nova</DestinationFilename>
+        <Folder>MPlayer_GUIPlugin\SkinFiles\Black Glass Nova</Folder>
+        <Group>BlackGlassNova</Group>
+        <Recursive>true</Recursive>
+      </FolderGroup>
+      <FolderGroup InstallType="CopyFile" SystemFile="false" Modified="true">
+        <Param1 />
+        <UpdateOption>AlwaysOverwrite</UpdateOption>
+        <LocalFileName />
+        <ZipFileName>Installer{CopyFile}\{56b17194-3f75-464f-9bbe-6371a75c5ec1}-</ZipFileName>
+        <DestinationFilename>%Skin%\Black Glass Nova HD</DestinationFilename>
+        <Folder>MPlayer_GUIPlugin\SkinFiles\Black Glass Nova HD</Folder>
+        <Group>BlackGlassNovaHD</Group>
         <Recursive>true</Recursive>
       </FolderGroup>
     </FolderGroups>

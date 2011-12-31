@@ -183,12 +183,21 @@ namespace MPlayer
     /// </summary>
     public void Dispose()
     {
-      _mplayerInnerPanel.Dispose();
-      _mplayerInnerPanel = null;
-      _mplayerOuterPanel.Dispose();
-      _mplayerOuterPanel = null;
-      _mplayerBackgroundPanel.Dispose();
-      _mplayerBackgroundPanel = null;
+      if (_mplayerInnerPanel != null)
+      {
+        _mplayerInnerPanel.Dispose();
+        _mplayerInnerPanel = null;
+      }
+      if (_mplayerOuterPanel != null)
+      {
+        _mplayerOuterPanel.Dispose();
+        _mplayerOuterPanel = null;
+      }
+      if (_mplayerBackgroundPanel != null)
+      {
+        _mplayerBackgroundPanel.Dispose();
+        _mplayerBackgroundPanel = null;
+      }
     }
     #endregion
 

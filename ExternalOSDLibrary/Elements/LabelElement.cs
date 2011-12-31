@@ -154,11 +154,17 @@ namespace ExternalOSDLibrary
       GUIControl.Alignment alignment = _label.TextAlignment;
       SizeF size = graph.MeasureString(label, _font);
       RectangleF rectangle;
-      if (alignment == GUIControl.Alignment.ALIGN_LEFT)
+      if (alignment == GUIControl.Alignment.ALIGN_LEFT || alignment == GUIControl.Alignment.Left)
       {
         rectangle = new RectangleF((float)_label.Location.X, (float)_label.Location.Y, size.Width, _label.Height);
       }
-      else rectangle = alignment == GUIControl.Alignment.ALIGN_RIGHT ? new RectangleF((float)_label.Location.X - size.Width, (float)_label.Location.Y, size.Width, _label.Height) : new RectangleF((float)_label.Location.X - (size.Width / 2), (float)_label.Location.Y - (size.Height / 2), size.Width, _label.Height);
+      else if (alignment == GUIControl.Alignment.ALIGN_RIGHT || alignment == GUIControl.Alignment.Right)
+      {
+        rectangle = new RectangleF((float)_label.Location.X - size.Width, (float)_label.Location.Y, size.Width, _label.Height);
+      }else
+      {
+        rectangle =  new RectangleF((float)_label.Location.X - (size.Width / 2), (float)_label.Location.Y - (size.Height / 2), size.Width, _label.Height);
+      }
 
       return rectangle;
     }

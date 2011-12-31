@@ -54,7 +54,7 @@ namespace MPlayer.ConfigurationPanel
         VideoOutputDriver videoOutputDriverStandardValue = VideoOutputDriver.DirectX;
         if (OSInfo.OSInfo.OSList.WindowsVista == OSInfo.OSInfo.GetOSName() || OSInfo.OSInfo.OSList.Windows2008 == OSInfo.OSInfo.GetOSName() || OSInfo.OSInfo.OSList.Windows7 == OSInfo.OSInfo.GetOSName())
         {
-          videoOutputDriverStandardValue = VideoOutputDriver.OpenGL2;
+          videoOutputDriverStandardValue = VideoOutputDriver.Direct3D;
         }
         videoOutputDriver.SelectedIndex = xmlreader.GetValueAsInt("mplayer", "videoOutputDriver", (int)videoOutputDriverStandardValue);
         postProcessing.SelectedIndex = xmlreader.GetValueAsInt("mplayer", "postProcessing", (int)PostProcessing.Maximum);

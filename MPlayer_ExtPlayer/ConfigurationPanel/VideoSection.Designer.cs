@@ -92,7 +92,7 @@ namespace MPlayer.ConfigurationPanel
             "DirectX - No Acceleration",
             "OpenGL",
             "OpenGL2",
-            "Direct3D - Beta"});
+            "Direct3D"});
       this.videoOutputDriver.Location = new System.Drawing.Point(129, 15);
       this.videoOutputDriver.Name = "videoOutputDriver";
       this.videoOutputDriver.Size = new System.Drawing.Size(260, 21);
