@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Desktop
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPlayer_ExtPlayer", "MPlayer_ExtPlayer\MPlayer_ExtPlayer.csproj", "{77254E2B-4032-495A-AF2D-1804AB2127EF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPlayer_GUIPlugin", "MPlayer_GUIPlugin\MPlayer_GUIPlugin.csproj", "{53898324-E882-4D37-86C1-E4696B248A13}"
