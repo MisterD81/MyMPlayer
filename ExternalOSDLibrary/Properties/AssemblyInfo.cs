@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("-")]
 [assembly: AssemblyProduct("ExternalOSDLibrary")]
-[assembly: AssemblyCopyright("Copyright © - 2006 - 2012")]
+[assembly: AssemblyCopyright("Copyright © - 2006 - 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 //
 // Sie können alle Werte angeben oder die standardmäßigen Revisions- und Buildnummern 
 // übernehmen, indem Sie "*" eingeben:
-[assembly: AssemblyVersion("1.1.1.0")]
-[assembly: AssemblyFileVersion("1.1.1.0")]
+[assembly: AssemblyVersion("1.1.2.0")]
+[assembly: AssemblyFileVersion("1.1.2.0")]

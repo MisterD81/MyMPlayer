@@ -108,7 +108,7 @@
     <Compile Include="Elements\ImageElement.cs" />
     <Compile Include="Elements\CheckMarkElement.cs" />
     <Compile Include="Elements\SliderElement.cs" />
-    <Compile Include="Elements\ToggleButtonElement.cs" />
+    <Compile Include="Elements\CheckButtonElement.cs" />
     <Compile Include="Elements\VolumeBarElement.cs" />
     <Compile Include="Elements\LabelElement.cs" />
     <Compile Include="DialogWindow.cs" />
