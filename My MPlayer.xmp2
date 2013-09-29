@@ -652,9 +652,9 @@ public class Script
         <Id />
         <MinVersion>
           <Major>1</Major>
-          <Minor>4</Minor>
-          <Build>0</Build>
-          <Revision>0</Revision>
+          <Minor>1</Minor>
+          <Build>6</Build>
+          <Revision>27644</Revision>
         </MinVersion>
         <MaxVersion>
           <Major>1</Major>
@@ -662,8 +662,8 @@ public class Script
           <Build>6</Build>
           <Revision>27644</Revision>
         </MaxVersion>
-        <WarnOnly>false</WarnOnly>
-        <Message>This version of My MPlayer requires MediaPortal version 1.4.0 and 1.5.0</Message>
+        <WarnOnly>true</WarnOnly>
+        <Message>This version of My MPlayer requires MediaPortal 1.2.0 Beta or higher!</Message>
         <Name>MediaPortal</Name>
       </DependencyItem>
     </Items>
