@@ -344,20 +344,22 @@ namespace MPlayer
     /// <returns>Culture</returns>
     static public string GetCultureName(string language)
     {
-      if (_cultures == null)
-      {
-        _cultures = new Dictionary<string, string>();
-
-        CultureInfo[] cultureList = CultureInfo.GetCultures(CultureTypes.AllCultures);
-
-        for (int i = 0; i < cultureList.Length; i++)
+        if (_cultures == null)
         {
-          _cultures.Add(cultureList[i].EnglishName, cultureList[i].Name);
-        }
-      }
+            _cultures = new Dictionary<string, string>();
 
-      if (_cultures.ContainsKey(language))
-        return _cultures[language];
+            CultureInfo[] cultureList = CultureInfo.GetCultures(CultureTypes.AllCultures);
+
+            for (int i = 0; i < cultureList.Length; i++)
+            {
+                _cultures[cultureList[i].EnglishName] = cultureList[i].Name;
+            }
+        }
+        string cultures = null;
+        if (_cultures.TryGetValue(language, out cultures))
+        {
+            return cultures;
+        }
 
       return null;
     }

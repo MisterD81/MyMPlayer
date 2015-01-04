@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2013 MisterD
+#region Copyright (C) 2006-2015 MisterD
 
 /* 
- *	Copyright (C) 2006-2013 MisterD
+ *	Copyright (C) 2006-2015 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ namespace MPlayer.ConfigurationPanel
         int tempCacheSize = xmlreader.GetValueAsInt("mplayer", "cacheSize", 4096);
         cacheSize.Text = tempCacheSize > 0 ? tempCacheSize.ToString() : String.Empty;
         mplayerPath.Text = xmlreader.GetValueAsString("mplayer", "mplayerPath", "C:\\Program Files\\MPlayer\\MPlayer.exe");
-        bool blankScreenStandardValue = !(OSInfo.OSInfo.OSList.WindowsVista == OSInfo.OSInfo.GetOSName() || OSInfo.OSInfo.OSList.Windows2008 == OSInfo.OSInfo.GetOSName() || OSInfo.OSInfo.OSList.Windows7 == OSInfo.OSInfo.GetOSName());
+        bool blankScreenStandardValue = !OSInfo.OSInfo.VistaOrLater();
         externalOSDLibraryBlank.Checked = xmlreader.GetValueAsBool("externalOSDLibrary", "blankScreen", blankScreenStandardValue);
       }
     }

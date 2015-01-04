@@ -1,7 +1,7 @@
-#region Copyright (C) 2006-2013 MisterD
+#region Copyright (C) 2006-2015 MisterD
 
 /* 
- *	Copyright (C) 2006-2013 MisterD
+ *	Copyright (C) 2006-2015 MisterD
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -1020,12 +1020,7 @@ namespace MPlayer
                             Path = xmlreader.GetValueAsString(section, strSharePath, String.Empty)
                           };
 
-          string pinCode = Utils.DecryptPin(xmlreader.GetValueAsString(section, strPincode, string.Empty));
-          if (pinCode != string.Empty)
-            share.Pincode = Convert.ToInt32(pinCode);
-          else
-            share.Pincode = -1;
-
+          share.Pincode = Utils.DecryptPin(xmlreader.GetValueAsString(section, strPincode, string.Empty));
           share.IsFtpShare = xmlreader.GetValueAsBool(section, shareType, false);
           share.FtpServer = xmlreader.GetValueAsString(section, shareServer, String.Empty);
           share.FtpLoginName = xmlreader.GetValueAsString(section, shareLogin, String.Empty);

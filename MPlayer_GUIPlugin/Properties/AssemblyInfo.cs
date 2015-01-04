@@ -10,7 +10,7 @@ using MediaPortal.Common.Utils;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("-")]
 [assembly: AssemblyProduct("MPlayer_GUIPlugin")]
-[assembly: AssemblyCopyright("Copyright © - 2006 - 2013")]
+[assembly: AssemblyCopyright("Copyright © - 2006 - 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,9 +31,10 @@ using MediaPortal.Common.Utils;
 //
 // Sie können alle Werte angeben oder die standardmäßigen Revisions- und Buildnummern 
 // übernehmen, indem Sie "*" eingeben:
-[assembly: AssemblyVersion("1.1.2.0")]
-[assembly: AssemblyFileVersion("1.1.2.0")]
-[assembly: CompatibleVersion("1.4.0.0", "1.4.0.0")]
+[assembly: AssemblyVersion("1.1.3.0")]
+[assembly: AssemblyFileVersion("1.1.3.0")]
+[assembly: CompatibleVersion("1.6.27644.0", "1.6.27644.0")]
 [assembly: UsesSubsystem("MP.SkinEngine")]
 [assembly: UsesSubsystem("MP.Players")]
 [assembly: UsesSubsystem("MP.Config")]
+[assembly: UsesSubsystem("MP.Plugins.Videos")]

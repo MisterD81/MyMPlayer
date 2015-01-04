@@ -662,8 +662,8 @@ public class Script
           <Build>6</Build>
           <Revision>27644</Revision>
         </MaxVersion>
-        <WarnOnly>true</WarnOnly>
-        <Message>This version of My MPlayer requires MediaPortal 1.2.0 Beta or higher!</Message>
+        <WarnOnly>false</WarnOnly>
+        <Message>This version of My MPlayer requires MediaPortal 1.9.0</Message>
         <Name>MediaPortal</Name>
       </DependencyItem>
     </Items>
@@ -674,8 +674,8 @@ public class Script
         <CompatibleVersion>
           <Items>
             <CompatibleVersionItem>
-              <MinRequiredVersion>1.4.0.0</MinRequiredVersion>
-              <DesignedForVersion>1.4.0.0</DesignedForVersion>
+              <MinRequiredVersion>1.6.27644.0</MinRequiredVersion>
+              <DesignedForVersion>1.6.27644.0</DesignedForVersion>
             </CompatibleVersionItem>
           </Items>
         </CompatibleVersion>
@@ -683,6 +683,7 @@ public class Script
           <Items>
             <SubSystemItem Name="MP.Config" />
             <SubSystemItem Name="MP.Players" />
+            <SubSystemItem Name="MP.Players.Video" />
             <SubSystemItem Name="MP.SkinEngine" />
           </Items>
         </SubSystemsUsed>
@@ -691,8 +692,8 @@ public class Script
         <CompatibleVersion>
           <Items>
             <CompatibleVersionItem>
-              <MinRequiredVersion>1.4.0.0</MinRequiredVersion>
-              <DesignedForVersion>1.4.0.0</DesignedForVersion>
+              <MinRequiredVersion>1.6.27644.0</MinRequiredVersion>
+              <DesignedForVersion>1.6.27644.0</DesignedForVersion>
             </CompatibleVersionItem>
           </Items>
         </CompatibleVersion>
@@ -700,6 +701,7 @@ public class Script
           <Items>
             <SubSystemItem Name="MP.Config" />
             <SubSystemItem Name="MP.Players" />
+            <SubSystemItem Name="MP.Plugins.Videos" />
             <SubSystemItem Name="MP.SkinEngine" />
           </Items>
         </SubSystemsUsed>
@@ -716,7 +718,7 @@ public class Script
     <Version>
       <Major>1</Major>
       <Minor>1</Minor>
-      <Build>2</Build>
+      <Build>3</Build>
       <Revision>0</Revision>
     </Version>
     <ExtensionDescription>My MPlayer is an external player and window plugin that gives the user the ability to use MPlayer in MediaPortal.
@@ -724,12 +726,12 @@ public class Script
 With the window plugin the user can play more medias like rtsp streams etc. than with the standard plugins of MP. It always uses MPlayer even if normally the internal players or an other external player is used by the other Plugins.
 
 This version also includes a new OSD, which simulates the OSD of MP.</ExtensionDescription>
-    <VersionDescription>- Updated plugin to work with 1.4.0 and 1.5.0</VersionDescription>
+    <VersionDescription>- Updated plugin to work with 1.9.0</VersionDescription>
     <DevelopmentStatus>Stable</DevelopmentStatus>
     <OnlineLocation>https://raw.github.com/MisterD81/MyMPlayer/master/My%20MPlayer-1.1.2.mpe1</OnlineLocation>
-    <ReleaseDate>2013-09-17T10:51:30</ReleaseDate>
+    <ReleaseDate>2015-01-04T10:51:30</ReleaseDate>
     <Tags>mplayer</Tags>
-    <Location>.\My MPlayer-1.1.2.mpe1</Location>
+    <Location>.\My MPlayer-1.1.3.mpe1</Location>
     <Params>
       <Items>
         <SectionParam Name="Icon">
